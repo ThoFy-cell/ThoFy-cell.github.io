@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Classement LoVS</title>
+<style>
+:root{--bg:#faf7f8;--panel:#fff;--fg:#1f1a1c;--muted:#6d6468;--line:#ece4e8;--accent:#8a2a52;--accent-soft:#f5e8ee;--gold:#b8860b;--silver:#7d8a96;--bronze:#a0603a;--ok:#2f7d4f}
+@media (prefers-color-scheme:dark){:root{--bg:#151214;--panel:#1f1a1d;--fg:#f1eaee;--muted:#a99fa5;--line:#332b30;--accent:#e08ab0;--accent-soft:#3a2430;--gold:#e0b84a;--silver:#b8c3cc;--bronze:#d79a6f;--ok:#6fcf97}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:22px;margin:4px 0 2px;color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pod{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+.pod b{display:block;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.pod div{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){.podium{grid-template-columns:1fr}}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;position:sticky;top:0;background:var(--bg);z-index:2;padding-top:6px}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tools input,.tools select{font:inherit;font-size:14px;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.tools input{flex:1 1 160px;min-width:0}
+.note{color:var(--muted);font-size:13px;margin:0 0 10px}
+.list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.pl{font-weight:700;text-align:center;font-variant-numeric:tabular-nums;color:var(--muted)}
+.pl.g1{color:var(--gold)}.pl.g2{color:var(--silver)}.pl.g3{color:var(--bronze)}
+.nm{min-width:0}
+.nm strong{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.det{font-size:12px;color:var(--muted)}
+.rk{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:6px;background:var(--accent-soft);color:var(--accent);margin-right:6px}
+.sc{text-align:right;font-variant-numeric:tabular-nums}
+.sc b{font-size:18px;display:block;line-height:1.1}
+.sc span{font-size:11px;color:var(--muted)}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+details{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}
+details p{font-size:14px;color:var(--muted)}
+.stock{display:flex;align-items:center;gap:8px;font-size:14px}
+.stock input{width:80px}
+.stock[hidden]{display:none}
+.ok{color:var(--ok);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Classement [LoVS] LoVe Syndïcate</h1>
+  <p class="sub" id="sub">—</p>
+  <div class="podium" id="podium"></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Chercher un membre" aria-label="Chercher un membre">
+    <select id="rang" aria-label="Filtrer par rang"><option value="">Tous les rangs</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
+    <label class="stock" id="stockbox" hidden>Coffres <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="list" id="list"></div>
+  <details>
+    <summary>Comment les notes sont calculées</summary>
+    <p><b>Participation</b> (sur 100) : sièges joués dans la semaine 40 % (sur 6), places aux classements hebdomadaires d'aide, de dons et d'éliminations 20 % chacun (1re place = tous les points). Malus de 1 point par coffre reçu au-delà de 2 (10 au maximum).</p>
+    <p><b>Puissance</b> : puissance du joueur rapportée au plus puissant de l'alliance (= 100).</p>
+    <p><b>Combiné</b> : 70 % participation + 30 % puissance.</p>
+    <p><b>Coffres</b> : note de participation + bonus de rang (R5 +30, R4 +20, R3 +10, R1 −10), 3 coffres au plus par membre, chaque coffre supplémentaire coûte 25 points. Indique le nombre de coffres de la ville pour voir qui en reçoit.</p>
+  </details>
+</div>
+<script>
+function main(DATA) {
+const rp = p => Math.max(0, (100 - (p == null ? 100 : p)) / 99);
+const M = DATA.membres;
+const maxP = Math.max(...M.map(m => m.p || 0));
+const rows = M.map(m => {
+  const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
+  const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus));
+  const puis = Math.round(100 * (m.p || 0) / maxP);
+  return {...m, part, puis, mix: Math.round(0.7 * part + 0.3 * puis)};
+});
+const byName = (a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'});
+for (const k of ['part', 'puis', 'mix']) [...rows].sort((a, b) => b[k] - a[k] || byName(a, b)).forEach((r, i) => r['pl_' + k] = i + 1);
+const bonus = {R5: 30, R4: 20, R3: 10, R2: 0, R1: -10};
+const slots = rows.flatMap(r => [0, 1, 2].map(k => ({r, k, prio: r.part + (bonus[r.r] || 0) - 25 * k})))
+  .sort((a, b) => b.prio - a.prio || byName(a.r, b.r));
+slots.forEach((s, i) => (s.r.seuils ||= [])[s.k] = i + 1);
+const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('fr-FR'));
+const T = {
+  part: {label: 'Participation', note: 'Sièges de la semaine, aide, dons et éliminations.', key: 'part',
+    det: r => `Sièges ${v(r.s)} · Aide ${v(r.a)}e · Dons ${v(r.d)}e · Élim. ${v(r.e)}e`, score: r => [r.part, '/ 100']},
+  puis: {label: 'Puissance', note: 'Puissance relevée dans la liste des membres.', key: 'puis',
+    det: r => `${v(r.p)} M de puissance`, score: r => [r.puis, '/ 100']},
+  mix: {label: 'Combiné', note: '70 % participation + 30 % puissance.', key: 'mix',
+    det: r => `Participation ${r.part} · Puissance ${r.puis}`, score: r => [r.mix, '/ 100']},
+  coffres: {label: 'Coffres', note: '', key: 'coffres'}
+};
+let tab = 'part';
+const el = id => document.getElementById(id);
+el('sub').textContent = `Relevé du ${DATA.date} · ${rows.length} membres`;
+const pod = el('podium');
+for (const k of ['part', 'puis', 'mix']) {
+  const d = document.createElement('div'); d.className = 'pod';
+  const b = document.createElement('b'); b.textContent = T[k].label; d.appendChild(b);
+  const t = document.createElement('div');
+  t.textContent = [...rows].sort((a, b) => a['pl_' + k] - b['pl_' + k]).slice(0, 3).map(r => r.n).join(', ');
+  d.appendChild(t); pod.appendChild(d);
+}
+for (const k of Object.keys(T)) {
+  const b = document.createElement('button'); b.className = 'tab'; b.role = 'tab'; b.textContent = T[k].label; b.dataset.k = k;
+  b.onclick = () => { tab = k; draw(); }; el('tabs').appendChild(b);
+}
+function line(place, cls, name, rang, det, big, small) {
+  const row = document.createElement('div'); row.className = 'row';
+  const pl = document.createElement('div'); pl.className = 'pl ' + cls; pl.textContent = place;
+  const nm = document.createElement('div'); nm.className = 'nm';
+  const st = document.createElement('strong'); st.textContent = name;
+  const dt = document.createElement('div'); dt.className = 'det';
+  const rk = document.createElement('span'); rk.className = 'rk'; rk.textContent = rang;
+  dt.appendChild(rk); dt.appendChild(document.createTextNode(det));
+  nm.append(st, dt);
+  const sc = document.createElement('div'); sc.className = 'sc';
+  const bb = document.createElement('b'); bb.textContent = big; if (big === '✓') bb.className = 'ok';
+  const sm = document.createElement('span'); sm.textContent = small;
+  sc.append(bb, sm);
+  row.append(pl, nm, sc); return row;
+}
+function draw() {
+  for (const b of el('tabs').children) b.setAttribute('aria-selected', b.dataset.k === tab);
+  const q = el('q').value.trim().toLowerCase(), rg = el('rang').value;
+  const keep = r => (!q || r.n.toLowerCase().includes(q)) && (!rg || r.r === rg);
+  const list = el('list'); list.replaceChildren();
+  el('stockbox').hidden = tab !== 'coffres';
+  let shown;
+  if (tab === 'coffres') {
+    const stock = Math.max(0, parseInt(el('stock').value, 10) || 0);
+    const nb = r => r.seuils.filter(x => x <= stock).length;
+    const gagnants = rows.filter(r => nb(r) > 0).length;
+    el('note').textContent = `Avec ${stock} coffres : ${gagnants} membres récompensés. « 1er dès 12 » = 1er coffre si la ville en a au moins 12.`;
+    shown = [...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).filter(keep);
+    shown.forEach((r, i) => list.appendChild(line(i + 1, '', r.n, r.r,
+      `1er dès ${r.seuils[0]} · 2e dès ${r.seuils[1]} · 3e dès ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'coffre' + (nb(r) > 1 ? 's' : ''))));
+  } else {
+    const t = T[tab]; el('note').textContent = t.note;
+    shown = [...rows].sort((a, b) => a['pl_' + t.key] - b['pl_' + t.key]).filter(keep);
+    shown.forEach(r => { const p = r['pl_' + t.key], [big, small] = t.score(r);
+      list.appendChild(line(p, p <= 3 ? 'g' + p : '', r.n, r.r, t.det(r), big, small)); });
+  }
+  if (!shown.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Aucun membre ne correspond.'; list.appendChild(e); }
+}
+el('q').oninput = draw; el('rang').onchange = draw; el('stock').oninput = draw;
+draw();
+}
+fetch('data.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()).then(main)
+  .catch(() => { document.getElementById('sub').textContent = 'Impossible de charger le classement, réessaie dans un instant.'; });
+</script>
+</body>
+</html>
