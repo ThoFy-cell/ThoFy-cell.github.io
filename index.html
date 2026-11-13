@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>LoVS – classement, astuces et règles</title>
+<title>LoVS – astuces, classement et règles</title>
 <style>
 :root{--bg:#faf7f8;--panel:#fff;--fg:#1f1a1c;--muted:#6d6468;--line:#ece4e8;--accent:#8a2a52;--accent-soft:#f5e8ee;--gold:#b8860b;--silver:#7d8a96;--bronze:#a0603a;--ok:#2f7d4f}
 @media (prefers-color-scheme:dark){:root{--bg:#151214;--panel:#1f1a1d;--fg:#f1eaee;--muted:#a99fa5;--line:#332b30;--accent:#e08ab0;--accent-soft:#3a2430;--gold:#e0b84a;--silver:#b8c3cc;--bronze:#d79a6f;--ok:#6fcf97}}
@@ -61,12 +61,16 @@ details p{font-size:14px;color:var(--muted)}
 .tbl th,.tbl td{text-align:left;padding:6px 6px;border-top:1px solid var(--line);vertical-align:top}
 .tbl th{white-space:nowrap}
 .src{font-size:13px;color:var(--muted)}
+.gnav{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+.grp{margin-top:22px;scroll-margin-top:60px}
+.grp-h{font-size:17px;margin:0 0 2px;color:var(--accent);border-bottom:2px solid var(--accent-soft);padding-bottom:4px}
+.cta .tab{margin-left:4px}
 .src a,.page a{color:var(--accent)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Classement [LoVS] LoVe Syndïcate</h1>
+  <h1>[LoVS] LoVe Syndïcate</h1>
   <p class="sub" id="sub">—</p>
   <div class="podium" id="podium"></div>
   <div class="tabs" role="tablist" id="tabs"></div>
@@ -89,9 +93,10 @@ details p{font-size:14px;color:var(--muted)}
 
   <section class="page" id="page-astuces" hidden>
     <h2>💡 Astuces Top Lords</h2>
-    <p class="lead">Les conseils qui reviennent le plus souvent dans l'alliance et dans les guides. Touche un thème pour l'ouvrir.</p>
+    <p class="lead">Les conseils qui reviennent le plus souvent dans l'alliance et dans les guides. Elles sont rangées par thème : touche un thème pour y aller, puis un titre pour l'ouvrir. Le classement de l'alliance est dans les onglets suivants.</p>
 
     <div class="card warn" id="today"></div>
+    <div class="gnav"><button type="button" class="tab" data-g="g-ressources">🌾 Ressources</button><button type="button" class="tab" data-g="g-progression">📈 Progression</button><button type="button" class="tab" data-g="g-attaque">⚔️ Attaque</button><button type="button" class="tab" data-g="g-guerre">🛡️ Guerre</button><button type="button" class="tab" data-g="g-evenements">🎉 Événements</button></div>
 
     <div class="card key">
       <h3>⭐ Les 5 réflexes</h3>
@@ -104,88 +109,77 @@ details p{font-size:14px;color:var(--muted)}
       </ol>
     </div>
 
+
+    <div class="grp" id="g-ressources">
+    <h3 class="grp-h">🌾 Ressources</h3>
+    <p class="lead">Récolter, protéger son stock, bien dépenser.</p>
     <details open>
-      <summary>📣 Les astuces du jour de l'alliance</summary>
-      <p>Reprises des annonces d'alliance du jeu (Chat → Alliance → Annonce d'Alliance).</p>
+      <summary>📣 Conseils de l'alliance</summary>
       <ul>
-        <li><b>Équipement</b> : sur chaque héros que tu utilises, monte d'abord <b>l'épée et les gants</b> au maximum, puis le reste. Monte par tranches de 10 niveaux. Les bonus n'existent que sur les pièces or et violettes.</li>
-        <li><b>Arène</b> : 3 « j'aime » par jour = 90 gemmes gratuites. Le 4e « j'aime », sur le podium, rapporte 30 gemmes de plus.</li>
         <li><b>Chariots</b> : envoie 4 chariots et pilles-en 4 chaque jour.
           <ul>
             <li>Envoi : 5 rafraîchissements garantissent un chariot UR. Envoie-les de préférence un par un, protégés par ta meilleure équipe, et garde ton équipe de protection à jour.</li>
-            <li>Pillage : vise les chariots SSR ou UR, de préférence ceux qui contiennent des fragments de héros UR. Tu as autant d'essais qu'il faut pour atteindre 4 pillages.</li>
+            <li>Escorte : jusqu'à 5 héros par chariot. L'équipe est figée au départ, choisis-la avant d'envoyer. Les combats d'escorte ne coûtent pas de soldats.</li>
           </ul></li>
-        <li><b>Tour de guet</b> : tes héros gagnent des niveaux à chaque victoire. Commence avec tes héros faibles pour leur donner de l'expérience, et ajoute tes héros forts petit à petit quand ça bloque.</li>
-        <li><b>Duel, jour du lundi</b> : griffon, récolte et dépense d'endurance. Lis les prérequis de la journée avant de dépenser.</li>
-        <li><b>Dons</b> : donner à l'alliance te rapporte aussi des points à échanger dans la boutique d'alliance. Donne chaque jour.</li>
-        <li><b>Cabanes d'ouvriers</b> : elles n'augmentent pas que la vitesse, elles ajoutent aussi de la puissance de combat.</li>
-        <li><b>Événements</b> : l'icône Événements, à droite de l'écran, donne accès à la course aux armements (nouvelles tâches toutes les 4 heures) et à un calendrier gratuit pour préparer la suite.</li>
-        <li>Une encyclopédie des prochains événements est en construction sur le Discord de l'alliance.</li>
+        <li><b>Dons</b> : donner à l'alliance te rapporte aussi des points à échanger dans la boutique d'alliance. Donne chaque jour, et <b>tôt dans la journée</b> : d'après les joueurs, le nombre de dons récompensés est limité et les premiers servis sont les premiers récompensés.</li>
+        <li><b>Arène</b> : 3 « j'aime » par jour = 90 gemmes gratuites. Le 4e « j'aime », sur le podium, rapporte 30 gemmes de plus.</li>
       </ul>
     </details>
-
     <details>
-      <summary>🗓️ Duel d'alliance : quoi utiliser quel jour</summary>
+      <summary>🌾 Ressources, récolte et sécurité</summary>
+      <ul>
+        <li>Envoie tes troupes récolter dès qu'elles sont libres. Les ressources n'arrivent dans ton stock qu'<b>au retour</b> de la troupe.</li>
+        <li><b>Regarde la tuile avant d'envoyer</b> : si un joueur d'une alliance protégée y est déjà, choisis-en une autre.</li>
+        <li>Garde ton endurance pour le lundi : chaque point compte alors aussi pour le duel.</li>
+        <li><b>Reste près du camp de l'alliance</b> (objet « Relocalisation d'Alliance », onglet Spécial) : groupés, on se défend et on s'aide plus vite.</li>
+        <li>Le pacte ne protège pas de tout le monde : mets un <b>bouclier</b> avant une longue absence, surtout le samedi, et rappelle tes récolteurs.</li>
+        <li>Ce qui est dans ton sac ne peut pas être pillé : voir « Sac : quoi ouvrir, quoi garder fermé ».</li>
+        <li><b>Pillage</b> : une partie de ton bois, de ta nourriture et de tes pièces est protégée et ne peut pas être prise. Un attaquant n'emporte pas plus que la charge de sa marche, et il gagne de moins en moins s'il pille plusieurs fois la même cible dans la journée.</li>
+        <li>Le meilleur abri reste de <b>dépenser</b> : utilise tes ressources pour tes améliorations plutôt que de garder un gros stock dans le château.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🎒 Sac : quoi ouvrir, quoi garder fermé</summary>
+      <p>Un attaquant ne pille que le bois, la nourriture et les pièces qui sont dans ton château. Ce qui reste dans le sac est à l'abri.</p>
       <table class="tbl">
-        <tr><th>🦅 Lundi</th><td>Endurance (150 pts le point), tâches d'Intel (10 000), noyaux de bête (2 000), récolte.</td></tr>
-        <tr><th>🏰 Mardi</th><td>Accélérateurs de construction (50 pts la minute), wagons UR (100 000), primes UR (75 000), tickets d'ouvriers.</td></tr>
-        <tr><th>🔬 Mercredi</th><td>Accélérateurs de recherche, médailles d'honneur, tâches d'Intel.</td></tr>
-        <tr><th>🦸 Jeudi</th><td>Fragments de héros (UR 10 000, SSR 3 500, SR 1 000), tickets de recrutement (1 500), médailles de compétence.</td></tr>
-        <tr><th>🛡️ Vendredi</th><td>Entraînement et amélioration de soldats, accélérateurs d'entraînement, wagons et primes UR, fonte, pierres d'amélioration, tâches d'Intel. Bouclier le soir.</td></tr>
-        <tr><th>⚔️ Samedi</th><td>Jour « Kill » contre l'alliance adverse. <b>Tous</b> les accélérateurs comptent, y compris le soin, ainsi que les récoltes et les fins de recherche. Journée qui vaut double.</td></tr>
-        <tr><th>😴 Dimanche</th><td>Repos : ne dépense rien d'important. Stocke tes tâches d'Intel et lance tes récoltes le soir pour lundi.</td></tr>
+        <tr><th>✅ À ouvrir</th><td><b>Objets de gemmes (rubis) et d'endurance</b> : les gemmes et l'endurance ne sont pas pillables, tu peux les ouvrir sans risque.</td></tr>
+        <tr><th>✅ À ouvrir</th><td><b>Coffres de récompense</b> (événements, missions, alliance, course aux armements) : ouvre-les régulièrement. Ils donnent des objets (coffres de ressources, accélérateurs, fragments) qui restent en sécurité dans le sac.</td></tr>
+        <tr><th>🔒 À garder fermé</th><td><b>Coffres de ressources</b> (bois, nourriture, pièces) et <b>coffres universels</b> (ressource au choix) : une fois ouverts, leur contenu va dans le château et devient pillable.</td></tr>
       </table>
       <ul>
-        <li>Les points ci-dessus sont les valeurs de base : la recherche « duel » de l'alliance les augmente (un wagon UR passe à 150 000, une tâche d'Intel à 19 000).</li>
-        <li>Les <b>contrats de commerce et de prime</b> servent à rafraîchir wagons et primes jusqu'à tomber sur de l'UR : garde-les pour mardi et vendredi.</li>
-        <li>Les coffres d'EXP rapportent très peu au duel : ouvre-les quand tu en as besoin.</li>
-        <li><b>Ne quitte pas l'alliance en cours de semaine</b> : tu perds les récompenses du duel. Attends le courrier de récompenses.</li>
-        <li>Finis tes bâtiments et tes recherches <b>pendant</b> le bon jour : c'est le gain de puissance qui compte (10 pts par point de puissance).</li>
-        <li>Autres objets à garder : décorations SSR et UR (20 000 et 100 000 pts) pour le mardi, médailles d'honneur (150 pts) pour le mercredi.</li>
-        <li><b>Points de victoire</b> : 1 le lundi, 2 du mardi au vendredi, 4 le samedi. Le samedi peut tout renverser.</li>
-        <li><b>Paliers de coffres personnels</b> : 40 K, 150 K, 540 K, 660 K, 1 M, 2,3 M, 2,6 M, 3,6 M et 7,2 M points. Vise au moins 2,3 M les jours importants.</li>
-        <li>Pour participer : château 11, et l'alliance dans le top 32 du royaume à l'appariement du dimanche.</li>
-        <li>Exemple : 100 tickets de recrutement et 50 fragments UR gardés pour un jeudi valent 650 000 points de base, contre presque rien un autre jour.</li>
+        <li>Ne confonds pas les deux : un coffre de <b>récompense</b> s'ouvre, un coffre de <b>ressources</b> se garde.</li>
+        <li>Ouvre tes coffres de ressources au dernier moment, et seulement la quantité qu'il te manque pour lancer la construction ou la recherche.</li>
+        <li>Ouvrir un objet d'endurance n'oblige pas à la dépenser tout de suite : la dépense rapporte le plus le lundi du duel.</li>
+        <li>Garde les coffres universels pour la ressource qui te bloque le moment venu.</li>
       </ul>
     </details>
-
     <details>
-      <summary>🧠 Duel : préparer ses points à l'avance</summary>
-      <p>Le principe du programme VS de l'alliance : on prépare les jours creux, on valide le jour où ça compte.</p>
+      <summary>💎 Gemmes, VIP et boutiques</summary>
       <ul>
-        <li><b>Tâches d'Intel (lundi, mercredi, vendredi)</b> : termine tes tâches la veille <b>sans récupérer les récompenses</b>, puis récupère tout d'un coup le jour J. On peut en mettre de côté une trentaine (jusqu'à 35 d'après le programme de l'alliance) en commençant dès le matin de la veille. Les mardi, jeudi et dimanche servent donc à stocker.</li>
-        <li><b>Récoltes</b> : les points sont comptés quand la récolte <b>se termine</b>. Lance tes troupes la veille au soir pour qu'elles finissent juste après le début du jour suivant (1 h du matin à Paris).</li>
-        <li><b>Constructions (mardi)</b> : un bâtiment terminé ne donne ses points que lorsque tu ouvres son cadeau de fin de chantier. Pendant la semaine, laisse les cadeaux fermés et ouvre-les le mardi. Dans les paramètres, active la récupération avec validation pour ne pas les ouvrir par erreur.</li>
-        <li><b>Recherches</b> : même logique, fais-les finir le mercredi, et garde une fin de recherche pour le samedi.</li>
-        <li><b>Chariots et primes UR (mardi et vendredi)</b> : les jours précédents, fais tes missions de façon à n'avoir plus que de l'UR en attente. Lance toujours tes UR <b>avant</b> d'actualiser la liste, sinon tu les perds. Les tâches à prime <b>étoilées</b> se conservent : garde-les pour le jour du duel.</li>
-        <li><b>Soldats (vendredi)</b> : pendant la semaine, entraîne des troupes d'un niveau en dessous de ton maximum. Le vendredi, ne fais que des <b>améliorations</b> vers le niveau supérieur : les points sont ceux du niveau d'arrivée, pour beaucoup moins de temps et d'accélérateurs.</li>
-        <li>Vendredi compte aussi : pierres d'amélioration et fonte brute.</li>
+        <li>Garde les gemmes pour du permanent plutôt que pour finir un chantier au hasard. <b>Monter de niveau VIP</b> (vitesse de construction et de recherche pour toujours) vaut mieux que des tickets au résultat aléatoire.</li>
+        <li><b>Boutique VIP</b> (gemmes, renouvelée le lundi) : les coffres de ressources à 12 gemmes et l'endurance sont de bonnes affaires quand tu es bloqué. Vérifie les remises.</li>
+        <li><b>Boutique d'alliance</b> (points de dons) : coffres d'EXP, médailles de compétence, boucliers et accélérateurs.</li>
+        <li><b>Boutique d'honneur</b> (renouvelée le 1er du mois) : fragments universels UR.</li>
+        <li><b>Recrutement</b> : surveille le compteur de palier sur l'écran de recrutement, et fais tes recrutements un jeudi.</li>
+        <li>Avant de dépenser, trois questions : est-ce que ça règle un blocage durable ? existe-t-il une solution gratuite ? un événement récompense-t-il cette dépense ?</li>
+        <li>Les pièces de la Foire du Royaume (Shimmer Coins) non utilisées se conservent pour la foire suivante.</li>
+        <li>Le premier achat de chaque taille de pack de gemmes donne le double.</li>
+        <li><b>Les « générateurs de gemmes gratuites » n'existent pas</b> : un site qui demande tes identifiants cherche à voler ton compte. Lie ton compte et note ton identifiant de joueur.</li>
       </ul>
-      <div class="card warn">
-        <h3>🛡️ Vendredi soir : bouclier obligatoire</h3>
-        <ul>
-          <li>Le samedi est le jour « Kill » : sans bouclier, tes troupes donnent des points à l'adversaire. Pose ton bouclier <b>vendredi soir, avant 1 h du matin</b>.</li>
-          <li>Mets de côté assez de points d'alliance dans la semaine pour en acheter un à la boutique d'alliance.</li>
-          <li>Tu peux aussi abriter tes troupes ailleurs : en renfort chez un joueur sous bouclier ou dans une ville de l'alliance. Attention, si ton château est rasé, tes troupes rentrent chez toi.</li>
-          <li>Rappelle tes récolteurs : ce jour-là, les récoltes sont des cibles faciles.</li>
-          <li>Attaquer ou envoyer un éclaireur fait tomber ton bouclier : n'attaque que si c'est prévu avec les R4 et le R5.</li>
-        </ul>
-      </div>
-      <p class="src">Source : programme « Événement VS » de l'alliance [LoVS]. Ces méthodes sont les mêmes que dans les jeux voisins du même genre (Last War, Last Asylum), où elles sont bien documentées ; vérifie les chiffres dans le jeu.</p>
     </details>
+    </div>
 
-    <details>
-      <summary>⏱️ Course aux armements (Race to Ace)</summary>
+    <div class="grp" id="g-progression">
+    <h3 class="grp-h">📈 Progression</h3>
+    <p class="lead">Château, héros, équipement : avancer vite et sans gaspiller.</p>
+    <details open>
+      <summary>📣 Conseils de l'alliance</summary>
       <ul>
-        <li>Le thème change <b>toutes les 4 heures</b> : 1 h, 5 h, 9 h, 13 h, 17 h et 21 h, heure de Paris (hiver).</li>
-        <li>Attends le créneau qui correspond à ce que tu as en stock. Quand il tombe le même jour que le thème du duel, une seule action est récompensée deux fois : ces créneaux sont surlignés dans le tableau.</li>
-        <li>Vise le dernier coffre du créneau, puis arrête-toi : le surplus est mieux utilisé ailleurs.</li>
-        <li>À partir du VIP 8, tu peux échanger un créneau contre un autre une fois par jour.</li>
+        <li><b>Équipement</b> : sur chaque héros que tu utilises, monte d'abord <b>l'épée et les gants</b> au maximum, puis le reste. Monte par tranches de 10 niveaux. Les bonus n'existent que sur les pièces or et violettes.</li>
+        <li><b>Tour de guet</b> : tes héros gagnent des niveaux à chaque victoire. Commence avec tes héros faibles pour leur donner de l'expérience, et ajoute tes héros forts petit à petit quand ça bloque.</li>
+        <li><b>Cabanes d'ouvriers</b> : elles n'augmentent pas que la vitesse, elles ajoutent aussi de la puissance de combat.</li>
       </ul>
-      <div style="overflow-x:auto"><table class="tbl" id="ra"></table></div>
-      <p class="src">Planning relevé dans le jeu, heures de Paris (hiver). Griffon = jour du lundi, Château = mardi, Recherche = mercredi, Héros = jeudi, Soldats = vendredi.</p>
     </details>
-
     <details>
       <summary>🏰 Château, files et accélérateurs</summary>
       <ul>
@@ -196,7 +190,6 @@ details p{font-size:14px;color:var(--muted)}
         <li>Une file arrêtée faute de ressources est un problème de ressources, pas de vitesse : envoie récolter.</li>
       </ul>
     </details>
-
     <details>
       <summary>🦸 Héros et équipes</summary>
       <ul>
@@ -210,7 +203,6 @@ details p{font-size:14px;color:var(--muted)}
         <li>Enregistre des formations séparées (boss, attaque, garnison) dès que la fonction est débloquée (château 16).</li>
       </ul>
     </details>
-
     <details>
       <summary>🔨 Forge : quelle pièce or fabriquer en premier</summary>
       <p>Une pièce or (UR) coûte cher : on n'en fabrique souvent qu'une à la fois. Voici l'ordre qui rapporte le plus.</p>
@@ -238,66 +230,11 @@ details p{font-size:14px;color:var(--muted)}
         <li><b>Vérifie sur tes combats</b> : rapport de bataille → Stats de Combat → Dégâts infligés. Équipe d'abord le héros qui a la plus grande barre.</li>
         <li>Une pièce or neuve repart du <b>niveau 0</b> : garde de quoi la monter au niveau 10 juste après, pour débloquer son premier bonus.</li>
         <li>Les bonus des pièces violettes ne servent que contre les monstres. Ceux des pièces or servent dans tous les combats.</li>
+        <li><b>Recycle ce qui ne sert plus</b> : démonter une pièce d'équipement donne du <b>minerai de fer</b>, qui remplace une partie de la <b>fonte brute</b> demandée pour fabriquer une pièce or. Démonte les pièces vertes et bleues inutiles, et même des violettes si ça te rapproche de la prochaine pièce or de ta première équipe.</li>
+        <li>N'améliore pas l'équipement de bas niveau ni celui des héros que tu ne joues pas : garde tes matériaux pour la première équipe.</li>
       </ul>
       <p class="src">Analyse faite le 11 nov. 2026 à partir des chiffres de la forge et d'un rapport de bataille. Les pourcentages de l'exemple viennent d'un seul combat : compare avec tes propres rapports.</p>
     </details>
-
-    <details>
-      <summary>🌾 Ressources, récolte et sécurité</summary>
-      <ul>
-        <li>Envoie tes troupes récolter dès qu'elles sont libres. Les ressources n'arrivent dans ton stock qu'<b>au retour</b> de la troupe.</li>
-        <li><b>Regarde la tuile avant d'envoyer</b> : si un joueur d'une alliance protégée y est déjà, choisis-en une autre.</li>
-        <li>Les ralliements contre les Exécuteurs impériaux rapportent beaucoup de nourriture pour peu d'endurance : rejoins-les.</li>
-        <li>Garde ton endurance pour le lundi : chaque point compte alors aussi pour le duel.</li>
-        <li><b>Reste près du camp de l'alliance</b> (objet « Relocalisation d'Alliance », onglet Spécial) : groupés, on se défend et on s'aide plus vite.</li>
-        <li>Le pacte ne protège pas de tout le monde : mets un <b>bouclier</b> avant une longue absence, surtout le samedi, et rappelle tes récolteurs.</li>
-        <li>Ce qui est dans ton sac ne peut pas être pillé : voir « Sac : quoi ouvrir, quoi garder fermé ».</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>🎒 Sac : quoi ouvrir, quoi garder fermé</summary>
-      <p>Un attaquant ne pille que le bois, la nourriture et les pièces qui sont dans ton château. Ce qui reste dans le sac est à l'abri.</p>
-      <table class="tbl">
-        <tr><th>✅ À ouvrir</th><td><b>Objets de gemmes (rubis) et d'endurance</b> : les gemmes et l'endurance ne sont pas pillables, tu peux les ouvrir sans risque.</td></tr>
-        <tr><th>✅ À ouvrir</th><td><b>Coffres de récompense</b> (événements, missions, alliance, course aux armements) : ouvre-les régulièrement. Ils donnent des objets (coffres de ressources, accélérateurs, fragments) qui restent en sécurité dans le sac.</td></tr>
-        <tr><th>🔒 À garder fermé</th><td><b>Coffres de ressources</b> (bois, nourriture, pièces) et <b>coffres universels</b> (ressource au choix) : une fois ouverts, leur contenu va dans le château et devient pillable.</td></tr>
-      </table>
-      <ul>
-        <li>Ne confonds pas les deux : un coffre de <b>récompense</b> s'ouvre, un coffre de <b>ressources</b> se garde.</li>
-        <li>Ouvre tes coffres de ressources au dernier moment, et seulement la quantité qu'il te manque pour lancer la construction ou la recherche.</li>
-        <li>Ouvrir un objet d'endurance n'oblige pas à la dépenser tout de suite : la dépense rapporte le plus le lundi du duel.</li>
-        <li>Garde les coffres universels pour la ressource qui te bloque le moment venu.</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>🏙️ Villes et sièges</summary>
-      <ul>
-        <li>Les R4 et R5 déclarent la guerre à une ville, une seule à la fois. L'heure est annoncée dans le chat : sois en ligne et rejoins les ralliements avec ta meilleure équipe.</li>
-        <li>Une ville prise est protégée 24 heures, puis il faut la défendre.</li>
-        <li>Le seigneur et les chevaliers de la ville relancent le <b>décret chaque jour</b> : il s'arrête à minuit serveur (1 h à Paris).</li>
-        <li>Chaque siège joué compte dans ta note de participation (40 % de la note), donc dans le partage des coffres de la ville.</li>
-        <li>Siège de la Capitale le vendredi : il faut une ville de niveau 6 à l'alliance et un château 12 pour entrer dans la zone.</li>
-        <li>Garde des accélérateurs de soin et d'entraînement pour les jours de siège.</li>
-      </ul>
-    </details>
-
-    <details>
-      <summary>💎 Gemmes, VIP et boutiques</summary>
-      <ul>
-        <li>Garde les gemmes pour du permanent plutôt que pour finir un chantier au hasard. <b>Monter de niveau VIP</b> (vitesse de construction et de recherche pour toujours) vaut mieux que des tickets au résultat aléatoire.</li>
-        <li><b>Boutique VIP</b> (gemmes, renouvelée le lundi) : les coffres de ressources à 12 gemmes et l'endurance sont de bonnes affaires quand tu es bloqué. Vérifie les remises.</li>
-        <li><b>Boutique d'alliance</b> (points de dons) : coffres d'EXP, médailles de compétence, boucliers et accélérateurs.</li>
-        <li><b>Boutique d'honneur</b> (renouvelée le 1er du mois) : fragments universels UR.</li>
-        <li><b>Recrutement</b> : surveille le compteur de palier sur l'écran de recrutement, et fais tes recrutements un jeudi.</li>
-        <li>Avant de dépenser, trois questions : est-ce que ça règle un blocage durable ? existe-t-il une solution gratuite ? un événement récompense-t-il cette dépense ?</li>
-        <li>Les pièces de la Foire du Royaume (Shimmer Coins) non utilisées se conservent pour la foire suivante.</li>
-        <li>Le premier achat de chaque taille de pack de gemmes donne le double.</li>
-        <li><b>Les « générateurs de gemmes gratuites » n'existent pas</b> : un site qui demande tes identifiants cherche à voler ton compte. Lie ton compte et note ton identifiant de joueur.</li>
-      </ul>
-    </details>
-
     <details>
       <summary>✅ Routine quotidienne (10 minutes)</summary>
       <ul>
@@ -312,8 +249,117 @@ details p{font-size:14px;color:var(--muted)}
         <li>Seigneurs et chevaliers de ville : relancer le décret.</li>
       </ul>
     </details>
+    </div>
 
-    <p class="src">Sources : annonces d'alliance [LoVS] du 31 octobre au 9 novembre 2026, relevés faits dans le jeu ; <a href="https://www.toplordsintel.com/guides/alliance-duel" rel="noopener">Top Lords Intel</a>, <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a>, <a href="https://toplordswiki.com/guides/beginner-tips/" rel="noopener">toplordswiki</a>, <a href="https://tap-guides.com/2026/07/31/top-lords-beginner-guide/" rel="noopener">Tap Guides</a>, <a href="https://top-lords.wiki/alliance/city" rel="noopener">top-lords.wiki</a>. Les chiffres peuvent changer avec les mises à jour du jeu. Dernière révision : 11 novembre 2026.</p>
+    <div class="grp" id="g-attaque">
+    <h3 class="grp-h">⚔️ Attaque</h3>
+    <p class="lead">Ralliements, monstres et pillage.</p>
+    <details open>
+      <summary>⚔️ Ralliements et pillage</summary>
+      <ul>
+        <li><b>Contre un château défendu</b> : prépare les joueurs et les marches avant de lancer. Un ralliement complet part tout de suite ; sinon il attend la fin de son minuteur. N'envoie pas d'éclaireur juste avant : la cible peut être prévenue.</li>
+        <li>Enchaîne les vagues : un premier ralliement puissant entame la garnison, les suivants partent aussitôt, avant que l'adversaire ait le temps de renforcer. Rien n'est garanti : lis les rapports de combat et adapte la suite.</li>
+        <li>Les ralliements contre les Exécuteurs impériaux rapportent beaucoup de nourriture pour peu d'endurance : rejoins-les.</li>
+        <li><b>Pillage de chariots</b> : vise les chariots SSR ou UR, de préférence ceux qui contiennent des fragments de héros UR. Tu as autant d'essais qu'il faut pour atteindre 4 pillages.</li>
+        <li>Attaquer ou envoyer un éclaireur fait tomber ton bouclier : n'attaque que si c'est prévu avec les R4 et le R5, et jamais une alliance protégée par le pacte (onglet Règles).</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-guerre">
+    <h3 class="grp-h">🛡️ Guerre</h3>
+    <p class="lead">Villes, sièges et défense de l'alliance.</p>
+    <details open>
+      <summary>🏙️ Villes et sièges</summary>
+      <ul>
+        <li>Les R4 et R5 déclarent la guerre à une ville, une seule à la fois. L'heure est annoncée dans le chat : sois en ligne et rejoins les ralliements avec ta meilleure équipe.</li>
+        <li>Une ville prise est protégée 24 heures, puis il faut la défendre.</li>
+        <li><b>Comment une ville est gagnée</b> : pendant la guerre déclarée, les points de tous les membres s'additionnent. 100 dégâts aux troupes qui défendent = 1 point ; 1 point de durabilité retiré à la ville = 5 points. Quand la durabilité tombe à zéro, la ville va à l'alliance qui a le plus de points, <b>pas à celle qui donne le dernier coup</b>. Frapper les murs rapporte donc beaucoup.</li>
+        <li>La ville appartient à l'alliance. C'est le <b>chef d'alliance qui nomme le seigneur</b> (et les chevaliers) : ce n'est pas forcément celui qui a le plus attaqué, et le titre peut changer de main.</li>
+        <li>Les déclarations sont limitées : 3 par jour (2 en saison), une cible à la fois, et l'alliance doit compter au moins 20 membres. Une fois qu'on possède une ville, on ne peut viser que les villes voisines.</li>
+        <li>Le seigneur et les chevaliers de la ville relancent le <b>décret chaque jour</b> : il s'arrête à minuit serveur (1 h à Paris).</li>
+        <li>Chaque siège joué compte dans ta note de participation (40 % de la note), donc dans le partage des coffres de la ville.</li>
+        <li>Siège de la Capitale le vendredi : il faut une ville de niveau 6 à l'alliance et un château 12 pour entrer dans la zone.</li>
+        <li>Garde des accélérateurs de soin et d'entraînement pour les jours de siège.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🛡️ Vendredi soir : bouclier obligatoire</summary>
+        <ul>
+          <li>Le samedi est le jour « Kill » : sans bouclier, tes troupes donnent des points à l'adversaire. Pose ton bouclier <b>vendredi soir, avant 1 h du matin</b>.</li>
+          <li>Mets de côté assez de points d'alliance dans la semaine pour en acheter un à la boutique d'alliance.</li>
+          <li>Tu peux aussi abriter tes troupes ailleurs : en renfort chez un joueur sous bouclier ou dans une ville de l'alliance. Attention, si ton château est rasé, tes troupes rentrent chez toi.</li>
+          <li>Rappelle tes récolteurs : ce jour-là, les récoltes sont des cibles faciles.</li>
+          <li>Attaquer ou envoyer un éclaireur fait tomber ton bouclier : n'attaque que si c'est prévu avec les R4 et le R5.</li>
+        </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-evenements">
+    <h3 class="grp-h">🎉 Événements</h3>
+    <p class="lead">Duel d'alliance, course aux armements et calendrier.</p>
+    <details open>
+      <summary>📣 Conseils de l'alliance</summary>
+      <ul>
+        <li><b>Duel, jour du lundi</b> : griffon, récolte et dépense d'endurance. Lis les prérequis de la journée avant de dépenser.</li>
+        <li><b>Événements</b> : l'icône Événements, à droite de l'écran, donne accès à la course aux armements (nouvelles tâches toutes les 4 heures) et à un calendrier gratuit pour préparer la suite.</li>
+        <li>Une encyclopédie des prochains événements est en construction sur le Discord de l'alliance.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🗓️ Duel d'alliance : quoi utiliser quel jour</summary>
+      <table class="tbl">
+        <tr><th>🦅 Lundi</th><td>Endurance (150 pts le point), tâches d'Intel (10 000), noyaux de bête (2 000), récolte.</td></tr>
+        <tr><th>🏰 Mardi</th><td>Accélérateurs de construction (50 pts la minute), wagons UR (100 000), primes UR (75 000), tickets d'ouvriers.</td></tr>
+        <tr><th>🔬 Mercredi</th><td>Accélérateurs de recherche, médailles d'honneur, tâches d'Intel.</td></tr>
+        <tr><th>🦸 Jeudi</th><td>Fragments de héros (UR 10 000, SSR 3 500, SR 1 000), tickets de recrutement (1 500), médailles de compétence.</td></tr>
+        <tr><th>🛡️ Vendredi</th><td>Entraînement et amélioration de soldats, accélérateurs d'entraînement, wagons et primes UR, fonte, pierres d'amélioration, tâches d'Intel. Bouclier le soir.</td></tr>
+        <tr><th>⚔️ Samedi</th><td>Jour « Kill » contre l'alliance adverse. <b>Tous</b> les accélérateurs comptent, y compris le soin, ainsi que les récoltes et les fins de recherche. Journée qui vaut double.</td></tr>
+        <tr><th>😴 Dimanche</th><td>Repos : ne dépense rien d'important. Stocke tes tâches d'Intel et lance tes récoltes le soir pour lundi.</td></tr>
+      </table>
+      <ul>
+        <li>Les points ci-dessus sont les valeurs de base : la recherche « duel » de l'alliance les augmente (un wagon UR passe à 150 000, une tâche d'Intel à 19 000).</li>
+        <li>Les <b>contrats de commerce et de prime</b> servent à rafraîchir wagons et primes jusqu'à tomber sur de l'UR : garde-les pour mardi et vendredi.</li>
+        <li>Les coffres d'EXP rapportent très peu au duel : ouvre-les quand tu en as besoin.</li>
+        <li><b>Ne quitte pas l'alliance en cours de semaine</b> : tu perds les récompenses du duel. Attends le courrier de récompenses.</li>
+        <li>Finis tes bâtiments et tes recherches <b>pendant</b> le bon jour : c'est le gain de puissance qui compte (10 pts par point de puissance).</li>
+        <li>Autres objets à garder : décorations SSR et UR (20 000 et 100 000 pts) pour le mardi, médailles d'honneur (150 pts) pour le mercredi.</li>
+        <li><b>Points de victoire</b> : 1 le lundi, 2 du mardi au vendredi, 4 le samedi. Le samedi peut tout renverser.</li>
+        <li><b>Paliers de coffres personnels</b> : 40 K, 150 K, 540 K, 660 K, 1 M, 2,3 M, 2,6 M, 3,6 M et 7,2 M points. Vise au moins 2,3 M les jours importants.</li>
+        <li>Pour participer : château 11, et l'alliance dans le top 32 du royaume à l'appariement du dimanche.</li>
+        <li>Exemple : 100 tickets de recrutement et 50 fragments UR gardés pour un jeudi valent 650 000 points de base, contre presque rien un autre jour.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🧠 Duel : préparer ses points à l'avance</summary>
+      <p>Le principe du programme VS de l'alliance : on prépare les jours creux, on valide le jour où ça compte.</p>
+      <ul>
+        <li><b>Tâches d'Intel (lundi, mercredi, vendredi)</b> : termine tes tâches la veille <b>sans récupérer les récompenses</b>, puis récupère tout d'un coup le jour J. On peut en mettre de côté une trentaine (jusqu'à 35 d'après le programme de l'alliance) en commençant dès le matin de la veille. Les mardi, jeudi et dimanche servent donc à stocker.</li>
+        <li><b>Récoltes</b> : les points sont comptés quand la récolte <b>se termine</b>. Lance tes troupes la veille au soir pour qu'elles finissent juste après le début du jour suivant (1 h du matin à Paris).</li>
+        <li><b>Constructions (mardi)</b> : un bâtiment terminé ne donne ses points que lorsque tu ouvres son cadeau de fin de chantier. Pendant la semaine, laisse les cadeaux fermés et ouvre-les le mardi. Dans les paramètres, active la récupération avec validation pour ne pas les ouvrir par erreur.</li>
+        <li><b>Recherches</b> : même logique, fais-les finir le mercredi, et garde une fin de recherche pour le samedi.</li>
+        <li><b>Chariots et primes UR (mardi et vendredi)</b> : les jours précédents, fais tes missions de façon à n'avoir plus que de l'UR en attente. Lance toujours tes UR <b>avant</b> d'actualiser la liste, sinon tu les perds. Les tâches à prime <b>étoilées</b> se conservent : garde-les pour le jour du duel.</li>
+        <li><b>Soldats (vendredi)</b> : pendant la semaine, entraîne des troupes d'un niveau en dessous de ton maximum. Le vendredi, ne fais que des <b>améliorations</b> vers le niveau supérieur : les points sont ceux du niveau d'arrivée, pour beaucoup moins de temps et d'accélérateurs.</li>
+        <li>Vendredi compte aussi : pierres d'amélioration et fonte brute.</li>
+      </ul>
+      <p class="src">Source : programme « Événement VS » de l'alliance [LoVS]. Ces méthodes sont les mêmes que dans les jeux voisins du même genre (Last War, Last Asylum), où elles sont bien documentées ; vérifie les chiffres dans le jeu.</p>
+    </details>
+    <details>
+      <summary>⏱️ Course aux armements (Race to Ace)</summary>
+      <ul>
+        <li>Le thème change <b>toutes les 4 heures</b> : 1 h, 5 h, 9 h, 13 h, 17 h et 21 h, heure de Paris (hiver).</li>
+        <li>Attends le créneau qui correspond à ce que tu as en stock. Quand il tombe le même jour que le thème du duel, une seule action est récompensée deux fois : ces créneaux sont surlignés dans le tableau.</li>
+        <li>Vise le dernier coffre du créneau, puis arrête-toi : le surplus est mieux utilisé ailleurs.</li>
+        <li>À partir du VIP 8, tu peux échanger un créneau contre un autre une fois par jour.</li>
+      </ul>
+      <div style="overflow-x:auto"><table class="tbl" id="ra"></table></div>
+      <p class="src">Planning relevé dans le jeu, heures de Paris (hiver). Griffon = jour du lundi, Château = mardi, Recherche = mercredi, Héros = jeudi, Soldats = vendredi.</p>
+    </details>
+    </div>
+
+    <div class="card key cta"><h3>🏆 Et le classement ?</h3><p>Participation, puissance et partage des coffres de l'alliance : <button type="button" class="tab" id="go-rank">voir le classement →</button></p></div>
+
+    <p class="src">Sources : annonces d'alliance [LoVS] du 31 octobre au 9 novembre 2026, relevés faits dans le jeu ; <a href="https://www.toplordsintel.com/guides/alliance-duel" rel="noopener">Top Lords Intel</a>, <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a>, <a href="https://toplordswiki.com/guides/beginner-tips/" rel="noopener">toplordswiki</a>, <a href="https://tap-guides.com/2026/07/31/top-lords-beginner-guide/" rel="noopener">Tap Guides</a>, <a href="https://top-lords.wiki/alliance/city" rel="noopener">top-lords.wiki</a>, <a href="https://www.toplordsintel.com/guides/cities" rel="noopener">Top Lords Intel (villes)</a>, <a href="https://www.toplordsintel.com/guides/plunder" rel="noopener">Top Lords Intel (pillage et chariots)</a>, <a href="https://www.ldshop.gg/ru/blog/top-lords/top-lords-gear-crafting-and-upgrading-guide.html" rel="noopener">LDShop (forge)</a> ; carnet d'astuces de ThoFy. Les chiffres peuvent changer avec les mises à jour du jeu. Dernière révision : 13 novembre 2026 (astuces regroupées par thème).</p>
   </section>
 
   <section class="page" id="page-regles" hidden>
@@ -408,6 +454,7 @@ const slots = rows.flatMap(r => [0, 1, 2].map(k => ({r, k, prio: r.part + (bonus
 slots.forEach((s, i) => (s.r.seuils ||= [])[s.k] = i + 1);
 const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('fr-FR'));
 const T = {
+  astuces: {icon: '💡', label: 'Astuces', page: 'page-astuces'},
   part: {icon: '🤝', label: 'Participation', note: 'Sièges de la semaine, aide, dons et éliminations.', key: 'part',
     det: r => `Sièges ${v(r.s)} · Aide ${v(r.a)}e · Dons ${v(r.d)}e · Élim. ${v(r.e)}e`, score: r => [r.part, '/ 100']},
   puis: {icon: '⚔️', label: 'Puissance', note: 'Puissance relevée dans la liste des membres.', key: 'puis',
@@ -415,10 +462,9 @@ const T = {
   mix: {icon: '🏆', label: 'Combiné', note: '70 % participation + 30 % puissance.', key: 'mix',
     det: r => `Participation ${r.part} · Puissance ${r.puis}`, score: r => [r.mix, '/ 100']},
   coffres: {icon: '🎁', label: 'Coffres', note: '', key: 'coffres'},
-  astuces: {icon: '💡', label: 'Astuces', page: 'page-astuces'},
   regles: {icon: '📜', label: 'Règles', page: 'page-regles'}
 };
-let tab = T[location.hash.slice(1)] ? location.hash.slice(1) : 'part';
+let tab = T[location.hash.slice(1)] ? location.hash.slice(1) : 'astuces';
 const el = id => document.getElementById(id);
 el('sub').textContent = `Relevé du ${DATA.date} · ${rows.length} membres`;
 const pod = el('podium');
@@ -431,7 +477,7 @@ for (const k of ['part', 'puis', 'mix']) {
 }
 for (const k of Object.keys(T)) {
   const b = document.createElement('button'); b.className = 'tab'; b.role = 'tab'; b.textContent = T[k].icon + ' ' + T[k].label; b.dataset.k = k;
-  b.onclick = () => { tab = k; history.replaceState(null, '', T[k].page ? '#' + k : location.pathname); draw(); }; el('tabs').appendChild(b);
+  b.onclick = () => { tab = k; history.replaceState(null, '', k === 'astuces' ? location.pathname : '#' + k); draw(); }; el('tabs').appendChild(b);
 }
 function line(place, cls, name, rang, det, big, small) {
   const row = document.createElement('div'); row.className = 'row';
@@ -496,6 +542,8 @@ const RAW = ['RHSGCR', 'GCRSHG', 'CRHSGC', 'RHSGCR', 'HSGCRH', 'SGCRHS', 'CRHSGC
   tr([{t: 'Paris', th: 1}, ...order.map(d => ({t: names[d], th: 1}))], 'th');
   for (let sl = 0; sl < 6; sl++) tr([{t: (sl * 4 + 1) + ' h', th: 1}, ...order.map(d => { const c = RA[RAW[d][sl]]; return {t: c[0], bg: c[1] === d ? 'var(--accent-soft)' : '', b: d === dow && sl === slot}; })], 'td');
 }
+document.querySelectorAll('.gnav [data-g]').forEach(b => b.onclick = () => el(b.dataset.g).scrollIntoView({behavior: 'smooth'}));
+el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#part'); draw(); scrollTo(0, 0); };
 el('q').oninput = draw; el('rang').onchange = draw; el('stock').oninput = draw;
 draw();
 }
