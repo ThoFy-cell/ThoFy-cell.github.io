@@ -6,8 +6,8 @@
 <meta name="robots" content="noindex">
 <title>LoVS – astuces, classement et règles</title>
 <style>
-:root{--bg:#faf7f8;--panel:#fff;--fg:#1f1a1c;--muted:#6d6468;--line:#ece4e8;--accent:#8a2a52;--accent-soft:#f5e8ee;--gold:#b8860b;--silver:#7d8a96;--bronze:#a0603a;--ok:#2f7d4f}
-@media (prefers-color-scheme:dark){:root{--bg:#151214;--panel:#1f1a1d;--fg:#f1eaee;--muted:#a99fa5;--line:#332b30;--accent:#e08ab0;--accent-soft:#3a2430;--gold:#e0b84a;--silver:#b8c3cc;--bronze:#d79a6f;--ok:#6fcf97}}
+:root{--bg:#f4ecdc;--panel:#fffaf0;--fg:#2b2116;--muted:#6f6352;--line:#e6d8bd;--accent:#1d4f91;--accent-2:#163a6b;--accent-soft:#e3ecf8;--gold:#b8860b;--gold-2:#e2b44f;--silver:#7d8a96;--bronze:#a0603a;--ok:#2f7d4f;--serif:Georgia,'Times New Roman',serif}
+@media (prefers-color-scheme:dark){:root{--bg:#11151d;--panel:#1a2030;--fg:#efe7d8;--muted:#a59c8c;--line:#2c3446;--accent:#86b4ff;--accent-2:#1d4f91;--accent-soft:#1f2e4a;--gold:#e2b44f;--gold-2:#f0cd7a;--silver:#b8c3cc;--bronze:#d79a6f;--ok:#6fcf97}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:860px;margin:0 auto;padding:16px 16px 40px}
@@ -66,11 +66,30 @@ details p{font-size:14px;color:var(--muted)}
 .grp-h{font-size:17px;margin:0 0 2px;color:var(--accent);border-bottom:2px solid var(--accent-soft);padding-bottom:4px}
 .cta .tab{margin-left:4px}
 .src a,.page a{color:var(--accent)}
+
+/* Ambiance Top Lords, légère : parchemin, bleu royal et or, sans image ni police externe */
+body{background:var(--bg) radial-gradient(ellipse at top,rgba(226,180,79,.18),transparent 60%) no-repeat}
+.hero{position:relative;overflow:hidden;margin:0 0 12px;padding:16px 16px 14px 76px;border-radius:16px;color:#fff;background:linear-gradient(135deg,#2a62ad,#163a6b 70%);border:2px solid var(--gold-2);box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:repeating-linear-gradient(90deg,var(--gold-2) 0 14px,transparent 14px 22px);opacity:.7}
+.hero svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:50px;height:58px}
+.hero h1{color:#fff;font-family:var(--serif);font-size:23px;letter-spacing:.3px;margin:0;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.hero .tag{margin:2px 0 0;font-size:13px;color:#f3dfae}
+h1,.page h2,.grp-h,.card h3{font-family:var(--serif)}
+.page h2,.grp-h{color:var(--accent)}
+.grp-h{border-bottom:2px solid var(--gold-2)}
+.tab{border-color:var(--line)}
+.tab[aria-selected=true]{background:linear-gradient(180deg,#2a62ad,#163a6b);border-color:var(--gold-2);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.tabs{background:var(--bg)}
+details,.card,.list,.pod{box-shadow:0 1px 0 rgba(90,60,20,.08)}
+summary::marker{color:var(--gold)}
+.card.key{border-color:var(--gold-2);background:linear-gradient(180deg,var(--accent-soft),var(--panel))}
+.card.warn{border-left-color:var(--gold-2)}
+.pod b{color:var(--accent)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>[LoVS] LoVe Syndïcate</h1>
+  <header class="hero"><svg viewBox="0 0 50 58" aria-hidden="true"><path d="M25 2 46 9v18c0 14-9 24-21 29C13 51 4 41 4 27V9z" fill="#f3dfae" stroke="#b8860b" stroke-width="2.5"/><path d="M25 8 40 13v14c0 10-6 17-15 21-9-4-15-11-15-21V13z" fill="#163a6b"/><path d="M16 22h18l-3 9H19z M17 19l3-5 5 4 5-4 3 5z" fill="#e2b44f"/><path d="M18 36l7-4 7 4-7 4z" fill="#e2b44f"/></svg><h1>[LoVS] LoVe Syndïcate</h1><p class="tag">Royaume #116 · astuces, classement et règles</p></header>
   <p class="sub" id="sub">—</p>
   <div class="podium" id="podium"></div>
   <div class="tabs" role="tablist" id="tabs"></div>
