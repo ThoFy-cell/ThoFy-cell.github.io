@@ -83,7 +83,10 @@ JS = [  # (fragment exact du script français, anglais, allemand)
  ("'Impossible de charger le classement, réessaie dans un instant.'", "'Could not load the ranking, try again in a moment.'", "'Die Rangliste konnte nicht geladen werden, versuch es gleich noch einmal.'"),
  ("fetch('data.json?v='", "fetch('../data.json?v='", "fetch('../data.json?v='"),
  ("fetch('cargo.json?v='", "fetch('../cargo.json?v='", "fetch('../cargo.json?v='"),
- ("function main(DATA, CARGO) {", "function main(DATA, CARGO) {\nDATA.date = trDate(DATA.date);", "function main(DATA, CARGO) {\nDATA.date = trDate(DATA.date);"),
+ ("function main(DATA, CARGO) {", "function main(DATA, CARGO) {\nDATA.date = trDate(DATA.date); (DATA.historique || []).forEach(h => h.date = trDate(h.date));", "function main(DATA, CARGO) {\nDATA.date = trDate(DATA.date); (DATA.historique || []).forEach(h => h.date = trDate(h.date));"),
+ ("' Évolution depuis le relevé du ' + HIST[0].date + '.'", "' Trend since the reading of ' + HIST[0].date + '.'", "' Entwicklung seit der Ablesung vom ' + HIST[0].date + '.'"),
+ ("{txt: 'nouveau', cls: ''}", "{txt: 'new', cls: ''}", "{txt: 'neu', cls: ''}"),
+ ("unit = tab === 'puis' ? ' M' : ''", "unit = tab === 'puis' ? 'M' : ''", "unit = tab === 'puis' ? ' Mio.' : ''"),
 ]
 MONTHS = {'en': ['January','February','March','April','May','June','July','August','September','October','November','December'],
           'de': ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember']}

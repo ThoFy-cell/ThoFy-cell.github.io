@@ -61,6 +61,10 @@ details p{font-size:14px;color:var(--muted)}
 .tbl th,.tbl td{text-align:left;padding:6px 6px;border-top:1px solid var(--line);vertical-align:top}
 .tbl th{white-space:nowrap}
 .src{font-size:13px;color:var(--muted)}
+.tr{font-size:12px;color:var(--muted);margin-top:1px}
+.sc .dl{display:block;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
+.sc .dl.up{color:var(--ok)}
+.sc .dl.down{color:#c0392b}
 .lang{display:flex;gap:6px;justify-content:flex-end;margin:0 0 8px;font-size:13px}
 .lang a{padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:inherit;text-decoration:none;opacity:.8}
 .lang a[aria-current]{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
@@ -111,6 +115,7 @@ summary::marker{color:var(--gold)}
     <p><b>Participation</b> (sur 100) : sièges joués dans la semaine 40 % (sur 6), places aux classements hebdomadaires d'aide, de dons et d'éliminations 20 % chacun (1re place = tous les points). Malus de 1 point par coffre reçu au-delà de 2 (10 au maximum).</p>
     <p><b>Puissance</b> : puissance du joueur rapportée au plus puissant de l'alliance (= 100).</p>
     <p><b>Combiné</b> : 70 % participation + 30 % puissance.</p>
+    <p><b>Évolution</b> : ▲ ou ▼ sous la note = écart avec le relevé précédent. La ligne 📈 montre les trois derniers relevés, du plus ancien au plus récent. La participation repart de zéro chaque lundi, car les sièges et les classements sont comptés par semaine.</p>
     <p><b>Coffres</b> : note de participation + bonus de rang (R5 +30, R4 +20, R3 +10, R1 −10), 3 coffres au plus par membre, chaque coffre supplémentaire coûte 25 points. Indique le nombre de coffres de la ville pour voir qui en reçoit.</p>
   </details>
   </div>
@@ -618,6 +623,12 @@ const rows = M.map(m => {
 });
 const byName = (a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'});
 for (const k of ['part', 'puis', 'mix']) [...rows].sort((a, b) => b[k] - a[k] || byName(a, b)).forEach((r, i) => r['pl_' + k] = i + 1);
+const scoreOf = L => { const mx = Math.max(...L.map(m => m.p || 0)), o = {};
+  L.forEach(m => { const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
+    const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus)), puis = Math.round(100 * (m.p || 0) / mx);
+    o[m.n] = {part, puis, mix: Math.round(0.7 * part + 0.3 * puis), p: m.p}; });
+  return o; };
+const HIST = (DATA.historique || []).slice(0, 2).map(h => ({date: h.date, by: scoreOf(h.membres)}));
 const bonus = {R5: 30, R4: 20, R3: 10, R2: 0, R1: -10};
 const slots = rows.flatMap(r => [0, 1, 2].map(k => ({r, k, prio: r.part + (bonus[r.r] || 0) - 25 * k})))
   .sort((a, b) => b.prio - a.prio || byName(a.r, b.r));
@@ -650,7 +661,7 @@ for (const k of Object.keys(T)) {
   const b = document.createElement('button'); b.className = 'tab'; b.role = 'tab'; b.textContent = T[k].icon + ' ' + T[k].label; b.dataset.k = k;
   b.onclick = () => { tab = k; history.replaceState(null, '', k === 'astuces' ? location.pathname : '#' + k); draw(); }; el('tabs').appendChild(b);
 }
-function line(place, cls, name, rang, det, big, small) {
+function line(place, cls, name, rang, det, big, small, trend, delta) {
   const row = document.createElement('div'); row.className = 'row';
   const pl = document.createElement('div'); pl.className = 'pl ' + cls; pl.textContent = place;
   const nm = document.createElement('div'); nm.className = 'nm';
@@ -659,10 +670,12 @@ function line(place, cls, name, rang, det, big, small) {
   const rk = document.createElement('span'); rk.className = 'rk'; rk.textContent = rang;
   dt.appendChild(rk); dt.appendChild(document.createTextNode(det));
   nm.append(st, dt);
+  if (trend) { const tr = document.createElement('div'); tr.className = 'tr'; tr.textContent = trend; nm.appendChild(tr); }
   const sc = document.createElement('div'); sc.className = 'sc';
   const bb = document.createElement('b'); bb.textContent = big; if (big === '✓') bb.className = 'ok';
   const sm = document.createElement('span'); sm.textContent = small;
   sc.append(bb, sm);
+  if (delta) { const dl = document.createElement('span'); dl.className = 'dl ' + delta.cls; dl.textContent = delta.txt; sc.appendChild(dl); }
   row.append(pl, nm, sc); return row;
 }
 function draw() {
@@ -684,10 +697,18 @@ function draw() {
     shown.forEach((r, i) => list.appendChild(line(i + 1, '', r.n, r.r,
       `1er dès ${r.seuils[0]} · 2e dès ${r.seuils[1]} · 3e dès ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'coffre' + (nb(r) > 1 ? 's' : ''))));
   } else {
-    const t = T[tab]; el('note').textContent = t.note;
+    const t = T[tab]; el('note').textContent = t.note + (HIST.length ? ' Évolution depuis le relevé du ' + HIST[0].date + '.' : '');
+    const val = o => o == null ? null : (tab === 'puis' ? o.p : o[t.key]), unit = tab === 'puis' ? ' M' : '';
     shown = [...rows].sort((a, b) => a['pl_' + t.key] - b['pl_' + t.key]).filter(keep);
     shown.forEach(r => { const p = r['pl_' + t.key], [big, small] = t.score(r);
-      list.appendChild(line(p, p <= 3 ? 'g' + p : '', r.n, r.r, t.det(r), big, small)); });
+      const cur = tab === 'puis' ? r.p : r[t.key], past = HIST.map(h => val(h.by[r.n])).reverse().filter(x => x != null);
+      const prev = HIST.length ? val(HIST[0].by[r.n]) : null;
+      let delta = null;
+      if (HIST.length && cur != null) {
+        if (prev == null) delta = {txt: 'nouveau', cls: ''};
+        else { const d = Math.round((cur - prev) * 10) / 10; delta = {txt: (d > 0 ? '▲ +' + v(d) : d < 0 ? '▼ −' + v(-d) : '= 0') + unit, cls: d > 0 ? 'up' : d < 0 ? 'down' : ''}; }
+      }
+      list.appendChild(line(p, p <= 3 ? 'g' + p : '', r.n, r.r, t.det(r), big, small, past.length ? '📈 ' + [...past, cur].map(v).join(' → ') + unit : '', delta)); });
   }
   if (!shown.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Aucun membre ne correspond.'; list.appendChild(e); }
 }
