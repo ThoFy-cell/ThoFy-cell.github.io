@@ -134,10 +134,16 @@ summary::marker{color:var(--gold)}
     </div>
 
     <div class="card warn">
-      <h3>📋 Rotation proposée</h3>
+      <h3>📋 Rotation de la semaine</h3>
       <p class="src" id="cargo-note"></p>
       <table class="tbl" id="cargo-rot"></table>
-      <p class="src">Proposition calculée automatiquement à partir du classement, pour servir de base. Le planning réel est décidé et annoncé par les R4 et le R5.</p>
+      <p class="src">✅ = cargo déjà fait. Les autres jours sont une proposition calculée automatiquement à partir du classement, pour servir de base. Le planning réel est décidé et annoncé par les R4 et le R5.</p>
+    </div>
+
+    <div class="card">
+      <h3>📜 Historique des capitaines</h3>
+      <p>Un capitaine ne peut pas reprendre le cargo dans la même semaine (du lundi au dimanche). La dernière colonne donne la date à partir de laquelle il peut de nouveau être capitaine.</p>
+      <div style="overflow-x:auto"><table class="tbl" id="cargo-hist"></table></div>
     </div>
 
     <div class="card">
@@ -596,7 +602,7 @@ summary::marker{color:var(--gold)}
   </section>
 </div>
 <script>
-function main(DATA) {
+function main(DATA, CARGO) {
 const rp = p => Math.max(0, (100 - (p == null ? 100 : p)) / 99);
 const M = DATA.membres;
 const maxP = Math.max(...M.map(m => m.p || 0));
@@ -706,25 +712,45 @@ const RAW = ['RHSGCR', 'GCRSHG', 'CRHSGC', 'RHSGCR', 'HSGCRH', 'SGCRHS', 'CRHSGC
 document.querySelectorAll('.gnav [data-g]').forEach(b => b.onclick = () => el(b.dataset.g).scrollIntoView({behavior: 'smooth'}));
 el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#part'); draw(); scrollTo(0, 0); };
 {
+  const H = (CARGO.historique || []).slice().sort((a, b) => a.date < b.date ? -1 : 1);
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const fr = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'}); };
+  const lundi = s => { const [y, m, d] = s.split('-').map(Number), x = new Date(y, m - 1, d); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
+  const today = iso(new Date()), w0 = lundi(today);
+  const semaine = [0, 1, 2, 3, 4, 5, 6].map(k => { const x = new Date(w0); x.setDate(x.getDate() + k); return iso(x); });
+  const fait = Object.fromEntries(H.map(h => [h.date, h.capitaine]));
+  const taken = new Set(semaine.map(d => fait[d]).filter(Boolean));
   const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
-  const taken = new Set(), t = el('cargo-rot');
-  const add = (jour, critere, r, suivant) => {
-    const tr = document.createElement('tr'), th = document.createElement('th'), td = document.createElement('td');
-    th.textContent = jour;
-    if (r) { taken.add(r.n); const b = document.createElement('b'); b.textContent = r.n; td.append(b, ' (' + r.r + ') · ' + critere(r) + (suivant ? ' · ensuite : ' + suivant.n : '')); }
-    else td.textContent = critere();
-    tr.append(th, td); t.appendChild(tr);
-  };
-  ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'].forEach((j, i) => add(j, r => v(r.p) + ' M de puissance', byP[i]));
-  const libres = byC.filter(r => !taken.has(r.n));
-  add('Samedi', r => 'participation ' + r.part + ' / 100', libres[0], libres[1]);
-  add('Dimanche', () => 'Champion du VS : à venir, dès que le duel sera relevé.');
-  el('cargo-note').textContent = "D'après le relevé du " + DATA.date + '. Un joueur déjà capitaine en semaine laisse sa place du samedi au suivant.';
+  const names = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'], t = el('cargo-rot');
+  const cell = (tag, txt, bold) => { const x = document.createElement(tag); if (bold) { const b = document.createElement('b'); b.textContent = txt; x.appendChild(b); } else x.textContent = txt; return x; };
+  semaine.forEach((d, k) => {
+    const tr = document.createElement('tr'), td = document.createElement('td');
+    tr.appendChild(cell('th', names[k] + ' ' + Number(d.slice(8)) + (d === today ? ' ·  ce soir' : '')));
+    if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · cargo fait'); }
+    else if (d < today) td.textContent = '– pas de cargo enregistré';
+    else if (k === 6) td.textContent = 'Champion du VS : à venir, dès que le duel sera relevé.';
+    else {
+      const pool = (k === 5 ? byC : byP).filter(r => !taken.has(r.n)), r = pool[0];
+      if (r) { taken.add(r.n); td.append(cell('span', r.n, true), ' (' + r.r + ') · ' + (k === 5 ? 'participation ' + r.part + ' / 100' : v(r.p) + ' M de puissance') + (pool[1] ? ' · ensuite : ' + pool[1].n : '')); }
+    }
+    tr.appendChild(td); t.appendChild(tr);
+  });
+  el('cargo-note').textContent = 'Semaine du ' + fr(semaine[0]) + ' au ' + fr(semaine[6]) + ". Classement d'après le relevé du " + DATA.date + '. Les capitaines déjà passés cette semaine sont écartés des propositions.';
+  const hist = el('cargo-hist');
+  if (!H.length) hist.appendChild(cell('p', 'Aucun cargo enregistré pour le moment.'));
+  else {
+    const head = document.createElement('tr'); ['Date', 'Capitaine', 'De nouveau possible'].forEach(x => head.appendChild(cell('th', x))); hist.appendChild(head);
+    H.slice().reverse().forEach(h => {
+      const nx = lundi(h.date); nx.setDate(nx.getDate() + 7); const n = iso(nx), tr = document.createElement('tr');
+      tr.append(cell('td', fr(h.date)), cell('td', h.capitaine, true), cell('td', n <= today ? '✅ oui, depuis le ' + fr(n) : '⏳ à partir du ' + fr(n)));
+      hist.appendChild(tr);
+    });
+  }
 }
 el('q').oninput = draw; el('rang').onchange = draw; el('stock').oninput = draw;
 draw();
 }
-fetch('data.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()).then(main)
+Promise.all([fetch('data.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()), fetch('cargo.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()).catch(() => ({historique: []}))]).then(([d, c]) => main(d, c))
   .catch(() => { document.getElementById('sub').textContent = 'Impossible de charger le classement, réessaie dans un instant.'; });
 </script>
 </body>
