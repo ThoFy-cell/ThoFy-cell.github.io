@@ -111,6 +111,68 @@ summary::marker{color:var(--gold)}
   </details>
   </div>
 
+  <section class="page" id="page-cargo" hidden>
+    <h2>🚢 Cargo d'alliance</h2>
+    <p class="lead">Chaque soir, un capitaine lance le cargo et les autres membres embarquent. Voici qui est capitaine quel jour et ce que chacun doit faire, d'après le résultat du vote (courrier du R5 du 14 novembre 2026).</p>
+
+    <div class="card key">
+      <h3>⏰ Embarquement vers 20 h</h3>
+      <p>Sois connecté autour de 20 h (heure de Paris) pour monter à bord. Plus il y a de passagers, plus le capitaine et l'alliance y gagnent.</p>
+    </div>
+
+    <div class="card">
+      <h3>🗓️ Qui est capitaine ?</h3>
+      <table class="tbl">
+        <tr><th>Lundi → vendredi</th><td>Les <b>plus costauds</b> de l'alliance (puissance), un par soir.</td></tr>
+        <tr><th>Samedi</th><td>Le <b>champion de contribution</b> à l'alliance : le premier du classement 🤝 Participation de ce site.</td></tr>
+        <tr><th>Dimanche</th><td>Le <b>champion du VS</b> (duel d'alliance) de la semaine.</td></tr>
+      </table>
+      <ul>
+        <li><b>Une seule fois par semaine</b> : personne ne peut être capitaine deux fois dans la même semaine. Si tu es de nouveau qualifié grâce à tes points, c'est le joueur classé juste après toi qui prend le cargo.</li>
+        <li><b>Échange possible</b> : tu peux demander au capitaine prévu de prendre sa place. S'il accepte, pas de souci.</li>
+      </ul>
+    </div>
+
+    <div class="card warn">
+      <h3>📋 Rotation proposée</h3>
+      <p class="src" id="cargo-note"></p>
+      <table class="tbl" id="cargo-rot"></table>
+      <p class="src">Proposition calculée automatiquement à partir du classement, pour servir de base. Le planning réel est décidé et annoncé par les R4 et le R5.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧭 Si tu es capitaine</h3>
+      <ol>
+        <li><b>Actualise les 4 wagons</b> du cargo jusqu'à ce qu'ils soient tous en or, pour une valeur d'au moins 50 000 pièces chacun si possible.</li>
+        <li><b>On ne lance jamais un cargo bleu ou violet</b> : il doit être entièrement or.</li>
+        <li>Lance-le à l'heure prévue et préviens dans le chat de l'alliance.</li>
+        <li>Tu reçois des tickets à mesure que les passagers embarquent : en moyenne 70 à 80 tickets par cargo.</li>
+        <li>Si tu ne peux pas être là, préviens un R4 à l'avance ou arrange-toi avec un autre membre.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>🎟️ Si tu es passager</h3>
+      <ul>
+        <li>Embarque dès que le capitaine a lancé le cargo, vers 20 h.</li>
+        <li>Mettre plus de contrats de commerce dans la file donne la priorité pour une place, sans la garantir.</li>
+        <li>Si tu n'embarques pas, tes contrats te sont renvoyés par courrier.</li>
+        <li>Chaque passager rapporte des tickets au capitaine : embarquer, c'est aussi aider celui qui a mérité sa place.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🏅 Comment devenir capitaine</h3>
+      <ul>
+        <li><b>Samedi</b> : monte dans le classement 🤝 Participation (sièges, aide, dons, éliminations).</li>
+        <li><b>Dimanche</b> : fais le meilleur score de la semaine au duel d'alliance. L'onglet 💡 Astuces explique quoi utiliser chaque jour.</li>
+        <li><b>En semaine</b> : la puissance fait la différence, voir le classement ⚔️ Puissance.</li>
+      </ul>
+    </div>
+
+    <p class="src">Source : courrier « Résultat vote Cargo alliance et informations R1, 2, 3 » du R5, 14 novembre 2026 ; <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a> pour la file d'attente des passagers. Le classement du champion VS sera ajouté quand le duel sera relevé.</p>
+  </section>
+
   <section class="page" id="page-astuces" hidden>
     <h2>💡 Astuces Top Lords</h2>
     <p class="lead">Les conseils qui reviennent le plus souvent dans l'alliance et dans les guides. Elles sont rangées par thème : touche un thème pour y aller, puis un titre pour l'ouvrir. Le classement de l'alliance est dans les onglets suivants.</p>
@@ -384,6 +446,7 @@ summary::marker{color:var(--gold)}
       <ul>
         <li><b>Duel, jour du lundi</b> : griffon, récolte et dépense d'endurance. Lis les prérequis de la journée avant de dépenser.</li>
         <li><b>Événements</b> : l'icône Événements, à droite de l'écran, donne accès à la course aux armements (nouvelles tâches toutes les 4 heures) et à un calendrier gratuit pour préparer la suite.</li>
+        <li><b>Cargo d'alliance</b> : embarquement vers 20 h, capitaines en rotation. Tout est dans l'onglet 🚢 Cargo.</li>
         <li>Une encyclopédie des prochains événements est en construction sur le Discord de l'alliance.</li>
       </ul>
     </details>
@@ -503,6 +566,21 @@ summary::marker{color:var(--gold)}
     </div>
 
     <div class="card">
+      <h3>🎖️ Les rangs dans l'alliance</h3>
+      <table class="tbl">
+        <tr><th>R3</th><td>Les vétérans, les piliers : ils montrent l'exemple, donnent des conseils, participent, communiquent et <b>lisent</b> les annonces et les courriers. Ils reçoivent logiquement plus de récompenses.</td></tr>
+        <tr><th>R2</th><td>Communique sans beaucoup participer, ou participe sans communiquer ni répondre. Ou bien en attente de réévaluation.</td></tr>
+        <tr><th>R1</th><td>Nouveau dans la famille, le temps de faire ses preuves. Ou joueur qui ne communique pas, ne répond pas ou contribue très peu.</td></tr>
+      </table>
+      <ul>
+        <li>Les R1 peuvent être remplacés petit à petit. Les nouveaux sont protégés pendant 3 jours.</li>
+        <li><b>Absence de plus de 24 h : préviens un R4</b>, qui avertira l'équipe. Sans nouvelles, plus d'un jour d'absence augmente le risque de passer R1, voire d'être exclu.</li>
+        <li>Ta participation ou ta communication s'est améliorée ? Demande ta promotion aux R4 ou au R5 : un oubli est possible.</li>
+        <li>Une suggestion sur ce fonctionnement ? Contacte les R4 ou le R5.</li>
+      </ul>
+    </div>
+
+    <div class="card">
       <h3>💜 Dans l'alliance [LoVS]</h3>
       <ul>
         <li>Les cibles (villes, sièges, ralliements) sont décidées par les R4 et le R5 et annoncées dans le chat.</li>
@@ -510,10 +588,11 @@ summary::marker{color:var(--gold)}
         <li>On ne quitte pas l'alliance pendant la semaine du duel.</li>
         <li>Mets un nom de joueur reconnaissable (pas le nom par défaut) pour faciliter les échanges.</li>
         <li>Les annonces du jour sont dans Chat → Alliance → Annonce d'Alliance : lis-les à chaque connexion.</li>
+        <li>Le cargo du soir suit une rotation de capitaines : voir l'onglet 🚢 Cargo.</li>
       </ul>
     </div>
 
-    <p class="src">Sources : annonces d'alliance [LoVS] des 4 et 8 novembre 2026 ; Discord « Kingdom #116 », salon nap15-laws (annonce du 5 novembre 2026 et guide illustré) ; <a href="https://www.packsify.com/blogs/top-lords-kingdom-titles" rel="noopener">Packsify – titres royaux et lois du Royaume</a>. Dernière mise à jour : 10 novembre 2026.</p>
+    <p class="src">Sources : annonces d'alliance [LoVS] des 4 et 8 novembre 2026 ; courrier du R5 du 14 novembre 2026 (rangs) ; Discord « Kingdom #116 », salon nap15-laws (annonce du 5 novembre 2026 et guide illustré) ; <a href="https://www.packsify.com/blogs/top-lords-kingdom-titles" rel="noopener">Packsify – titres royaux et lois du Royaume</a>. Dernière mise à jour : 14 novembre 2026.</p>
   </section>
 </div>
 <script>
@@ -536,6 +615,7 @@ slots.forEach((s, i) => (s.r.seuils ||= [])[s.k] = i + 1);
 const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('fr-FR'));
 const T = {
   astuces: {icon: '💡', label: 'Astuces', page: 'page-astuces'},
+  cargo: {icon: '🚢', label: 'Cargo', page: 'page-cargo'},
   part: {icon: '🤝', label: 'Participation', note: 'Sièges de la semaine, aide, dons et éliminations.', key: 'part',
     det: r => `Sièges ${v(r.s)} · Aide ${v(r.a)}e · Dons ${v(r.d)}e · Élim. ${v(r.e)}e`, score: r => [r.part, '/ 100']},
   puis: {icon: '⚔️', label: 'Puissance', note: 'Puissance relevée dans la liste des membres.', key: 'puis',
@@ -625,6 +705,22 @@ const RAW = ['RHSGCR', 'GCRSHG', 'CRHSGC', 'RHSGCR', 'HSGCRH', 'SGCRHS', 'CRHSGC
 }
 document.querySelectorAll('.gnav [data-g]').forEach(b => b.onclick = () => el(b.dataset.g).scrollIntoView({behavior: 'smooth'}));
 el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#part'); draw(); scrollTo(0, 0); };
+{
+  const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
+  const taken = new Set(), t = el('cargo-rot');
+  const add = (jour, critere, r, suivant) => {
+    const tr = document.createElement('tr'), th = document.createElement('th'), td = document.createElement('td');
+    th.textContent = jour;
+    if (r) { taken.add(r.n); const b = document.createElement('b'); b.textContent = r.n; td.append(b, ' (' + r.r + ') · ' + critere(r) + (suivant ? ' · ensuite : ' + suivant.n : '')); }
+    else td.textContent = critere();
+    tr.append(th, td); t.appendChild(tr);
+  };
+  ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'].forEach((j, i) => add(j, r => v(r.p) + ' M de puissance', byP[i]));
+  const libres = byC.filter(r => !taken.has(r.n));
+  add('Samedi', r => 'participation ' + r.part + ' / 100', libres[0], libres[1]);
+  add('Dimanche', () => 'Champion du VS : à venir, dès que le duel sera relevé.');
+  el('cargo-note').textContent = "D'après le relevé du " + DATA.date + '. Un joueur déjà capitaine en semaine laisse sa place du samedi au suivant.';
+}
 el('q').oninput = draw; el('rang').onchange = draw; el('stock').oninput = draw;
 draw();
 }
