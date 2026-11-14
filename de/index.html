@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>LoVS – Tipps, Rangliste und Regeln</title>
+<style>
+:root{--bg:#f4ecdc;--panel:#fffaf0;--fg:#2b2116;--muted:#6f6352;--line:#e6d8bd;--accent:#1d4f91;--accent-2:#163a6b;--accent-soft:#e3ecf8;--gold:#b8860b;--gold-2:#e2b44f;--silver:#7d8a96;--bronze:#a0603a;--ok:#2f7d4f;--serif:Georgia,'Times New Roman',serif}
+@media (prefers-color-scheme:dark){:root{--bg:#11151d;--panel:#1a2030;--fg:#efe7d8;--muted:#a59c8c;--line:#2c3446;--accent:#86b4ff;--accent-2:#1d4f91;--accent-soft:#1f2e4a;--gold:#e2b44f;--gold-2:#f0cd7a;--silver:#b8c3cc;--bronze:#d79a6f;--ok:#6fcf97}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:22px;margin:4px 0 2px;color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.podium[hidden]{display:none}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pod{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+.pod b{display:block;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.pod div{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){.podium{grid-template-columns:1fr}}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;position:sticky;top:0;background:var(--bg);z-index:2;padding-top:6px}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tools input,.tools select{font:inherit;font-size:14px;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.tools input{flex:1 1 160px;min-width:0}
+.note{color:var(--muted);font-size:13px;margin:0 0 10px}
+.list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.pl{font-weight:700;text-align:center;font-variant-numeric:tabular-nums;color:var(--muted)}
+.pl.g1{color:var(--gold)}.pl.g2{color:var(--silver)}.pl.g3{color:var(--bronze)}
+.nm{min-width:0}
+.nm strong{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.det{font-size:12px;color:var(--muted)}
+.rk{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:6px;background:var(--accent-soft);color:var(--accent);margin-right:6px}
+.sc{text-align:right;font-variant-numeric:tabular-nums}
+.sc b{font-size:18px;display:block;line-height:1.1}
+.sc span{font-size:11px;color:var(--muted)}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+details{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}
+details p{font-size:14px;color:var(--muted)}
+.stock{display:flex;align-items:center;gap:8px;font-size:14px}
+.stock input{width:80px}
+.stock[hidden]{display:none}
+.ok{color:var(--ok);font-weight:600}
+.page[hidden],.rank[hidden]{display:none}
+.page h2{font-size:18px;margin:6px 0 4px;color:var(--accent)}
+.page .lead{color:var(--muted);font-size:14px;margin:0 0 12px}
+.page details{margin-top:8px}
+.page details ul,.card ul,.card ol{margin:8px 0 4px;padding-left:20px}
+.page li{margin:5px 0;font-size:14.5px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{margin:6px 0;font-size:14.5px}
+.card.key{border-color:var(--accent);background:var(--accent-soft)}
+.card.warn{border-left:4px solid var(--gold)}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+.tbl th,.tbl td{text-align:left;padding:6px 6px;border-top:1px solid var(--line);vertical-align:top}
+.tbl th{white-space:nowrap}
+.src{font-size:13px;color:var(--muted)}
+.lang{display:flex;gap:6px;justify-content:flex-end;margin:0 0 8px;font-size:13px}
+.lang a{padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:inherit;text-decoration:none;opacity:.8}
+.lang a[aria-current]{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
+.gnav{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+.grp{margin-top:22px;scroll-margin-top:60px}
+.grp-h{font-size:17px;margin:0 0 2px;color:var(--accent);border-bottom:2px solid var(--accent-soft);padding-bottom:4px}
+.cta .tab{margin-left:4px}
+.pharma{color:#1f9d55;font-weight:900}
+.src a,.page a{color:var(--accent)}
+
+/* Ambiance Top Lords, légère : parchemin, bleu royal et or, sans image ni police externe */
+body{background:var(--bg) radial-gradient(ellipse at top,rgba(226,180,79,.18),transparent 60%) no-repeat}
+.hero{position:relative;overflow:hidden;margin:0 0 12px;padding:16px 16px 14px 76px;border-radius:16px;color:#fff;background:linear-gradient(135deg,#2a62ad,#163a6b 70%);border:2px solid var(--gold-2);box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:repeating-linear-gradient(90deg,var(--gold-2) 0 14px,transparent 14px 22px);opacity:.7}
+.hero svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:50px;height:58px}
+.hero h1{color:#fff;font-family:var(--serif);font-size:23px;letter-spacing:.3px;margin:0;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.hero .tag{margin:2px 0 0;font-size:13px;color:#f3dfae}
+h1,.page h2,.grp-h,.card h3{font-family:var(--serif)}
+.page h2,.grp-h{color:var(--accent)}
+.grp-h{border-bottom:2px solid var(--gold-2)}
+.tab{border-color:var(--line)}
+.tab[aria-selected=true]{background:linear-gradient(180deg,#2a62ad,#163a6b);border-color:var(--gold-2);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.tabs{background:var(--bg)}
+details,.card,.list,.pod{box-shadow:0 1px 0 rgba(90,60,20,.08)}
+summary::marker{color:var(--gold)}
+.card.key{border-color:var(--gold-2);background:linear-gradient(180deg,var(--accent-soft),var(--panel))}
+.card.warn{border-left-color:var(--gold-2)}
+.pod b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="lang" aria-label="Sprache"><a href="../">Français</a><a href="../en/">English</a><a href="../de/" aria-current="true">Deutsch</a></nav>
+  <header class="hero"><svg viewBox="0 0 50 58" aria-hidden="true"><path d="M25 2 46 9v18c0 14-9 24-21 29C13 51 4 41 4 27V9z" fill="#f3dfae" stroke="#b8860b" stroke-width="2.5"/><path d="M25 8 40 13v14c0 10-6 17-15 21-9-4-15-11-15-21V13z" fill="#163a6b"/><path d="M16 22h18l-3 9H19z M17 19l3-5 5 4 5-4 3 5z" fill="#e2b44f"/><path d="M18 36l7-4 7 4-7 4z" fill="#e2b44f"/></svg><h1>[LoVS] LoVe Syndïcate</h1><p class="tag">Königreich #116 · Tipps, Rangliste und Regeln</p></header>
+  <p class="sub" id="sub">—</p>
+  <div class="podium" id="podium"></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="rank" id="rank">
+  <div class="tools">
+    <input type="search" id="q" placeholder="Mitglied suchen" aria-label="Mitglied suchen">
+    <select id="rang" aria-label="Nach Rang filtern"><option value="">Alle Ränge</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
+    <label class="stock" id="stockbox" hidden>Truhen <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="list" id="list"></div>
+  <details>
+    <summary>🧮 So werden die Noten berechnet</summary>
+    <p><b>Beteiligung</b> (von 100): gespielte Belagerungen der Woche 40 % (von 6), Plätze in den Wochenranglisten für Hilfe, Spenden und Kills je 20 % (1. Platz = alle Punkte). 1 Punkt Abzug pro erhaltener Truhe über 2 hinaus (höchstens 10).</p>
+    <p><b>Stärke</b>: Stärke des Spielers im Verhältnis zum stärksten Mitglied der Allianz (= 100).</p>
+    <p><b>Kombiniert</b>: 70 % Beteiligung + 30 % Stärke.</p>
+    <p><b>Truhen</b>: Beteiligungsnote + Rangbonus (R5 +30, R4 +20, R3 +10, R1 −10), höchstens 3 Truhen pro Mitglied, jede weitere Truhe kostet 25 Punkte. Gib die Zahl der Stadttruhen ein, um zu sehen, wer eine bekommt.</p>
+  </details>
+  </div>
+
+  <section class="page" id="page-cargo" hidden>
+    <h2>🚢 Allianz-Frachtschiff</h2>
+    <p class="lead">Jeden Abend startet ein Kapitän das Frachtschiff und die anderen Mitglieder gehen an Bord. Hier steht, wer an welchem Tag Kapitän ist und was jeder zu tun hat, gemäß dem Abstimmungsergebnis (Post des R5 vom 14. November 2026).</p>
+
+    <div class="card key">
+      <h3>⏰ Einsteigen gegen 20 Uhr</h3>
+      <p>Sei gegen 20 Uhr (MEZ) online, um an Bord zu gehen. Je mehr Passagiere, desto mehr gewinnen der Kapitän und die Allianz.</p>
+    </div>
+
+    <div class="card">
+      <h3>🗓️ Wer ist Kapitän?</h3>
+      <table class="tbl">
+        <tr><th>Montag → Freitag</th><td>Die <b>Stärksten</b> der Allianz (Stärke), einer pro Abend.</td></tr>
+        <tr><th>Samstag</th><td>Der <b>Beitrags-Champion</b> der Allianz: Platz 1 der Rangliste 🤝 Beteiligung auf dieser Seite.</td></tr>
+        <tr><th>Sonntag</th><td>Der <b>VS-Champion</b> (Allianzduell) der Woche.</td></tr>
+      </table>
+      <ul>
+        <li><b>Nur einmal pro Woche</b>: Niemand kann in derselben Woche zweimal Kapitän sein. Wenn du dich durch deine Punkte erneut qualifizierst, übernimmt der Spieler direkt hinter dir das Frachtschiff.</li>
+        <li><b>Tausch möglich</b>: Du kannst den vorgesehenen Kapitän fragen, ob du seinen Platz übernehmen darfst. Wenn er zustimmt, kein Problem.</li>
+      </ul>
+    </div>
+
+    <div class="card warn">
+      <h3>📋 Rotation dieser Woche</h3>
+      <p class="src" id="cargo-note"></p>
+      <table class="tbl" id="cargo-rot"></table>
+      <p class="src">✅ = Frachtschiff bereits erledigt. Die anderen Tage sind ein automatisch aus der Rangliste berechneter Vorschlag als Grundlage. Den echten Plan legen die R4 und der R5 fest und kündigen ihn an.</p>
+    </div>
+
+    <div class="card">
+      <h3>📜 Verlauf der Kapitäne</h3>
+      <p>Ein Kapitän kann das Frachtschiff in derselben Woche (Montag bis Sonntag) nicht noch einmal übernehmen. Die letzte Spalte zeigt, ab wann er wieder Kapitän sein kann.</p>
+      <div style="overflow-x:auto"><table class="tbl" id="cargo-hist"></table></div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 Wenn du Kapitän bist</h3>
+      <ol>
+        <li><b>Aktualisiere die 4 Wagen</b> des Frachtschiffs, bis alle golden sind, möglichst mit einem Wert von mindestens 50.000 Münzen pro Wagen.</li>
+        <li><b>Nie ein blaues oder violettes Frachtschiff starten</b>: Es muss komplett golden sein.</li>
+        <li>Starte es zur geplanten Zeit und sag im Allianz-Chat Bescheid.</li>
+        <li>Du erhältst Tickets, sobald Passagiere einsteigen: im Schnitt 70 bis 80 Tickets pro Frachtschiff.</li>
+        <li>Wenn du nicht da sein kannst, sag vorher einem R4 Bescheid oder tausche mit einem anderen Mitglied.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>🎟️ Wenn du Passagier bist</h3>
+      <ul>
+        <li>Steig ein, sobald der Kapitän das Frachtschiff gestartet hat, gegen 20 Uhr.</li>
+        <li>Mehr Handelsverträge in der Warteschlange geben Vorrang für einen Platz, garantieren ihn aber nicht.</li>
+        <li>Wenn du nicht einsteigst, bekommst du deine Verträge per Post zurück.</li>
+        <li>Jeder Passagier bringt dem Kapitän Tickets: Einsteigen hilft auch dem, der sich den Platz verdient hat.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🏅 So wirst du Kapitän</h3>
+      <ul>
+        <li><b>Samstag</b>: Steig in der Rangliste 🤝 Beteiligung auf (Belagerungen, Hilfe, Spenden, Kills).</li>
+        <li><b>Sonntag</b>: Hol die beste Wochenpunktzahl im Allianzduell. Der Reiter 💡 Tipps erklärt, was du an welchem Tag einsetzen sollst.</li>
+        <li><b>Unter der Woche</b>: Die Stärke entscheidet, siehe Rangliste ⚔️ Stärke.</li>
+      </ul>
+    </div>
+
+    <p class="src">Quelle: Post „Ergebnis Abstimmung Frachtschiff und Infos R1, 2, 3“ des R5, 14. November 2026; <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a> für die Warteschlange der Passagiere. Die Rangliste des VS-Champions kommt hinzu, sobald das Duell erfasst wird.</p>
+  </section>
+
+  <section class="page" id="page-astuces" hidden>
+    <h2>💡 Top Lords Tipps</h2>
+    <p class="lead">Die Ratschläge, die in der Allianz und in den Guides am häufigsten vorkommen, nach Themen geordnet: Tippe auf ein Thema, um dorthin zu springen, dann auf einen Titel, um ihn zu öffnen. Die Rangliste der Allianz findest du in den nächsten Reitern.</p>
+
+    <div class="card warn" id="today"></div>
+    <div class="gnav"><button type="button" class="tab" data-g="g-ressources">🌾 Ressourcen</button><button type="button" class="tab" data-g="g-progression">📈 Fortschritt</button><button type="button" class="tab" data-g="g-attaque">⚔️ Angriff</button><button type="button" class="tab" data-g="g-guerre">🛡️ Krieg</button><button type="button" class="tab" data-g="g-evenements">🎉 Events</button></div>
+
+    <div class="card key">
+      <h3>⭐ Die 5 Grundregeln</h3>
+      <ol>
+        <li><b>Schloss zuerst</b>: Schau, was die nächste Stufe verlangt, und bau nur das.</li>
+        <li><b>Keine leere Warteschlange</b>: Bau, Forschung und Training laufen ständig. Starte lange Bauten vor dem Schlafengehen.</li>
+        <li><b>Jeder Gegenstand hat seinen Tag</b>: Heb Tickets, Fragmente und Beschleuniger für den richtigen Tag des Allianzduells auf.</li>
+        <li><b>Mach bei Belagerungen mit, hilf und spende</b>: Das lässt die Allianz gewinnen und entscheidet über die Verteilung der Truhen.</li>
+        <li><b>Halte den Pakt des Königreichs ein</b>: Geschützte Allianzen werden nicht angegriffen (siehe Reiter Regeln).</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>💜 Der LoVS-Geist</h3>
+      <ul>
+        <li>Wir wollen kein Team von Champions sein, sondern eine Allianz, in der man gern spielt: <b>gute Stimmung, gemeinsam vorankommen, jeder wächst auf seinem Niveau</b>.</li>
+        <li>Du musst das Spiel nicht gut kennen, um bei uns mitzumachen: Wir lernen voneinander, auch das gehört zum Teilen.</li>
+        <li>Wir stimmen ab, wann immer es geht, damit jeder so mitmachen kann, wie er möchte.</li>
+        <li>Die Belohnungen werden fair nach dem Einsatz jedes Einzelnen verteilt, damit alle vorankommen.</li>
+      </ul>
+    </div>
+
+
+    <div class="grp" id="g-ressources">
+    <h3 class="grp-h">🌾 Ressourcen</h3>
+    <p class="lead">Sammeln, Vorrat schützen, klug ausgeben.</p>
+    <details open>
+      <summary>📣 Tipps der Allianz</summary>
+      <ul>
+        <li><b>Wagen</b>: Schick jeden Tag 4 Wagen los und plündere 4.
+          <ul>
+            <li>Versand: 5 Aktualisierungen garantieren einen UR-Wagen. Schick sie am besten einzeln, geschützt von deinem besten Team, und halte dein Schutzteam aktuell.</li>
+            <li>Eskorte: bis zu 5 Helden pro Wagen. Das Team steht beim Start fest, wähle es also vor dem Losschicken. Eskortenkämpfe kosten keine Soldaten.</li>
+          </ul></li>
+        <li><b>Spenden</b>: Spenden an die Allianz bringen dir auch Punkte für den Allianz-Shop. Spende jeden Tag.
+          <ul>
+            <li>Ausnahme: Um manche Allianz-Events zu starten, ist die Zahl der Spenden begrenzt. Auch sie bringen Shop-Punkte: Wenn so ein Event angekündigt wird, spende schnell. Die täglichen Spenden sind nicht auf diese Weise begrenzt.</li>
+          </ul></li>
+        <li><b>Arena</b>: 3 Likes pro Tag = 90 Gratis-Edelsteine. Das 4. Like, auf dem Podium, bringt 30 Edelsteine dazu.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🌾 Ressourcen, Sammeln und Sicherheit</summary>
+      <ul>
+        <li>Schick deine Truppen sammeln, sobald sie frei sind. Die Ressourcen kommen erst <b>bei der Rückkehr</b> der Truppe in deinen Vorrat.</li>
+        <li><b>Schau dir das Feld vor dem Losschicken an</b>: Wenn schon ein Spieler einer geschützten Allianz dort ist, nimm ein anderes.</li>
+        <li>Heb deine Ausdauer für Montag auf: Dann zählt jeder Punkt auch für das Duell.</li>
+        <li><b>Bleib nahe am Allianz-Lager</b> (Gegenstand „Allianz-Umsiedlung“, Reiter Spezial): Zusammen verteidigen und helfen wir uns schneller.</li>
+        <li>Der Pakt schützt nicht vor allen: Setz vor längerer Abwesenheit einen <b>Schild</b>, vor allem am Samstag, und ruf deine Sammler zurück.</li>
+        <li>Was in deinem Rucksack ist, kann nicht geplündert werden: siehe „Rucksack: was öffnen, was geschlossen lassen“.</li>
+        <li><b>Plünderung</b>: Ein Teil deines Holzes, deiner Nahrung und deiner Münzen ist geschützt und kann nicht genommen werden. Ein Angreifer trägt nicht mehr als die Ladung seines Marsches und gewinnt immer weniger, wenn er dasselbe Ziel mehrmals am Tag plündert.</li>
+        <li>Der beste Schutz ist <b>Ausgeben</b>: Nutze deine Ressourcen für Verbesserungen, statt einen großen Vorrat im Schloss zu lagern.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🎒 Rucksack: was öffnen, was geschlossen lassen</summary>
+      <p>Ein Angreifer plündert nur Holz, Nahrung und Münzen, die in deinem Schloss liegen. Was im Rucksack bleibt, ist sicher.</p>
+      <table class="tbl">
+        <tr><th>✅ Öffnen</th><td><b>Edelstein- (Rubin-) und Ausdauer-Gegenstände</b>: Edelsteine und Ausdauer sind nicht plünderbar, du kannst sie gefahrlos öffnen.</td></tr>
+        <tr><th>✅ Öffnen</th><td><b>Belohnungstruhen</b> (Events, Missionen, Allianz, Wettrüsten): Öffne sie regelmäßig. Sie geben Gegenstände (Ressourcentruhen, Beschleuniger, Fragmente), die sicher im Rucksack bleiben.</td></tr>
+        <tr><th>🔒 Geschlossen lassen</th><td><b>Ressourcentruhen</b> (Holz, Nahrung, Münzen) und <b>Universaltruhen</b> (Ressource nach Wahl): Einmal geöffnet, wandert der Inhalt ins Schloss und wird plünderbar.</td></tr>
+      </table>
+      <ul>
+        <li>Nicht verwechseln: Eine <b>Belohnungs</b>truhe wird geöffnet, eine <b>Ressourcen</b>truhe bleibt zu.</li>
+        <li>Öffne deine Ressourcentruhen im letzten Moment und nur die Menge, die dir für den Bau oder die Forschung fehlt.</li>
+        <li>Einen Ausdauer-Gegenstand zu öffnen heißt nicht, sie sofort auszugeben: Am Duell-Montag bringt das Ausgeben am meisten.</li>
+        <li>Heb Universaltruhen für die Ressource auf, die dich im entscheidenden Moment blockiert.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>💎 Edelsteine, VIP und Shops</summary>
+      <ul>
+        <li>Heb Edelsteine für Dauerhaftes auf, statt irgendeinen Bau zu beenden. <b>Eine VIP-Stufe aufsteigen</b> (Bau- und Forschungstempo für immer) ist besser als Tickets mit Zufallsergebnis.</li>
+        <li><b>VIP-Shop</b> (Edelsteine, montags erneuert): Die Ressourcentruhen für 12 Edelsteine und die Ausdauer sind gute Angebote, wenn du feststeckst. Achte auf Rabatte.</li>
+        <li><b>Allianz-Shop</b> (Spendenpunkte): EXP-Truhen, Fertigkeitsmedaillen, Schilde und Beschleuniger.</li>
+        <li><b>Ehren-Shop</b> (am 1. des Monats erneuert): universelle UR-Fragmente.</li>
+        <li><b>Rekrutierung</b>: Achte auf den Stufenzähler im Rekrutierungsbildschirm und rekrutiere an einem Donnerstag.</li>
+        <li>Vor dem Ausgeben drei Fragen: Löst es eine dauerhafte Blockade? Gibt es eine kostenlose Lösung? Belohnt ein Event diese Ausgabe?</li>
+        <li>Nicht genutzte Münzen des Königreichsfests (Shimmer Coins) bleiben für das nächste Fest erhalten.</li>
+        <li>Der erste Kauf jeder Edelsteinpaket-Größe gibt das Doppelte.</li>
+        <li><b>„Gratis-Edelstein-Generatoren“ gibt es nicht</b>: Eine Seite, die deine Zugangsdaten verlangt, will dein Konto stehlen. Verknüpfe dein Konto und notiere deine Spieler-ID.</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-progression">
+    <h3 class="grp-h">📈 Fortschritt</h3>
+    <p class="lead">Schloss, Helden, Ausrüstung: schnell vorankommen, ohne zu verschwenden.</p>
+    <details open>
+      <summary>📣 Tipps der Allianz</summary>
+      <ul>
+        <li><b>Ausrüstung</b>: Bring bei jedem Helden, den du nutzt, zuerst die Teile seiner Rolle aufs Maximum, dann den Rest.
+          <ul>
+            <li><b>Angreifer (hintere Reihe)</b>: Schwert und Handschuhe.</li>
+            <li><b>Die beiden Tanks (vordere Reihe)</b>: Rüstung (Brustpanzer) und Beinschienen.</li>
+            <li>Ziel ist <b>goldene Ausrüstung für dein erstes Team</b>. Wird eines seiner Teile ersetzt, gib das alte an das nächste Team weiter: So rüsten sich deine anderen Teams nach und nach aus.</li>
+            <li>Steigere in Schritten von 10 Stufen. Boni gibt es nur auf goldenen und violetten Teilen.</li>
+          </ul></li>
+        <li><b>Wachturm</b>: Deine Helden gewinnen bei jedem Sieg Stufen. Fang mit deinen schwachen Helden an, damit sie Erfahrung sammeln, und nimm deine starken Helden nach und nach dazu, wenn es hakt.
+          <ul>
+            <li><b>Immer noch blockiert?</b> Leih die Ausrüstung deines ersten Teams aus: Leg sie ab, rüste Team 2 oder 3 aus, das du hochbringen willst, und mach den Turm mit ihm. Ausrüstungsboni zählen im Turm: Deine schwachen Helden schaffen die Etagen und gewinnen Stufen. Denk daran, dein erstes Team danach wieder auszurüsten.</li>
+          </ul></li>
+        <li><b>Arbeiterhütten</b>: Sie erhöhen nicht nur das Tempo, sondern auch die Kampfkraft.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🏰 Schloss, Warteschlangen und Beschleuniger</summary>
+      <ul>
+        <li>Behandle jede Verbesserung als Schritt zur nächsten Schlossstufe. Vermeide Gebäude, die nicht verlangt werden.</li>
+        <li>Kurze Bauten, während du spielst, lange Bauten vor der Arbeit oder über Nacht.</li>
+        <li><b>Bitte um Allianz-Hilfe, bevor du einen Beschleuniger einsetzt</b>: Hilfe nimmt kostenlos Zeit weg.</li>
+        <li>Ein Tempobonus zieht keinen Prozentsatz von der Zeit ab: tatsächliche Zeit = Grundzeit ÷ (1 + Bonus). Mit +100 % dauert ein 10-Stunden-Bau 5 Stunden.</li>
+        <li>Eine Warteschlange, die mangels Ressourcen steht, ist ein Ressourcenproblem, kein Tempoproblem: Schick Sammler los.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🦸 Helden und Teams</summary>
+      <ul>
+        <li><b>Zuerst nur ein 5er-Team</b>: Konzentriere EXP, Fragmente und Ausrüstung darauf, bevor du ein zweites aufbaust.</li>
+        <li><b>Fraktionsbonus</b>: 5 Helden derselben Fraktion (Bär, Löwe oder Adler) geben den Höchstbonus (+20 %), 4 + 1 geben +15 %. Der Lord zählt für alle Fraktionen.</li>
+        <li>Zwei Tanks vorn, die Angreifer hinten. Lies die Fertigkeiten, statt nur nach der Stärkezahl zu wählen.</li>
+        <li>Manche SSR-Helden haben eine UR-Version, die später freigeschaltet wird: Sie lohnen sich auf lange Sicht.</li>
+        <li>EXP wird immer teurer (eine Stufe nach 70 kostet über 5 Millionen): Verteile sie nicht auf Helden, die du nicht spielst.</li>
+        <li>Zweites Team: Bau es um eine andere Fraktion, mit den Helden, die nicht ins erste passen.</li>
+        <li>Heb die <b>universellen UR-Fragmente</b> auf, bis dein endgültiges Team feststeht, und setz sie an einem Donnerstag ein.</li>
+        <li>Speichere getrennte Aufstellungen (Boss, Angriff, Garnison), sobald die Funktion freigeschaltet ist (Schloss 16).</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🔨 Schmiede: welches goldene Teil zuerst herstellen</summary>
+      <p>Ein goldenes (UR-)Teil ist teuer: Oft stellt man nur eines auf einmal her. Diese Reihenfolge bringt am meisten.</p>
+      <ol>
+        <li><b>Das Schwert des Königs</b> für jeden Angreifer deines Teams (die Helden der hinteren Reihe).</li>
+        <li><b>Die Armschienen des Königs</b> für dieselben Angreifer, beginnend mit dem, der den meisten Schaden macht.</li>
+        <li><b>Die Rüstung des Königs</b> für deine Tanks.</li>
+        <li><b>Die Beinschienen des Königs</b> zuletzt.</li>
+      </ol>
+      <p><b>Was jedes goldene Teil auf Stufe 0 gibt</b> (Werte aus der Schmiede):</p>
+      <table class="tbl">
+        <tr><th>⚔️ Schwert</th><td>+1.134 ANG, +151 VER, 5 % Krit, +1,5 % ANG</td></tr>
+        <tr><th>🧤 Armschienen</th><td>+756 ANG, +15.880 LP, +1,5 % ANG, 0,5 % Resistenz</td></tr>
+        <tr><th>🛡️ Rüstung</th><td>+39.702 LP, +113 VER, +5 % LP, 0,5 % Resistenz</td></tr>
+        <tr><th>🥾 Beinschienen</th><td>+23.821 LP, +189 VER, +5 % VER, 0,5 % Resistenz</td></tr>
+      </table>
+      <p><b>Warum zuerst Angriff</b> (Beispiel mit runden Zahlen):</p>
+      <ul>
+        <li>In einem typischen Kampf machen die drei hinteren Helden etwa <b>90 % des Schadens</b>. Die beiden Tanks machen 10 %.</li>
+        <li>Bei einem Angreifer mit 16.000 ANG bringt das goldene Schwert statt eines violetten etwa 1.000 ANG mehr (+6 %), dazu den Krit.</li>
+        <li>Die goldenen Armschienen geben ihm etwa 800 ANG (+5 %) und 12.000 LP dazu.</li>
+        <li>Die goldene Rüstung gibt einem Tank mit 600.000 LP etwa 55.000 LP dazu (+9 %). Mit Heilung hält ein Team aber weit mehr aus als seine angezeigten LP: Dieser Gewinn wiegt im Kampf weniger als der Angriffsgewinn.</li>
+      </ul>
+      <ul>
+        <li><b>Prüf es an deinen Kämpfen</b>: Kampfbericht → Kampfstatistik → Verursachter Schaden. Rüste zuerst den Helden mit dem längsten Balken aus.</li>
+        <li>Ein neues goldenes Teil beginnt wieder bei <b>Stufe 0</b>: Heb genug auf, um es gleich danach auf Stufe 10 zu bringen und seinen ersten Bonus freizuschalten.</li>
+        <li>Die Boni violetter Teile wirken nur gegen Monster. Die Boni goldener Teile wirken in allen Kämpfen.</li>
+        <li><b>Recycle, was du nicht mehr brauchst</b>: Das Zerlegen eines Ausrüstungsteils gibt <b>Eisenerz</b>, das einen Teil des <b>Roheisens</b> ersetzt, das für ein goldenes Teil nötig ist. Zerlege unnütze grüne und blaue Teile und sogar violette, wenn es dich dem nächsten goldenen Teil für dein erstes Team näherbringt.</li>
+        <li>Verbessere keine Ausrüstung niedriger Stufe und keine von Helden, die du nicht spielst: Heb dein Material für das erste Team auf.</li>
+      </ul>
+      <p class="src">Analyse vom 11. Nov. 2026 anhand der Schmiedewerte und eines Kampfberichts. Die Prozentwerte des Beispiels stammen aus einem einzigen Kampf: Vergleiche mit deinen eigenen Berichten.</p>
+    </details>
+    <details>
+      <summary>✅ Tägliche Routine (10 Minuten)</summary>
+      <ul>
+        <li>Missionen, Post, Gratis-Geschenk im Shop (Tagesangebot) und Allianz-Truhen abholen.</li>
+        <li>Die Belohnungstruhen im Rucksack öffnen (nicht die Ressourcentruhen).</li>
+        <li>Bau, Forschung und Training neu starten.</li>
+        <li>Auf „Helfen“ tippen und für die Allianz-Technologie spenden.</li>
+        <li>Kopfgelder starten (außer UR, die für Dienstag und Freitag aufheben) und Sammler losschicken.</li>
+        <li>Ausdauer für Sammelangriffe und Monster ausgeben (am besten am Montag).</li>
+        <li>Die Truhen des laufenden Wettrüsten-Zeitfensters holen.</li>
+        <li>Die 5 Gratis-Kämpfe im Turnier und die Aufgaben der Pässe erledigen (Helden, Forschung, Training, Greif).</li>
+        <li>Stadtherren und Ritter: das Dekret erneuern.</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-attaque">
+    <h3 class="grp-h">⚔️ Angriff</h3>
+    <p class="lead">Die Verteidigung lesen, Sammelangriffe abstimmen, heilen, ohne Truppen zu verlieren.</p>
+    <details open>
+      <summary>📣 Organisation der Angriffe</summary>
+      <ul>
+        <li>Die R4 und der R5 tun ihr Bestes, sind aber zur Angriffszeit nicht immer verfügbar. Wir planen sie dann, wenn möglichst viele da sein können, und das ist nicht immer einfach.</li>
+        <li><b>Schalte die Benachrichtigungen des Spiels auf deinem Handy ein</b>, um täglich informiert zu werden, und komm, wenn du kannst. Wenn es nicht geht, ist das nicht schlimm: Wir passen die Strategie an.</li>
+        <li>Du kennst das Spiel gut und hast Zeit? Wir suchen Spieler, die bei der Strategie helfen und mitdiskutieren: Melde dich im Chat.</li>
+      </ul>
+    </details>
+    <details open>
+      <summary>⚔️ Sammelangriffe und Plünderung</summary>
+      <ul>
+        <li><b>Gegen ein verteidigtes Schloss</b>: Bereite Spieler und Märsche vor dem Start vor. Ein voller Sammelangriff geht sofort los; sonst wartet er das Ende seines Timers ab. Schick kurz vorher keinen Späher: Das Ziel könnte gewarnt werden.</li>
+        <li>Reihe die Wellen aneinander: Ein starker erster Sammelangriff schwächt die Garnison, die nächsten starten sofort, bevor der Gegner verstärken kann. Nichts ist garantiert: Lies die Kampfberichte und pass dich an.</li>
+        <li>Sammelangriffe auf Kaiserliche Vollstrecker bringen viel Nahrung für wenig Ausdauer: Mach mit.</li>
+        <li><b>Wagen plündern</b>: Ziel auf SSR- oder UR-Wagen, am besten solche mit UR-Heldenfragmenten. Du hast so viele Versuche wie nötig, um 4 Plünderungen zu erreichen.</li>
+        <li>Angreifen oder Spähen lässt deinen Schild fallen: Greif nur an, wenn es mit den R4 und dem R5 abgesprochen ist, und nie eine durch den Pakt geschützte Allianz (Reiter Regeln).</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🎯 Eine Stadt angreifen: erst die Verteidigung lesen</summary>
+      <ul>
+        <li><b>Es ist ein Allianzprojekt</b>: Niemand greift eine Stadt im Alleingang an. Ziel und Uhrzeit werden in der Allianz entschieden und im Chat angekündigt, lange im Voraus, wenn es geplant ist, oder spontan, wenn wir auf einen Angriff reagieren müssen.</li>
+        <li><b>Sei reaktionsschnell</b>: Ein Angriff kann in letzter Minute starten. Wir können auch eine Stadt verlieren, die dann unter Schild steht: Wir nehmen andere, um unsere Quellen für Ressourcen und Fortschritt zu behalten.</li>
+        <li><b>Leere Stadt?</b> Wenn niemand sie verteidigt, greif voll an, solo, mit allem, was du hast.</li>
+        <li><b>Sonst schick einen Späher</b>, sobald der Angriff läuft: Er zeigt dir, wie viele Truppen verteidigen, und die Verteidigung kann schnell wachsen.</li>
+        <li><b>Kenne die Stärke deines ersten Teams</b> und vergleiche sie mit der Verteidigung. Ein zu schwaches Team kommt nicht durch: Du verlierst Truppen und Zeit.</li>
+        <li>Gegen eine echte Verteidigung: <b>Schließ dich Sammelangriffen an</b>, statt allein anzugreifen. Schau dir die offenen Gruppen an: verbleibende Zeit, ob sie fast voll sind, von wo sie starten. Oft starten dieselben Spieler sie.</li>
+        <li>Setz je nach Anzahl 1 oder 2 Teams in Sammelangriffe. Hat eine große Gruppe die Verteidigung gebrochen, kann der Rest solo angreifen.</li>
+        <li>Pass dich anhand der Kampfberichte schnell an: Das lernt man mit Übung, Schlacht für Schlacht.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>⏱️ Alle gleichzeitig ankommen</summary>
+      <ul>
+        <li>Wenn du deine Truppen marschieren lässt, zeigt das Spiel ihre Marschzeit. Merk sie dir und beobachte das Marschtempo, um Ankünfte abzuschätzen.</li>
+        <li><b>Mit einem Countdown</b> (Kriegsbeginn, Sammelangriff): Starte deinen Marsch, wenn der Countdown deine Marschzeit erreicht. Du kommst genau bei null an, zusammen mit allen anderen, und die Schläge treffen gemeinsam.</li>
+        <li>Wenn du nicht rechtzeitig bereit bist, ist es besser, <b>eine Welle auszulassen</b>, als allein anzukommen und geschlagen zu werden: Mach dich für die nächste bereit.</li>
+      </ul>
+    </details>
+    <details>
+      <summary><span class="pharma" aria-hidden="true">✚</span> Heilung: in kleinen Wellen</summary>
+      <ul>
+        <li><b>Heile oft und in kleinen Mengen.</b> Ist dein Lazarett voll, können neue Verwundete nicht mehr hinein und diese Soldaten sind verloren.</li>
+        <li>Heile jeweils <b>300 bis 500 Soldaten</b> und bitte um Allianz-Hilfe: Mit den Hilfe-Klicks ist eine kleine Heilung fast sofort fertig, ohne Beschleuniger. Deine Soldaten sind gleich wieder bereit, und du startest die nächste Heilwelle.</li>
+        <li>Pass die Menge an deine Heilboni an (Gebäude, Forschung): Wähle die Menge, die allein durch Hilfe fertig wird.</li>
+        <li>Alles auf einmal zu heilen kostet viele Ressourcen und Zeit und blockiert so lange das Lazarett.</li>
+        <li><b>Behalte möglichst viele Truppen</b>: Wechsle Angriffe und Heilung ab, nimm dir die nötige Zeit. Lieber abwarten, als die ganze Armee in einem hektischen Angriff zu verlieren.</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-guerre">
+    <h3 class="grp-h">🛡️ Krieg</h3>
+    <p class="lead">Städte, Belagerungen und Verteidigung der Allianz.</p>
+    <details open>
+      <summary>🏙️ Städte und Belagerungen</summary>
+      <ul>
+        <li>Die R4 und der R5 erklären einer Stadt den Krieg, immer nur einer. Die Uhrzeit wird im Chat angekündigt: Sei online und schließ dich den Sammelangriffen mit deinem besten Team an.</li>
+        <li>Eine eroberte Stadt ist 24 Stunden geschützt, danach muss sie verteidigt werden.</li>
+        <li><b>So wird eine Stadt gewonnen</b>: Während des erklärten Krieges zählen die Punkte aller Mitglieder zusammen. 100 Schaden an den verteidigenden Truppen = 1 Punkt; 1 Punkt abgezogene Haltbarkeit der Stadt = 5 Punkte. Fällt die Haltbarkeit auf null, geht die Stadt an die Allianz mit den meisten Punkten, <b>nicht an die mit dem letzten Schlag</b>. Auf die Mauern zu schlagen lohnt sich also sehr.</li>
+        <li>Die Stadt gehört der Allianz. Der <b>Allianzführer ernennt den Stadtherrn</b> (und die Ritter): Das ist nicht unbedingt, wer am meisten angegriffen hat, und der Titel kann wechseln.</li>
+        <li>Kriegserklärungen sind begrenzt: 3 pro Tag (2 in der Saison), ein Ziel zur Zeit, und die Allianz braucht mindestens 20 Mitglieder. Besitzen wir eine Stadt, können wir nur benachbarte Städte angreifen.</li>
+        <li>Stadtherr und Ritter erneuern das <b>Dekret jeden Tag</b>: Es endet um Mitternacht Serverzeit (1 Uhr MEZ).</li>
+        <li>Jede gespielte Belagerung zählt für deine Beteiligungsnote (40 % der Note) und damit für die Verteilung der Stadttruhen.</li>
+        <li>Belagerung der Hauptstadt am Freitag: Die Allianz braucht eine Stadt der Stufe 6 und du Schloss 12, um die Zone zu betreten.</li>
+        <li>Heb Heil- und Trainingsbeschleuniger für Belagerungstage auf.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🛡️ Freitagabend: Schild ist Pflicht</summary>
+        <ul>
+          <li>Samstag ist „Kill“-Tag: Ohne Schild geben deine Truppen dem Gegner Punkte. Setz deinen Schild <b>am Freitagabend, vor 1 Uhr nachts</b>.</li>
+          <li>Leg unter der Woche genug Allianzpunkte zurück, um einen im Allianz-Shop zu kaufen.</li>
+          <li>Du kannst deine Truppen auch woanders unterbringen: als Verstärkung bei einem Spieler mit Schild oder in einer Stadt der Allianz. Achtung: Wird dein Schloss zerstört, kehren deine Truppen zu dir zurück.</li>
+          <li>Ruf deine Sammler zurück: An diesem Tag sind Sammeltruppen leichte Ziele.</li>
+          <li>Angreifen oder Spähen lässt deinen Schild fallen: Greif nur an, wenn es mit den R4 und dem R5 abgesprochen ist.</li>
+        </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-evenements">
+    <h3 class="grp-h">🎉 Events</h3>
+    <p class="lead">Allianzduell, Wettrüsten und Kalender.</p>
+    <details open>
+      <summary>📣 Tipps der Allianz</summary>
+      <ul>
+        <li><b>Duell, Montag</b>: Greif, Sammeln und Ausdauer ausgeben. Lies die Voraussetzungen des Tages, bevor du ausgibst.</li>
+        <li><b>Events</b>: Das Event-Symbol rechts im Bildschirm führt zum Wettrüsten (alle 4 Stunden neue Aufgaben) und zu einem Gratis-Kalender, um das Kommende vorzubereiten.</li>
+        <li><b>Allianz-Frachtschiff</b>: Einsteigen gegen 20 Uhr, Kapitäne im Wechsel. Alles steht im Reiter 🚢 Frachtschiff.</li>
+        <li>Eine Enzyklopädie der kommenden Events entsteht auf dem Discord der Allianz.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🗓️ Allianzduell: was an welchem Tag einsetzen</summary>
+      <table class="tbl">
+        <tr><th>🦅 Montag</th><td>Ausdauer (150 Pkt. pro Punkt), Intel-Aufgaben (10.000), Bestienkerne (2.000), Sammeln.</td></tr>
+        <tr><th>🏰 Dienstag</th><td>Baubeschleuniger (50 Pkt. pro Minute), UR-Wagen (100.000), UR-Kopfgelder (75.000), Arbeitertickets.</td></tr>
+        <tr><th>🔬 Mittwoch</th><td>Forschungsbeschleuniger, Ehrenmedaillen, Intel-Aufgaben.</td></tr>
+        <tr><th>🦸 Donnerstag</th><td>Heldenfragmente (UR 10.000, SSR 3.500, SR 1.000), Rekrutierungstickets (1.500), Fertigkeitsmedaillen.</td></tr>
+        <tr><th>🛡️ Freitag</th><td>Soldaten trainieren und befördern, Trainingsbeschleuniger, UR-Wagen und -Kopfgelder, Roheisen, Verbesserungssteine, Intel-Aufgaben. Abends Schild.</td></tr>
+        <tr><th>⚔️ Samstag</th><td>„Kill“-Tag gegen die gegnerische Allianz. <b>Alle</b> Beschleuniger zählen, auch Heilung, ebenso Sammeln und abgeschlossene Forschungen. Der Tag zählt doppelt.</td></tr>
+        <tr><th>😴 Sonntag</th><td>Ruhetag: Gib nichts Wichtiges aus. Sammle Intel-Aufgaben an und schick abends die Sammler für Montag los.</td></tr>
+      </table>
+      <ul>
+        <li>Die Punkte oben sind Grundwerte: Die „Duell“-Forschung der Allianz erhöht sie (ein UR-Wagen bringt dann 150.000, eine Intel-Aufgabe 19.000).</li>
+        <li><b>Handels- und Kopfgeldverträge</b> dienen dazu, Wagen und Kopfgelder zu aktualisieren, bis UR kommt: Heb sie für Dienstag und Freitag auf.</li>
+        <li>EXP-Truhen bringen im Duell sehr wenig: Öffne sie, wenn du sie brauchst.</li>
+        <li><b>Verlass die Allianz nicht unter der Woche</b>: Du verlierst die Duell-Belohnungen. Warte auf die Belohnungspost.</li>
+        <li>Schließe Gebäude und Forschungen <b>am</b> richtigen Tag ab: Es zählt der Stärkegewinn (10 Pkt. pro Stärkepunkt).</li>
+        <li>Weitere Gegenstände zum Aufheben: SSR- und UR-Dekorationen (20.000 und 100.000 Pkt.) für Dienstag, Ehrenmedaillen (150 Pkt.) für Mittwoch.</li>
+        <li><b>Siegpunkte</b>: 1 am Montag, 2 von Dienstag bis Freitag, 4 am Samstag. Der Samstag kann alles drehen.</li>
+        <li><b>Stufen der persönlichen Truhen</b>: 40 K, 150 K, 540 K, 660 K, 1 M, 2,3 M, 2,6 M, 3,6 M und 7,2 M Punkte. Ziel an wichtigen Tagen: mindestens 2,3 M.</li>
+        <li>Teilnahme: Schloss 11 und die Allianz in den Top 32 des Königreichs bei der Paarung am Sonntag.</li>
+        <li>Beispiel: 100 Rekrutierungstickets und 50 UR-Fragmente, für einen Donnerstag aufgehoben, sind 650.000 Grundpunkte wert, an einem anderen Tag fast nichts.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🧠 Duell: Punkte im Voraus vorbereiten</summary>
+      <p>Das Prinzip des VS-Plans der Allianz: An ruhigen Tagen vorbereiten, am entscheidenden Tag einlösen.</p>
+      <ul>
+        <li><b>Intel-Aufgaben (Montag, Mittwoch, Freitag)</b>: Erledige deine Aufgaben am Vortag, <b>ohne die Belohnungen abzuholen</b>, und hol am Stichtag alles auf einmal ab. Man kann rund dreißig ansammeln (laut Allianzplan bis zu 35), wenn man am Morgen des Vortags beginnt. Dienstag, Donnerstag und Sonntag sind also Sammeltage.</li>
+        <li><b>Sammeln</b>: Die Punkte zählen, wenn das Sammeln <b>endet</b>. Schick deine Truppen am Vorabend los, damit sie kurz nach Beginn des nächsten Tages fertig sind (1 Uhr nachts MEZ).</li>
+        <li><b>Bau (Dienstag)</b>: Ein fertiges Gebäude gibt seine Punkte erst, wenn du sein Abschlussgeschenk öffnest. Lass die Geschenke unter der Woche zu und öffne sie am Dienstag. Schalte in den Einstellungen das Abholen mit Bestätigung ein, damit du sie nicht versehentlich öffnest.</li>
+        <li><b>Forschung</b>: gleiches Prinzip, lass sie am Mittwoch enden und heb einen Forschungsabschluss für Samstag auf.</li>
+        <li><b>UR-Wagen und -Kopfgelder (Dienstag und Freitag)</b>: Erledige an den Tagen davor deine Missionen so, dass nur noch UR wartet. Starte deine UR immer, <b>bevor</b> du die Liste aktualisierst, sonst verlierst du sie. Kopfgeldaufgaben mit <b>Stern</b> bleiben erhalten: Heb sie für den Duelltag auf.</li>
+        <li><b>Soldaten (Freitag)</b>: Trainiere unter der Woche Truppen eine Stufe unter deinem Maximum. Mach am Freitag nur <b>Beförderungen</b> auf die höhere Stufe: Es zählen die Punkte der Zielstufe, bei viel weniger Zeit und Beschleunigern.</li>
+        <li>Am Freitag zählen auch: Verbesserungssteine und Roheisen.</li>
+      </ul>
+      <p class="src">Quelle: Plan „VS-Event“ der Allianz [LoVS]. Diese Methoden sind dieselben wie in verwandten Spielen des Genres (Last War, Last Asylum), wo sie gut dokumentiert sind; prüfe die Zahlen im Spiel.</p>
+    </details>
+    <details>
+      <summary>⏱️ Wettrüsten (Race to Ace)</summary>
+      <ul>
+        <li>Das Thema wechselt <b>alle 4 Stunden</b>: 1, 5, 9, 13, 17 und 21 Uhr MEZ (Winterzeit).</li>
+        <li>Warte auf das Zeitfenster, das zu deinem Vorrat passt. Fällt es auf denselben Tag wie das Duellthema, wird eine Aktion doppelt belohnt: Diese Zeitfenster sind in der Tabelle hervorgehoben.</li>
+        <li>Ziel auf die letzte Truhe des Zeitfensters und hör dann auf: Der Überschuss ist anderswo besser eingesetzt.</li>
+        <li>Ab VIP 8 kannst du einmal pro Tag ein Zeitfenster gegen ein anderes tauschen.</li>
+      </ul>
+      <div style="overflow-x:auto"><table class="tbl" id="ra"></table></div>
+      <p class="src">Plan im Spiel abgelesen, Uhrzeiten in MEZ (Winterzeit). Greif = Montagsthema, Schloss = Dienstag, Forschung = Mittwoch, Helden = Donnerstag, Soldaten = Freitag.</p>
+    </details>
+    </div>
+
+    <div class="card key cta"><h3>🏆 Und die Rangliste?</h3><p>Beteiligung, Stärke und Truhenverteilung der Allianz: <button type="button" class="tab" id="go-rank">zur Rangliste →</button></p></div>
+
+    <p class="src">Quellen: Allianz-Ankündigungen [LoVS] vom 31. Oktober bis 9. November 2026, Ablesungen im Spiel; <a href="https://www.toplordsintel.com/guides/alliance-duel" rel="noopener">Top Lords Intel</a>, <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a>, <a href="https://toplordswiki.com/guides/beginner-tips/" rel="noopener">toplordswiki</a>, <a href="https://tap-guides.com/2026/07/31/top-lords-beginner-guide/" rel="noopener">Tap Guides</a>, <a href="https://top-lords.wiki/alliance/city" rel="noopener">top-lords.wiki</a>, <a href="https://www.toplordsintel.com/guides/cities" rel="noopener">Top Lords Intel (Städte)</a>, <a href="https://www.toplordsintel.com/guides/plunder" rel="noopener">Top Lords Intel (Plünderung und Wagen)</a>, <a href="https://www.ldshop.gg/ru/blog/top-lords/top-lords-gear-crafting-and-upgrading-guide.html" rel="noopener">LDShop (Schmiede)</a>; Tipp-Notizbuch von ThoFy. Zahlen können sich mit Spiel-Updates ändern. Letzte Überarbeitung: 13. November 2026 (Tipps nach Themen geordnet).</p>
+  </section>
+
+  <section class="page" id="page-regles" hidden>
+    <h2>📜 Regeln des Königreichs #116</h2>
+    <p class="lead">Der Nichtangriffspakt zwischen den großen Allianzen, wie er auf dem Discord des Königreichs angekündigt wurde, und was er für uns bedeutet.</p>
+
+    <div class="card key">
+      <h3>🤝 NAP 15: Nichtangriffspakt aktiv</h3>
+      <p>Eingeführt von den drei stärksten Allianzen des Königreichs, in der Allianz am 4. November 2026 und auf dem Discord „Kingdom #116“ am 5. November angekündigt. Die 15 stärksten Allianzen greifen sich gegenseitig nicht an, damit jeder in Ruhe sammeln, bauen und trainieren kann. Die Regel gilt für den ganzen Server.</p>
+      <ol>
+        <li><b>Wir greifen keinen Spieler einer Top-15-Allianz an.</b> Kein Schlossangriff, kein Späher, kein Angriff auf ein Sammelfeld.</li>
+        <li><b>Bei einem Angriff schlagen wir nicht zurück.</b> Wir informieren zuerst die R4 und den R5, die das unter den Anführern klären.</li>
+        <li><b>Keine Drohungen und keine Belästigung</b> gegenüber Mitgliedern der Pakt-Allianzen, nirgends auf dem Server.</li>
+      </ol>
+      <p><b>Sanktionen</b>: Im Wiederholungsfall können die Opfer ihre Angreifer sanktionieren, und das gilt in beide Richtungen.</p>
+    </div>
+
+    <div class="card warn">
+      <h3>❓ Top 10 oder Top 15?</h3>
+      <p>Die Ankündigungen der Allianz (4. und 8. November) und die des Königreichs-Discords sagen alle <b>Top 15</b>. Am 10. November wurde unter den Anführern die Frage nach einer Top 10 gestellt, bisher ohne Antwort. <b>Solange nichts anderes angekündigt ist, sind die Top 15 geschützt.</b> [LoVS] lag bei unseren letzten Ablesungen in den Top 10 des Königreichs.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔎 Vor jeder Aktion gegen einen Spieler</h3>
+      <ol>
+        <li>Tippe auf sein Profil.</li>
+        <li>Schau dir sein Allianz-Kürzel an.</li>
+        <li>Prüfe den Platz dieser Allianz: dein Profil → Ranglisten → Allianzstärke (oder Allianz → Einstellungen → Allianzliste).</li>
+      </ol>
+      <p>In den Top 15: Finger weg. Frag im Zweifel im Allianz-Chat, bevor du deine Truppen losschickst.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚨 Wenn du angegriffen wirst oder versehentlich angegriffen hast</h3>
+      <ul>
+        <li><b>Kein Gegenangriff.</b></li>
+        <li>Mach einen Screenshot des Berichts.</li>
+        <li>Schick ihn sofort per Privatnachricht an einen R4 oder den R5.</li>
+        <li>Die Anführer lösen das Problem diplomatisch.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ Was der Pakt nicht abdeckt</h3>
+      <ul>
+        <li>Spieler ohne Allianz oder außerhalb der Top 15 können dich weiterhin angreifen: Halte einen Schild bereit, wenn dein Schloss nicht verteidigt ist.</li>
+        <li>Am Samstag des Allianzduells (Kampftag) greif nur die Ziele an, die die R4 und der R5 vorgeben: Frag nach, bevor du eine Pakt-Allianz ins Visier nimmst.</li>
+        <li>Schau dir ein Sammelfeld an, bevor du Truppen hinschickst, damit du nicht versehentlich einen geschützten Spieler triffst.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>👑 Gesetze des Königreichs (im Spiel)</h3>
+      <p>Seit Version 1.0.41 kann der König drei Gesetze erlassen: Nichtangriff (Schlösser), Handelsschutz (Wagen) und Kopfgeldschutz.</p>
+      <ul>
+        <li>Ein Gesetz <b>verhindert</b> Angriffe technisch <b>nicht</b>: Jeder Verstoß löst eine Warnung aus und bleibt öffentlich vermerkt.</li>
+        <li>Der König kann danach bestrafen: ein „Brandmal“ mit negativer Wirkung oder den Status „Gesucht“ (5 Minuten ohne Schild und Teleport).</li>
+        <li>Lies die geltenden Gesetze, bevor du außerhalb eines Krieges angreifst.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🎖️ Die Ränge in der Allianz</h3>
+      <table class="tbl">
+        <tr><th>R3</th><td>Die Veteranen, die Stützen: Sie gehen mit gutem Beispiel voran, geben Ratschläge, machen mit, kommunizieren und <b>lesen</b> Ankündigungen und Post. Sie erhalten folgerichtig mehr Belohnungen.</td></tr>
+        <tr><th>R2</th><td>Kommuniziert, macht aber wenig mit, oder macht mit, ohne zu kommunizieren oder zu antworten. Oder wartet auf eine Neubewertung.</td></tr>
+        <tr><th>R1</th><td>Neu in der Familie, mit Zeit, sich zu beweisen. Oder ein Spieler, der nicht kommuniziert, nicht antwortet oder sehr wenig beiträgt.</td></tr>
+      </table>
+      <ul>
+        <li>R1 können nach und nach ersetzt werden. Neue sind 3 Tage lang geschützt.</li>
+        <li><b>Länger als 24 Stunden weg: Sag einem R4 Bescheid</b>, der das Team informiert. Ohne Nachricht erhöht mehr als ein Tag Abwesenheit das Risiko, R1 zu werden oder sogar ausgeschlossen zu werden.</li>
+        <li>Deine Beteiligung oder Kommunikation hat sich verbessert? Bitte die R4 oder den R5 um deine Beförderung: Es kann etwas übersehen worden sein.</li>
+        <li>Ein Vorschlag zu dieser Arbeitsweise? Wende dich an die R4 oder den R5.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>💜 In der Allianz [LoVS]</h3>
+      <ul>
+        <li>Die Ziele (Städte, Belagerungen, Sammelangriffe) legen die R4 und der R5 fest und kündigen sie im Chat an.</li>
+        <li>Die Stadttruhen werden nach Beteiligung verteilt: Belagerungen, Hilfe, Spenden und Kills (Reiter Truhen).</li>
+        <li>Niemand verlässt die Allianz während der Duellwoche.</li>
+        <li>Wähle einen erkennbaren Spielernamen (nicht den Standardnamen), um die Verständigung zu erleichtern.</li>
+        <li>Die Ankündigungen des Tages stehen unter Chat → Allianz → Allianz-Ankündigung: Lies sie bei jedem Einloggen.</li>
+        <li>Das abendliche Frachtschiff folgt einer Kapitänsrotation: siehe Reiter 🚢 Frachtschiff.</li>
+      </ul>
+    </div>
+
+    <p class="src">Quellen: Allianz-Ankündigungen [LoVS] vom 4. und 8. November 2026; Post des R5 vom 14. November 2026 (Ränge); Discord „Kingdom #116“, Kanal nap15-laws (Ankündigung vom 5. November 2026 und illustrierter Leitfaden); <a href="https://www.packsify.com/blogs/top-lords-kingdom-titles" rel="noopener">Packsify – Königstitel und Gesetze des Königreichs</a>. Letzte Aktualisierung: 14. November 2026.</p>
+  </section>
+</div>
+<script>
+function trDate(s){const M=["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],F=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];const m=/^(\d+)(?:er)? (\S+) (\d+)(?: à (\d+) h ?(\d*))?/.exec(s);if(!m)return s;const i=F.indexOf(m[2]);if(i<0)return s;return m[1]+'. '+M[i]+' '+m[3]+(m[4]?' um '+m[4]+':'+(m[5]||'00').padStart(2,'0')+' Uhr (MEZ)':'');}
+function main(DATA, CARGO) {
+DATA.date = trDate(DATA.date);
+const rp = p => Math.max(0, (100 - (p == null ? 100 : p)) / 99);
+const M = DATA.membres;
+const maxP = Math.max(...M.map(m => m.p || 0));
+const rows = M.map(m => {
+  const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
+  const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus));
+  const puis = Math.round(100 * (m.p || 0) / maxP);
+  return {...m, part, puis, mix: Math.round(0.7 * part + 0.3 * puis)};
+});
+const byName = (a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'});
+for (const k of ['part', 'puis', 'mix']) [...rows].sort((a, b) => b[k] - a[k] || byName(a, b)).forEach((r, i) => r['pl_' + k] = i + 1);
+const bonus = {R5: 30, R4: 20, R3: 10, R2: 0, R1: -10};
+const slots = rows.flatMap(r => [0, 1, 2].map(k => ({r, k, prio: r.part + (bonus[r.r] || 0) - 25 * k})))
+  .sort((a, b) => b.prio - a.prio || byName(a.r, b.r));
+slots.forEach((s, i) => (s.r.seuils ||= [])[s.k] = i + 1);
+const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('de-DE'));
+const T = {
+  astuces: {icon: '💡', label: 'Tipps', page: 'page-astuces'},
+  cargo: {icon: '🚢', label: 'Frachtschiff', page: 'page-cargo'},
+  part: {icon: '🤝', label: 'Beteiligung', note: 'Belagerungen der Woche, Hilfe, Spenden und Kills.', key: 'part',
+    det: r => `Belagerungen ${v(r.s)} · Hilfe ${v(r.a)}. · Spenden ${v(r.d)}. · Kills ${v(r.e)}.`, score: r => [r.part, '/ 100']},
+  puis: {icon: '⚔️', label: 'Stärke', note: 'Stärke aus der Mitgliederliste.', key: 'puis',
+    det: r => `${v(r.p)} Mio. Stärke`, score: r => [r.puis, '/ 100']},
+  mix: {icon: '🏆', label: 'Kombiniert', note: '70 % Beteiligung + 30 % Stärke.', key: 'mix',
+    det: r => `Beteiligung ${r.part} · Stärke ${r.puis}`, score: r => [r.mix, '/ 100']},
+  coffres: {icon: '🎁', label: 'Truhen', note: '', key: 'coffres'},
+  regles: {icon: '📜', label: 'Regeln', page: 'page-regles'}
+};
+let tab = T[location.hash.slice(1)] ? location.hash.slice(1) : 'astuces';
+const el = id => document.getElementById(id);
+el('sub').textContent = `Stand vom ${DATA.date} · ${rows.length} Mitglieder`;
+const pod = el('podium');
+for (const k of ['part', 'puis', 'mix']) {
+  const d = document.createElement('div'); d.className = 'pod';
+  const b = document.createElement('b'); b.textContent = T[k].icon + ' ' + T[k].label; d.appendChild(b);
+  const t = document.createElement('div');
+  t.textContent = [...rows].sort((a, b) => a['pl_' + k] - b['pl_' + k]).slice(0, 3).map(r => r.n).join(', ');
+  d.appendChild(t); pod.appendChild(d);
+}
+for (const k of Object.keys(T)) {
+  const b = document.createElement('button'); b.className = 'tab'; b.role = 'tab'; b.textContent = T[k].icon + ' ' + T[k].label; b.dataset.k = k;
+  b.onclick = () => { tab = k; history.replaceState(null, '', k === 'astuces' ? location.pathname : '#' + k); draw(); }; el('tabs').appendChild(b);
+}
+function line(place, cls, name, rang, det, big, small) {
+  const row = document.createElement('div'); row.className = 'row';
+  const pl = document.createElement('div'); pl.className = 'pl ' + cls; pl.textContent = place;
+  const nm = document.createElement('div'); nm.className = 'nm';
+  const st = document.createElement('strong'); st.textContent = name;
+  const dt = document.createElement('div'); dt.className = 'det';
+  const rk = document.createElement('span'); rk.className = 'rk'; rk.textContent = rang;
+  dt.appendChild(rk); dt.appendChild(document.createTextNode(det));
+  nm.append(st, dt);
+  const sc = document.createElement('div'); sc.className = 'sc';
+  const bb = document.createElement('b'); bb.textContent = big; if (big === '✓') bb.className = 'ok';
+  const sm = document.createElement('span'); sm.textContent = small;
+  sc.append(bb, sm);
+  row.append(pl, nm, sc); return row;
+}
+function draw() {
+  for (const b of el('tabs').children) b.setAttribute('aria-selected', b.dataset.k === tab);
+  for (const k in T) if (T[k].page) el(T[k].page).hidden = k !== tab;
+  el('rank').hidden = el('podium').hidden = !!T[tab].page;
+  if (T[tab].page) return;
+  const q = el('q').value.trim().toLowerCase(), rg = el('rang').value;
+  const keep = r => (!q || r.n.toLowerCase().includes(q)) && (!rg || r.r === rg);
+  const list = el('list'); list.replaceChildren();
+  el('stockbox').hidden = tab !== 'coffres';
+  let shown;
+  if (tab === 'coffres') {
+    const stock = Math.max(0, parseInt(el('stock').value, 10) || 0);
+    const nb = r => r.seuils.filter(x => x <= stock).length;
+    const gagnants = rows.filter(r => nb(r) > 0).length;
+    el('note').textContent = `Mit ${stock} Truhen: ${gagnants} Mitglieder belohnt. „1. ab 12“ = 1. Truhe, wenn die Stadt mindestens 12 hat.`;
+    shown = [...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).filter(keep);
+    shown.forEach((r, i) => list.appendChild(line(i + 1, '', r.n, r.r,
+      `1. ab ${r.seuils[0]} · 2. ab ${r.seuils[1]} · 3. ab ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'Truhe' + (nb(r) > 1 ? 'n' : ''))));
+  } else {
+    const t = T[tab]; el('note').textContent = t.note;
+    shown = [...rows].sort((a, b) => a['pl_' + t.key] - b['pl_' + t.key]).filter(keep);
+    shown.forEach(r => { const p = r['pl_' + t.key], [big, small] = t.score(r);
+      list.appendChild(line(p, p <= 3 ? 'g' + p : '', r.n, r.r, t.det(r), big, small)); });
+  }
+  if (!shown.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'Kein Mitglied passt.'; list.appendChild(e); }
+}
+const DUEL = [
+  ['😴 Sonntag: Ruhetag', "Heute kein Duell. Gib nichts Wichtiges aus, starte lange Bauten und bereite Montag vor."],
+  ['🦅 Montag: Intel, Greif und Sammeln', "Gib deine Ausdauer aus, erledige Intel-Aufgaben, nutze Bestienkerne und schick Sammler los. Heb alles andere auf."],
+  ['🏰 Dienstag: Schloss', "Baubeschleuniger, UR-Wagen und -Kopfgelder, Arbeitertickets. Schließe deine Gebäude heute ab."],
+  ['🔬 Mittwoch: Forschung', "Forschungsbeschleuniger, Ehrenmedaillen, Intel-Aufgaben. Schließe deine Forschungen heute ab."],
+  ['🦸 Donnerstag: Helden', "Der Tag für Rekrutierungstickets, Heldenfragmente und Fertigkeitsmedaillen."],
+  ['🛡️ Freitag: Soldaten', "Trainiere Soldaten der höchsten Stufe, nutze Trainingsbeschleuniger, UR-Wagen und -Kopfgelder."],
+  ['⚔️ Samstag: Kampf', "Der Tag zählt doppelt. Alle Beschleuniger zählen. Folge den Anweisungen der R4 und des R5, Schild, wenn du weg bist."]];
+const RA = {G: ['Greif', 1], C: ['Schloss', 2], R: ['Forschung', 3], H: ['Helden', 4], S: ['Soldaten', 5]};
+const RAW = ['RHSGCR', 'GCRSHG', 'CRHSGC', 'RHSGCR', 'HSGCRH', 'SGCRHS', 'CRHSGC']; // dimanche → samedi, créneaux serveur 0-4-8-12-16-20 h
+{
+  const now = new Date(), dow = now.getUTCDay(), slot = Math.floor(now.getUTCHours() / 4);
+  const box = el('today'), h = document.createElement('h3'), pp = document.createElement('p'), p2 = document.createElement('p');
+  h.textContent = 'Heute · ' + DUEL[dow][0]; pp.textContent = DUEL[dow][1];
+  const cur = RA[RAW[dow][slot]];
+  p2.textContent = '⏱️ Wettrüsten gerade: ' + cur[0] + (cur[1] === dow ? ' (passt zum Duell: zählt doppelt)' : '') + '.';
+  box.append(h, pp, p2);
+  const names = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'], order = [1, 2, 3, 4, 5, 6, 0], t = el('ra');
+  const tr = (cells, tag) => { const r = document.createElement('tr'); cells.forEach(c => { const x = document.createElement(c.th ? 'th' : tag); x.textContent = c.t; if (c.bg) x.style.background = c.bg; if (c.b) x.style.fontWeight = '700'; r.appendChild(x); }); t.appendChild(r); };
+  tr([{t: 'MEZ', th: 1}, ...order.map(d => ({t: names[d], th: 1}))], 'th');
+  for (let sl = 0; sl < 6; sl++) tr([{t: (sl * 4 + 1) + ' Uhr', th: 1}, ...order.map(d => { const c = RA[RAW[d][sl]]; return {t: c[0], bg: c[1] === d ? 'var(--accent-soft)' : '', b: d === dow && sl === slot}; })], 'td');
+}
+document.querySelectorAll('.gnav [data-g]').forEach(b => b.onclick = () => el(b.dataset.g).scrollIntoView({behavior: 'smooth'}));
+el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#part'); draw(); scrollTo(0, 0); };
+{
+  const H = (CARGO.historique || []).slice().sort((a, b) => a.date < b.date ? -1 : 1);
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const fr = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('de-DE', {weekday: 'long', day: 'numeric', month: 'long'}); };
+  const lundi = s => { const [y, m, d] = s.split('-').map(Number), x = new Date(y, m - 1, d); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
+  const today = iso(new Date()), w0 = lundi(today);
+  const semaine = [0, 1, 2, 3, 4, 5, 6].map(k => { const x = new Date(w0); x.setDate(x.getDate() + k); return iso(x); });
+  const fait = Object.fromEntries(H.map(h => [h.date, h.capitaine]));
+  const taken = new Set(semaine.map(d => fait[d]).filter(Boolean));
+  const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
+  const names = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'], t = el('cargo-rot');
+  const cell = (tag, txt, bold) => { const x = document.createElement(tag); if (bold) { const b = document.createElement('b'); b.textContent = txt; x.appendChild(b); } else x.textContent = txt; return x; };
+  semaine.forEach((d, k) => {
+    const tr = document.createElement('tr'), td = document.createElement('td');
+    tr.appendChild(cell('th', names[k] + ' ' + Number(d.slice(8)) + (d === today ? ' · heute Abend' : '')));
+    if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · erledigt'); }
+    else if (d < today) td.textContent = '– kein Frachtschiff erfasst';
+    else if (k === 6) td.textContent = 'VS-Champion: folgt, sobald das Duell erfasst wird.';
+    else {
+      const pool = (k === 5 ? byC : byP).filter(r => !taken.has(r.n)), r = pool[0];
+      if (r) { taken.add(r.n); td.append(cell('span', r.n, true), ' (' + r.r + ') · ' + (k === 5 ? 'Beteiligung ' + r.part + ' / 100' : v(r.p) + ' Mio. Stärke') + (pool[1] ? ' · danach: ' + pool[1].n : '')); }
+    }
+    tr.appendChild(td); t.appendChild(tr);
+  });
+  el('cargo-note').textContent = 'Woche von ' + fr(semaine[0]) + ' bis ' + fr(semaine[6]) + '. Rangliste nach dem Stand vom ' + DATA.date + '. Kapitäne, die diese Woche schon dran waren, werden bei den Vorschlägen ausgelassen.';
+  const hist = el('cargo-hist');
+  if (!H.length) hist.appendChild(cell('p', 'Noch kein Frachtschiff erfasst.'));
+  else {
+    const head = document.createElement('tr'); ['Datum', 'Kapitän', 'Wieder möglich'].forEach(x => head.appendChild(cell('th', x))); hist.appendChild(head);
+    H.slice().reverse().forEach(h => {
+      const nx = lundi(h.date); nx.setDate(nx.getDate() + 7); const n = iso(nx), tr = document.createElement('tr');
+      tr.append(cell('td', fr(h.date)), cell('td', h.capitaine, true), cell('td', n <= today ? '✅ ja, seit ' + fr(n) : '⏳ ab ' + fr(n)));
+      hist.appendChild(tr);
+    });
+  }
+}
+el('q').oninput = draw; el('rang').onchange = draw; el('stock').oninput = draw;
+draw();
+}
+Promise.all([fetch('../data.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()), fetch('../cargo.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()).catch(() => ({historique: []}))]).then(([d, c]) => main(d, c))
+  .catch(() => { document.getElementById('sub').textContent = 'Die Rangliste konnte nicht geladen werden, versuch es gleich noch einmal.'; });
+</script>
+</body>
+</html>

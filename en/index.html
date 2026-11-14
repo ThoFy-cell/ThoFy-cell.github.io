@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>LoVS – tips, rankings and rules</title>
+<style>
+:root{--bg:#f4ecdc;--panel:#fffaf0;--fg:#2b2116;--muted:#6f6352;--line:#e6d8bd;--accent:#1d4f91;--accent-2:#163a6b;--accent-soft:#e3ecf8;--gold:#b8860b;--gold-2:#e2b44f;--silver:#7d8a96;--bronze:#a0603a;--ok:#2f7d4f;--serif:Georgia,'Times New Roman',serif}
+@media (prefers-color-scheme:dark){:root{--bg:#11151d;--panel:#1a2030;--fg:#efe7d8;--muted:#a59c8c;--line:#2c3446;--accent:#86b4ff;--accent-2:#1d4f91;--accent-soft:#1f2e4a;--gold:#e2b44f;--gold-2:#f0cd7a;--silver:#b8c3cc;--bronze:#d79a6f;--ok:#6fcf97}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:22px;margin:4px 0 2px;color:var(--accent)}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.podium[hidden]{display:none}
+.podium{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.pod{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+.pod b{display:block;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.pod div{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){.podium{grid-template-columns:1fr}}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;position:sticky;top:0;background:var(--bg);z-index:2;padding-top:6px}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;cursor:pointer}
+.tab[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tools input,.tools select{font:inherit;font-size:14px;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--fg)}
+.tools input{flex:1 1 160px;min-width:0}
+.note{color:var(--muted);font-size:13px;margin:0 0 10px}
+.list{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.row{display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.pl{font-weight:700;text-align:center;font-variant-numeric:tabular-nums;color:var(--muted)}
+.pl.g1{color:var(--gold)}.pl.g2{color:var(--silver)}.pl.g3{color:var(--bronze)}
+.nm{min-width:0}
+.nm strong{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.det{font-size:12px;color:var(--muted)}
+.rk{display:inline-block;font-size:11px;font-weight:700;padding:0 6px;border-radius:6px;background:var(--accent-soft);color:var(--accent);margin-right:6px}
+.sc{text-align:right;font-variant-numeric:tabular-nums}
+.sc b{font-size:18px;display:block;line-height:1.1}
+.sc span{font-size:11px;color:var(--muted)}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+details{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+summary{cursor:pointer;font-weight:600}
+details p{font-size:14px;color:var(--muted)}
+.stock{display:flex;align-items:center;gap:8px;font-size:14px}
+.stock input{width:80px}
+.stock[hidden]{display:none}
+.ok{color:var(--ok);font-weight:600}
+.page[hidden],.rank[hidden]{display:none}
+.page h2{font-size:18px;margin:6px 0 4px;color:var(--accent)}
+.page .lead{color:var(--muted);font-size:14px;margin:0 0 12px}
+.page details{margin-top:8px}
+.page details ul,.card ul,.card ol{margin:8px 0 4px;padding-left:20px}
+.page li{margin:5px 0;font-size:14.5px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{margin:6px 0;font-size:14.5px}
+.card.key{border-color:var(--accent);background:var(--accent-soft)}
+.card.warn{border-left:4px solid var(--gold)}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+.tbl th,.tbl td{text-align:left;padding:6px 6px;border-top:1px solid var(--line);vertical-align:top}
+.tbl th{white-space:nowrap}
+.src{font-size:13px;color:var(--muted)}
+.lang{display:flex;gap:6px;justify-content:flex-end;margin:0 0 8px;font-size:13px}
+.lang a{padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:inherit;text-decoration:none;opacity:.8}
+.lang a[aria-current]{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
+.gnav{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+.grp{margin-top:22px;scroll-margin-top:60px}
+.grp-h{font-size:17px;margin:0 0 2px;color:var(--accent);border-bottom:2px solid var(--accent-soft);padding-bottom:4px}
+.cta .tab{margin-left:4px}
+.pharma{color:#1f9d55;font-weight:900}
+.src a,.page a{color:var(--accent)}
+
+/* Ambiance Top Lords, légère : parchemin, bleu royal et or, sans image ni police externe */
+body{background:var(--bg) radial-gradient(ellipse at top,rgba(226,180,79,.18),transparent 60%) no-repeat}
+.hero{position:relative;overflow:hidden;margin:0 0 12px;padding:16px 16px 14px 76px;border-radius:16px;color:#fff;background:linear-gradient(135deg,#2a62ad,#163a6b 70%);border:2px solid var(--gold-2);box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:repeating-linear-gradient(90deg,var(--gold-2) 0 14px,transparent 14px 22px);opacity:.7}
+.hero svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:50px;height:58px}
+.hero h1{color:#fff;font-family:var(--serif);font-size:23px;letter-spacing:.3px;margin:0;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.hero .tag{margin:2px 0 0;font-size:13px;color:#f3dfae}
+h1,.page h2,.grp-h,.card h3{font-family:var(--serif)}
+.page h2,.grp-h{color:var(--accent)}
+.grp-h{border-bottom:2px solid var(--gold-2)}
+.tab{border-color:var(--line)}
+.tab[aria-selected=true]{background:linear-gradient(180deg,#2a62ad,#163a6b);border-color:var(--gold-2);color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.tabs{background:var(--bg)}
+details,.card,.list,.pod{box-shadow:0 1px 0 rgba(90,60,20,.08)}
+summary::marker{color:var(--gold)}
+.card.key{border-color:var(--gold-2);background:linear-gradient(180deg,var(--accent-soft),var(--panel))}
+.card.warn{border-left-color:var(--gold-2)}
+.pod b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="lang" aria-label="Language"><a href="../">Français</a><a href="../en/" aria-current="true">English</a><a href="../de/">Deutsch</a></nav>
+  <header class="hero"><svg viewBox="0 0 50 58" aria-hidden="true"><path d="M25 2 46 9v18c0 14-9 24-21 29C13 51 4 41 4 27V9z" fill="#f3dfae" stroke="#b8860b" stroke-width="2.5"/><path d="M25 8 40 13v14c0 10-6 17-15 21-9-4-15-11-15-21V13z" fill="#163a6b"/><path d="M16 22h18l-3 9H19z M17 19l3-5 5 4 5-4 3 5z" fill="#e2b44f"/><path d="M18 36l7-4 7 4-7 4z" fill="#e2b44f"/></svg><h1>[LoVS] LoVe Syndïcate</h1><p class="tag">Kingdom #116 · tips, rankings and rules</p></header>
+  <p class="sub" id="sub">—</p>
+  <div class="podium" id="podium"></div>
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="rank" id="rank">
+  <div class="tools">
+    <input type="search" id="q" placeholder="Find a member" aria-label="Find a member">
+    <select id="rang" aria-label="Filter by rank"><option value="">All ranks</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
+    <label class="stock" id="stockbox" hidden>Chests <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="list" id="list"></div>
+  <details>
+    <summary>🧮 How the scores are calculated</summary>
+    <p><b>Participation</b> (out of 100): sieges played this week 40% (out of 6), places in the weekly help, donation and kill rankings 20% each (1st place = full points). 1 point off for each chest received beyond 2 (10 at most).</p>
+    <p><b>Power</b>: the player's power compared with the strongest member of the alliance (= 100).</p>
+    <p><b>Combined</b>: 70% participation + 30% power.</p>
+    <p><b>Chests</b>: participation score + rank bonus (R5 +30, R4 +20, R3 +10, R1 −10), 3 chests at most per member, each extra chest costs 25 points. Enter the number of city chests to see who gets one.</p>
+  </details>
+  </div>
+
+  <section class="page" id="page-cargo" hidden>
+    <h2>🚢 Alliance Cargo Ship</h2>
+    <p class="lead">Every evening a captain launches the cargo ship and the other members board. Here is who is captain on which day and what everyone has to do, following the vote result (R5 mail of 14 November 2026).</p>
+
+    <div class="card key">
+      <h3>⏰ Boarding around 8 pm</h3>
+      <p>Be online around 8 pm (Paris time) to board. The more passengers, the more the captain and the alliance gain.</p>
+    </div>
+
+    <div class="card">
+      <h3>🗓️ Who is captain?</h3>
+      <table class="tbl">
+        <tr><th>Monday → Friday</th><td>The <b>strongest members</b> of the alliance (power), one per evening.</td></tr>
+        <tr><th>Saturday</th><td>The <b>contribution champion</b> of the alliance: first place in the 🤝 Participation ranking on this site.</td></tr>
+        <tr><th>Sunday</th><td>The <b>VS champion</b> (Alliance Duel) of the week.</td></tr>
+      </table>
+      <ul>
+        <li><b>Only once a week</b>: nobody can be captain twice in the same week. If your points qualify you again, the player ranked right after you takes the cargo ship.</li>
+        <li><b>Swaps are allowed</b>: you can ask the planned captain to take their place. If they agree, no problem.</li>
+      </ul>
+    </div>
+
+    <div class="card warn">
+      <h3>📋 This week's rotation</h3>
+      <p class="src" id="cargo-note"></p>
+      <table class="tbl" id="cargo-rot"></table>
+      <p class="src">✅ = cargo already done. The other days are a proposal calculated automatically from the ranking, as a starting point. The real schedule is decided and announced by the R4s and the R5.</p>
+    </div>
+
+    <div class="card">
+      <h3>📜 Captain history</h3>
+      <p>A captain cannot take the cargo ship again in the same week (Monday to Sunday). The last column shows the date from which they can be captain again.</p>
+      <div style="overflow-x:auto"><table class="tbl" id="cargo-hist"></table></div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 If you are captain</h3>
+      <ol>
+        <li><b>Refresh the 4 wagons</b> of the cargo ship until they are all gold, worth at least 50,000 coins each if possible.</li>
+        <li><b>Never launch a blue or purple cargo</b>: it must be fully gold.</li>
+        <li>Launch it at the planned time and say so in alliance chat.</li>
+        <li>You receive tickets as passengers board: 70 to 80 tickets per cargo on average.</li>
+        <li>If you can't be there, tell an R4 in advance or arrange a swap with another member.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>🎟️ If you are a passenger</h3>
+      <ul>
+        <li>Board as soon as the captain has launched the cargo ship, around 8 pm.</li>
+        <li>Putting more Trade Contracts in the queue gives you priority for a seat, without guaranteeing it.</li>
+        <li>If you don't board, your contracts are mailed back to you.</li>
+        <li>Every passenger earns tickets for the captain: boarding also helps the member who earned the spot.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🏅 How to become captain</h3>
+      <ul>
+        <li><b>Saturday</b>: climb the 🤝 Participation ranking (sieges, help, donations, kills).</li>
+        <li><b>Sunday</b>: get the best score of the week in the Alliance Duel. The 💡 Tips tab explains what to use each day.</li>
+        <li><b>On weekdays</b>: power makes the difference, see the ⚔️ Power ranking.</li>
+      </ul>
+    </div>
+
+    <p class="src">Source: mail "Cargo vote result and R1, 2, 3 information" from the R5, 14 November 2026; <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a> for the passenger queue. The VS champion ranking will be added once the duel is recorded.</p>
+  </section>
+
+  <section class="page" id="page-astuces" hidden>
+    <h2>💡 Top Lords tips</h2>
+    <p class="lead">The advice that comes up most often in the alliance and in the guides, sorted by theme: tap a theme to jump to it, then a title to open it. The alliance ranking is in the next tabs.</p>
+
+    <div class="card warn" id="today"></div>
+    <div class="gnav"><button type="button" class="tab" data-g="g-ressources">🌾 Resources</button><button type="button" class="tab" data-g="g-progression">📈 Progress</button><button type="button" class="tab" data-g="g-attaque">⚔️ Attack</button><button type="button" class="tab" data-g="g-guerre">🛡️ War</button><button type="button" class="tab" data-g="g-evenements">🎉 Events</button></div>
+
+    <div class="card key">
+      <h3>⭐ The 5 habits</h3>
+      <ol>
+        <li><b>Castle first</b>: check what the next level requires and build only that.</li>
+        <li><b>No idle queue</b>: construction, research and training run all the time. Start long builds before going to sleep.</li>
+        <li><b>Every item has its day</b>: keep tickets, shards and speed-ups for the right Alliance Duel day.</li>
+        <li><b>Join sieges, help and donate</b>: that is what makes the alliance win, and what decides how chests are shared.</li>
+        <li><b>Respect the kingdom pact</b>: we don't attack protected alliances (see the Rules tab).</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>💜 The LoVS spirit</h3>
+      <ul>
+        <li>We are not trying to be a team of champions, but an alliance that is pleasant to play in: <b>good atmosphere, moving forward together, everyone progressing at their own level</b>.</li>
+        <li>You don't need to know the game well to join us: we learn from each other, that is part of sharing.</li>
+        <li>We vote whenever possible, so everyone can take part the way they want.</li>
+        <li>Rewards are shared fairly according to each member's involvement, so that everyone progresses.</li>
+      </ul>
+    </div>
+
+
+    <div class="grp" id="g-ressources">
+    <h3 class="grp-h">🌾 Resources</h3>
+    <p class="lead">Gather, protect your stock, spend wisely.</p>
+    <details open>
+      <summary>📣 Alliance advice</summary>
+      <ul>
+        <li><b>Wagons</b>: send 4 wagons and plunder 4 every day.
+          <ul>
+            <li>Sending: 5 refreshes guarantee a UR wagon. Preferably send them one at a time, protected by your best team, and keep your escort team up to date.</li>
+            <li>Escort: up to 5 heroes per wagon. The team is locked at departure, so choose it before sending. Escort fights don't cost soldiers.</li>
+          </ul></li>
+        <li><b>Donations</b>: donating to the alliance also earns you points to spend in the alliance shop. Donate every day.
+          <ul>
+            <li>Exception: to launch some alliance events, the number of donations is limited. Those also give shop points: when such an event is announced, donate quickly. Everyday donations are not limited this way.</li>
+          </ul></li>
+        <li><b>Arena</b>: 3 likes a day = 90 free gems. The 4th like, on the podium, gives 30 more gems.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🌾 Resources, gathering and safety</summary>
+      <ul>
+        <li>Send your troops gathering as soon as they are free. Resources only reach your stock <b>when the troop returns</b>.</li>
+        <li><b>Look at the tile before sending</b>: if a player from a protected alliance is already there, pick another one.</li>
+        <li>Keep your stamina for Monday: every point then also counts for the duel.</li>
+        <li><b>Stay close to the alliance camp</b> ("Alliance Relocation" item, Special tab): grouped together, we defend and help each other faster.</li>
+        <li>The pact does not protect you from everyone: put up a <b>shield</b> before a long absence, especially on Saturday, and recall your gatherers.</li>
+        <li>What is in your bag cannot be plundered: see "Bag: what to open, what to keep closed".</li>
+        <li><b>Plunder</b>: part of your wood, food and coins is protected and cannot be taken. An attacker cannot carry more than their march load, and gains less and less when plundering the same target several times in a day.</li>
+        <li>The best protection is to <b>spend</b>: use your resources on upgrades rather than keeping a big stock in the castle.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🎒 Bag: what to open, what to keep closed</summary>
+      <p>An attacker only plunders the wood, food and coins that are in your castle. What stays in the bag is safe.</p>
+      <table class="tbl">
+        <tr><th>✅ Open</th><td><b>Gem (ruby) and stamina items</b>: gems and stamina cannot be plundered, you can open them safely.</td></tr>
+        <tr><th>✅ Open</th><td><b>Reward chests</b> (events, missions, alliance, Race to Ace): open them regularly. They give items (resource chests, speed-ups, shards) that stay safe in the bag.</td></tr>
+        <tr><th>🔒 Keep closed</th><td><b>Resource chests</b> (wood, food, coins) and <b>universal chests</b> (resource of your choice): once opened, their content goes to the castle and can be plundered.</td></tr>
+      </table>
+      <ul>
+        <li>Don't mix them up: a <b>reward</b> chest gets opened, a <b>resource</b> chest stays closed.</li>
+        <li>Open your resource chests at the last moment, and only the amount you are missing to start the build or the research.</li>
+        <li>Opening a stamina item doesn't force you to spend it right away: spending pays most on duel Monday.</li>
+        <li>Keep universal chests for the resource that blocks you when the time comes.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>💎 Gems, VIP and shops</summary>
+      <ul>
+        <li>Keep gems for permanent gains rather than finishing a random build. <b>Raising your VIP level</b> (construction and research speed forever) beats tickets with a random result.</li>
+        <li><b>VIP shop</b> (gems, refreshed on Monday): the 12-gem resource chests and stamina are good deals when you are stuck. Check the discounts.</li>
+        <li><b>Alliance shop</b> (donation points): EXP chests, Skill Medals, shields and speed-ups.</li>
+        <li><b>Honor shop</b> (refreshed on the 1st of the month): universal UR shards.</li>
+        <li><b>Recruitment</b>: watch the milestone counter on the recruitment screen, and do your recruiting on a Thursday.</li>
+        <li>Before spending, three questions: does it fix a lasting block? is there a free option? does an event reward this spending?</li>
+        <li>Unused Kingdom Fair coins (Shimmer Coins) carry over to the next fair.</li>
+        <li>The first purchase of each gem pack size gives double.</li>
+        <li><b>"Free gem generators" do not exist</b>: a site asking for your login wants to steal your account. Link your account and write down your player ID.</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-progression">
+    <h3 class="grp-h">📈 Progress</h3>
+    <p class="lead">Castle, heroes, equipment: move fast without wasting.</p>
+    <details open>
+      <summary>📣 Alliance advice</summary>
+      <ul>
+        <li><b>Equipment</b>: on every hero you use, max the pieces of their role first, then the rest.
+          <ul>
+            <li><b>Attackers (back row)</b>: sword and gloves.</li>
+            <li><b>The two tanks (front row)</b>: armor (chestplate) and greaves.</li>
+            <li>Aim for <b>gold equipment on your first team</b>. When one of its pieces is replaced, hand the old one down to the next team: your other teams gear up as you go.</li>
+            <li>Upgrade in steps of 10 levels. Bonuses only exist on gold and purple pieces.</li>
+          </ul></li>
+        <li><b>Watchtower</b>: your heroes gain levels with every win. Start with your weak heroes to give them experience, and add your strong heroes little by little when you get stuck.
+          <ul>
+            <li><b>Still stuck?</b> Lend your first team's equipment: unequip it, equip team 2 or 3 that you want to level, and climb the tower with it. Equipment bonuses count in the tower: your weak heroes clear the floors and gain levels. Remember to re-equip your first team afterwards.</li>
+          </ul></li>
+        <li><b>Worker huts</b>: they don't only raise speed, they also add combat power.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🏰 Castle, queues and speed-ups</summary>
+      <ul>
+        <li>Treat every upgrade as a step towards the next castle level. Avoid buildings that are not required.</li>
+        <li>Short builds while you play, long builds before work or at night.</li>
+        <li><b>Ask for alliance help before using a speed-up</b>: help removes time for free.</li>
+        <li>A speed bonus does not remove a percentage of the time: real time = base time ÷ (1 + bonus). With +100%, a 10-hour build takes 5 hours.</li>
+        <li>A queue stopped for lack of resources is a resource problem, not a speed problem: send gatherers.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🦸 Heroes and teams</summary>
+      <ul>
+        <li><b>One team of 5 first</b>: focus EXP, shards and equipment on it before building a second one.</li>
+        <li><b>Faction bonus</b>: 5 heroes of the same faction (Bear, Lion or Eagle) give the maximum bonus (+20%), 4 + 1 give +15%. The Lord counts for every faction.</li>
+        <li>Two tanks in front, attackers behind. Read the skills rather than choosing by power number alone.</li>
+        <li>Some SSR heroes have a UR version to unlock later: they are worth the long-term investment.</li>
+        <li>EXP gets more and more expensive (one level after 70 costs over 5 million): don't spread it over heroes you don't play.</li>
+        <li>Second team: build it around another faction, with the heroes that don't fit in the first.</li>
+        <li>Keep <b>universal UR shards</b> until your final team is settled, and use them on a Thursday.</li>
+        <li>Save separate lineups (boss, attack, garrison) as soon as the feature unlocks (castle 16).</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🔨 Forge: which gold piece to craft first</summary>
+      <p>A gold (UR) piece is expensive: you often craft only one at a time. Here is the order that pays most.</p>
+      <ol>
+        <li><b>The King's Sword</b> for each attacker in your team (the back-row heroes).</li>
+        <li><b>The King's Bracers</b> for those same attackers, starting with the one who deals the most damage.</li>
+        <li><b>The King's Armor</b> for your tanks.</li>
+        <li><b>The King's Greaves</b> last.</li>
+      </ol>
+      <p><b>What each gold piece gives at level 0</b> (values shown in the forge):</p>
+      <table class="tbl">
+        <tr><th>⚔️ Sword</th><td>+1,134 ATK, +151 DEF, 5% crit, +1.5% ATK</td></tr>
+        <tr><th>🧤 Bracers</th><td>+756 ATK, +15,880 HP, +1.5% ATK, 0.5% resistance</td></tr>
+        <tr><th>🛡️ Armor</th><td>+39,702 HP, +113 DEF, +5% HP, 0.5% resistance</td></tr>
+        <tr><th>🥾 Greaves</th><td>+23,821 HP, +189 DEF, +5% DEF, 0.5% resistance</td></tr>
+      </table>
+      <p><b>Why attack first</b> (example with round numbers):</p>
+      <ul>
+        <li>In a typical fight, the three back-row heroes deal about <b>90% of the damage</b>. The two tanks deal 10%.</li>
+        <li>On an attacker with 16,000 ATK, the gold sword instead of a purple one adds about 1,000 ATK (+6%), plus the crit.</li>
+        <li>The gold bracers add about 800 ATK (+5%) and 12,000 HP.</li>
+        <li>The gold armor adds about 55,000 HP to a tank that has 600,000 (+9%). But with healing, a team absorbs far more than its displayed HP: this gain weighs less in the fight than the attack gain.</li>
+      </ul>
+      <ul>
+        <li><b>Check on your own fights</b>: battle report → Combat Stats → Damage dealt. Equip first the hero with the longest bar.</li>
+        <li>A new gold piece starts again at <b>level 0</b>: keep enough to raise it to level 10 right away, to unlock its first bonus.</li>
+        <li>Bonuses on purple pieces only work against monsters. Those on gold pieces work in every fight.</li>
+        <li><b>Recycle what you no longer use</b>: dismantling a piece of equipment gives <b>iron ore</b>, which replaces part of the <b>pig iron</b> needed to craft a gold piece. Dismantle useless green and blue pieces, and even purple ones if it brings you closer to the next gold piece for your first team.</li>
+        <li>Don't upgrade low-level equipment or the gear of heroes you don't play: keep your materials for the first team.</li>
+      </ul>
+      <p class="src">Analysis made on 11 Nov. 2026 from the forge figures and one battle report. The percentages in the example come from a single fight: compare with your own reports.</p>
+    </details>
+    <details>
+      <summary>✅ Daily routine (10 minutes)</summary>
+      <ul>
+        <li>Collect missions, mail, the free shop gift (Daily Special) and alliance chests.</li>
+        <li>Open the reward chests in your bag (not the resource chests).</li>
+        <li>Restart construction, research and training.</li>
+        <li>Tap "Help" and donate to alliance technology.</li>
+        <li>Start bounties (except UR ones, kept for Tuesday and Friday) and send gatherers.</li>
+        <li>Spend stamina on rallies and monsters (preferably on Monday).</li>
+        <li>Take the chests of the current Race to Ace slot.</li>
+        <li>Do the 5 free tourney fights and the pass tasks (hero, research, training, griffin).</li>
+        <li>City lords and knights: renew the decree.</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-attaque">
+    <h3 class="grp-h">⚔️ Attack</h3>
+    <p class="lead">Read the defence, time the rallies, heal without losing your troops.</p>
+    <details open>
+      <summary>📣 How attacks are organised</summary>
+      <ul>
+        <li>The R4s and the R5 do their best, but are not always available when attacks happen. We schedule them when most people can be there, and that is not always easy.</li>
+        <li><b>Turn on the game's notifications on your phone</b> to be alerted every day, and come if you can. If you can't, no worries: we rethink the strategy.</li>
+        <li>You know the game well and have time? We are looking for players to help prepare the strategy and discuss it: speak up in chat.</li>
+      </ul>
+    </details>
+    <details open>
+      <summary>⚔️ Rallies and plunder</summary>
+      <ul>
+        <li><b>Against a defended castle</b>: get players and marches ready before launching. A full rally leaves immediately; otherwise it waits for its timer to end. Don't scout just before: the target may be warned.</li>
+        <li>Chain the waves: a strong first rally wears down the garrison, the next ones leave right away, before the enemy has time to reinforce. Nothing is guaranteed: read the battle reports and adapt.</li>
+        <li>Rallies against Imperial Executors give a lot of food for little stamina: join them.</li>
+        <li><b>Wagon plunder</b>: go for SSR or UR wagons, preferably those containing UR hero shards. You get as many tries as it takes to reach 4 plunders.</li>
+        <li>Attacking or scouting drops your shield: only attack when it is planned with the R4s and the R5, and never an alliance protected by the pact (Rules tab).</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🎯 Attacking a city: read the defence first</summary>
+      <ul>
+        <li><b>It is an alliance project</b>: nobody attacks a city alone. The target and the time are decided by the alliance and announced in chat, long in advance when it is planned, or on the spot when we have to react to an attack.</li>
+        <li><b>Be reactive</b>: an attack can be launched at the last minute. We can also lose a city, which then goes under a shield: we take others to keep our sources of resources and progress.</li>
+        <li><b>Empty city?</b> If nobody defends it, attack all out, solo, with everything you have.</li>
+        <li><b>Otherwise, send a scout</b> once the attack has started: it shows you how many troops are defending, and the defence can grow fast.</li>
+        <li><b>Know your first team's power</b> and compare it with the defence. A team that is too weak won't get through: you lose troops and time.</li>
+        <li>Against a real defence, <b>join rallies</b> rather than attacking alone. Look at the open groups: time left, whether they are nearly full, where they leave from. The same players often launch them.</li>
+        <li>Put 1 or 2 teams in rallies depending on how many you have. Once a big group has broken the defence, the rest can attack solo.</li>
+        <li>Adapt quickly based on the battle reports: it comes with practice, battle after battle.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>⏱️ Arriving all together</summary>
+      <ul>
+        <li>When you march your troops, the game shows their travel time. Remember it, and watch march speeds to estimate arrivals.</li>
+        <li><b>With a countdown</b> (start of a war, rally): launch your march when the countdown reaches your travel time. You arrive right at zero, together with everyone else, and the hits land together.</li>
+        <li>If you are not ready in time, better to <b>miss a wave</b> than arrive alone and get beaten: get ready for the next one.</li>
+      </ul>
+    </details>
+    <details>
+      <summary><span class="pharma" aria-hidden="true">✚</span> Healing: in small waves</summary>
+      <ul>
+        <li><b>Heal often and in small amounts.</b> If your infirmary is full, new wounded cannot get in and those soldiers are lost.</li>
+        <li>Heal <b>300 to 500 soldiers</b> at a time and ask for alliance help: with help taps, a small heal finishes almost at once, without speed-ups. Your soldiers are ready right away, and you start the next healing wave.</li>
+        <li>Adjust the size to your healing bonuses (buildings, research): choose the amount that help alone can finish.</li>
+        <li>Healing everything at once costs a lot of resources and time, and blocks the infirmary meanwhile.</li>
+        <li><b>Keep as many troops as possible</b>: alternate attacks and healing, take the time you need. Better to slow down than lose your whole army in a frantic attack.</li>
+      </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-guerre">
+    <h3 class="grp-h">🛡️ War</h3>
+    <p class="lead">Cities, sieges and alliance defence.</p>
+    <details open>
+      <summary>🏙️ Cities and sieges</summary>
+      <ul>
+        <li>The R4s and R5 declare war on a city, one at a time. The time is announced in chat: be online and join the rallies with your best team.</li>
+        <li>A captured city is protected for 24 hours, then it has to be defended.</li>
+        <li><b>How a city is won</b>: during the declared war, all members' points add up. 100 damage to the defending troops = 1 point; 1 point of durability removed from the city = 5 points. When durability reaches zero, the city goes to the alliance with the most points, <b>not to the one that lands the last hit</b>. Hitting the walls therefore pays a lot.</li>
+        <li>The city belongs to the alliance. The <b>alliance leader appoints the lord</b> (and the knights): it is not necessarily whoever attacked most, and the title can change hands.</li>
+        <li>Declarations are limited: 3 per day (2 in season), one target at a time, and the alliance needs at least 20 members. Once we own a city, we can only target neighbouring cities.</li>
+        <li>The city's lord and knights renew the <b>decree every day</b>: it ends at midnight server time (1 am in Paris).</li>
+        <li>Every siege you play counts in your participation score (40% of the score), and so in the sharing of city chests.</li>
+        <li>Capital Siege on Friday: the alliance needs a level 6 city and you need castle 12 to enter the zone.</li>
+        <li>Keep healing and training speed-ups for siege days.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🛡️ Friday evening: shield required</summary>
+        <ul>
+          <li>Saturday is "Kill" day: without a shield, your troops give points to the enemy. Put up your shield <b>on Friday evening, before 1 am</b> (Paris time).</li>
+          <li>Set aside enough alliance points during the week to buy one in the alliance shop.</li>
+          <li>You can also shelter your troops elsewhere: reinforcing a shielded player or an alliance city. Careful: if your castle is zeroed, your troops come home.</li>
+          <li>Recall your gatherers: on that day, gathering troops are easy targets.</li>
+          <li>Attacking or scouting drops your shield: only attack when it is planned with the R4s and the R5.</li>
+        </ul>
+    </details>
+    </div>
+
+    <div class="grp" id="g-evenements">
+    <h3 class="grp-h">🎉 Events</h3>
+    <p class="lead">Alliance Duel, Race to Ace and calendar.</p>
+    <details open>
+      <summary>📣 Alliance advice</summary>
+      <ul>
+        <li><b>Duel, Monday</b>: griffin, gathering and stamina spending. Read the day's requirements before spending.</li>
+        <li><b>Events</b>: the Events icon, on the right of the screen, opens Race to Ace (new tasks every 4 hours) and a free calendar to prepare what comes next.</li>
+        <li><b>Alliance Cargo Ship</b>: boarding around 8 pm, rotating captains. Everything is in the 🚢 Cargo tab.</li>
+        <li>An encyclopedia of upcoming events is being built on the alliance Discord.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🗓️ Alliance Duel: what to use on which day</summary>
+      <table class="tbl">
+        <tr><th>🦅 Monday</th><td>Stamina (150 pts per point), Intel Tasks (10,000), Beast Cores (2,000), gathering.</td></tr>
+        <tr><th>🏰 Tuesday</th><td>Construction speed-ups (50 pts per minute), UR wagons (100,000), UR bounties (75,000), worker tickets.</td></tr>
+        <tr><th>🔬 Wednesday</th><td>Research speed-ups, Honor Medals, Intel Tasks.</td></tr>
+        <tr><th>🦸 Thursday</th><td>Hero shards (UR 10,000, SSR 3,500, SR 1,000), recruitment tickets (1,500), Skill Medals.</td></tr>
+        <tr><th>🛡️ Friday</th><td>Training and promoting soldiers, training speed-ups, UR wagons and bounties, pig iron, enhancement stones, Intel Tasks. Shield in the evening.</td></tr>
+        <tr><th>⚔️ Saturday</th><td>"Kill" day against the matched alliance. <b>All</b> speed-ups count, healing included, as well as gathering and finished research. This day counts double.</td></tr>
+        <tr><th>😴 Sunday</th><td>Rest: don't spend anything important. Stock your Intel Tasks and send gatherers in the evening for Monday.</td></tr>
+      </table>
+      <ul>
+        <li>The points above are base values: the alliance's "duel" research raises them (a UR wagon becomes 150,000, an Intel Task 19,000).</li>
+        <li><b>Trade and bounty contracts</b> are for refreshing wagons and bounties until you get a UR: keep them for Tuesday and Friday.</li>
+        <li>EXP chests give very little in the duel: open them when you need them.</li>
+        <li><b>Don't leave the alliance during the week</b>: you lose the duel rewards. Wait for the reward mail.</li>
+        <li>Finish your buildings and research <b>during</b> the right day: it is the power gain that counts (10 pts per point of power).</li>
+        <li>Other items to keep: SSR and UR decorations (20,000 and 100,000 pts) for Tuesday, Honor Medals (150 pts) for Wednesday.</li>
+        <li><b>Victory points</b>: 1 on Monday, 2 from Tuesday to Friday, 4 on Saturday. Saturday can turn everything around.</li>
+        <li><b>Personal chest tiers</b>: 40K, 150K, 540K, 660K, 1M, 2.3M, 2.6M, 3.6M and 7.2M points. Aim for at least 2.3M on the important days.</li>
+        <li>To take part: castle 11, and the alliance in the kingdom's top 32 at Sunday's matching.</li>
+        <li>Example: 100 recruitment tickets and 50 UR shards kept for a Thursday are worth 650,000 base points, against almost nothing on another day.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>🧠 Duel: preparing your points in advance</summary>
+      <p>The idea behind the alliance's VS schedule: prepare on the quiet days, cash in on the day it counts.</p>
+      <ul>
+        <li><b>Intel Tasks (Monday, Wednesday, Friday)</b>: finish your tasks the day before <b>without claiming the rewards</b>, then claim everything at once on the day. You can set aside about thirty (up to 35 according to the alliance schedule) by starting the morning before. Tuesday, Thursday and Sunday are therefore stocking days.</li>
+        <li><b>Gathering</b>: points are counted when the gathering <b>ends</b>. Send your troops the evening before so they finish just after the next day starts (1 am in Paris).</li>
+        <li><b>Construction (Tuesday)</b>: a finished building only gives its points when you open its completion gift. During the week leave the gifts closed and open them on Tuesday. In the settings, turn on claim confirmation so you don't open them by mistake.</li>
+        <li><b>Research</b>: same logic, make it finish on Wednesday, and keep one research completion for Saturday.</li>
+        <li><b>UR wagons and bounties (Tuesday and Friday)</b>: on the days before, do your missions so that only UR ones are left waiting. Always launch your UR ones <b>before</b> refreshing the list, otherwise you lose them. <b>Starred</b> bounty tasks can be kept: save them for duel day.</li>
+        <li><b>Soldiers (Friday)</b>: during the week, train troops one level below your maximum. On Friday, only do <b>promotions</b> to the next level: points are those of the final level, for far less time and fewer speed-ups.</li>
+        <li>Friday also counts: enhancement stones and pig iron.</li>
+      </ul>
+      <p class="src">Source: the [LoVS] alliance "VS Event" schedule. These methods are the same as in neighbouring games of the genre (Last War, Last Asylum), where they are well documented; check the numbers in game.</p>
+    </details>
+    <details>
+      <summary>⏱️ Race to Ace</summary>
+      <ul>
+        <li>The theme changes <b>every 4 hours</b>: 1 am, 5 am, 9 am, 1 pm, 5 pm and 9 pm, Paris time (winter).</li>
+        <li>Wait for the slot that matches what you have in stock. When it falls on the same day as the duel theme, one action is rewarded twice: those slots are highlighted in the table.</li>
+        <li>Aim for the last chest of the slot, then stop: the surplus is better used elsewhere.</li>
+        <li>From VIP 8, you can swap one slot for another once a day.</li>
+      </ul>
+      <div style="overflow-x:auto"><table class="tbl" id="ra"></table></div>
+      <p class="src">Schedule read in game, Paris time (winter). Griffin = Monday's theme, Castle = Tuesday, Research = Wednesday, Heroes = Thursday, Soldiers = Friday.</p>
+    </details>
+    </div>
+
+    <div class="card key cta"><h3>🏆 And the ranking?</h3><p>Participation, power and chest sharing in the alliance: <button type="button" class="tab" id="go-rank">see the ranking →</button></p></div>
+
+    <p class="src">Sources: [LoVS] alliance announcements from 31 October to 9 November 2026, readings taken in game; <a href="https://www.toplordsintel.com/guides/alliance-duel" rel="noopener">Top Lords Intel</a>, <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a>, <a href="https://toplordswiki.com/guides/beginner-tips/" rel="noopener">toplordswiki</a>, <a href="https://tap-guides.com/2026/07/31/top-lords-beginner-guide/" rel="noopener">Tap Guides</a>, <a href="https://top-lords.wiki/alliance/city" rel="noopener">top-lords.wiki</a>, <a href="https://www.toplordsintel.com/guides/cities" rel="noopener">Top Lords Intel (cities)</a>, <a href="https://www.toplordsintel.com/guides/plunder" rel="noopener">Top Lords Intel (plunder and wagons)</a>, <a href="https://www.ldshop.gg/ru/blog/top-lords/top-lords-gear-crafting-and-upgrading-guide.html" rel="noopener">LDShop (forge)</a>; ThoFy's tip notebook. Numbers may change with game updates. Last revised: 13 November 2026 (tips grouped by theme).</p>
+  </section>
+
+  <section class="page" id="page-regles" hidden>
+    <h2>📜 Rules of kingdom #116</h2>
+    <p class="lead">The non-aggression pact between the big alliances, as announced on the kingdom Discord, and what it means for us.</p>
+
+    <div class="card key">
+      <h3>🤝 NAP 15: non-aggression pact in force</h3>
+      <p>Set up by the kingdom's top three alliances, announced in the alliance on 4 November 2026 and on the "Kingdom #116" Discord on 5 November. The 15 strongest alliances do not attack each other, so everyone can gather, build and train in peace. The rule applies to the whole server.</p>
+      <ol>
+        <li><b>We attack no player of a top 15 alliance.</b> No castle attack, no scouting, no attack on a gathering tile.</li>
+        <li><b>If attacked, we do not strike back.</b> We first tell the R4s and the R5, who settle it between leaders.</li>
+        <li><b>No threats or harassment</b> towards members of pact alliances, anywhere on the server.</li>
+      </ol>
+      <p><b>Sanctions</b>: in case of repeat offences, victims may sanction their attackers, and this works both ways.</p>
+    </div>
+
+    <div class="card warn">
+      <h3>❓ Top 10 or top 15?</h3>
+      <p>The alliance announcements (4 and 8 November) and the kingdom Discord all say <b>top 15</b>. On 10 November the question of a top 10 was raised between leaders, with no answer so far. <b>Until something else is announced, the top 15 is protected.</b> [LoVS] was in the kingdom's top 10 at our latest readings.</p>
+    </div>
+
+    <div class="card">
+      <h3>🔎 Before any action against a player</h3>
+      <ol>
+        <li>Tap their profile.</li>
+        <li>Look at their alliance tag.</li>
+        <li>Check that alliance's place: your profile → Rankings → Alliance Power (or Alliance → Settings → Alliance list).</li>
+      </ol>
+      <p>In the top 15: hands off. If in doubt, ask in alliance chat before sending your troops.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚨 If you are attacked, or attacked by mistake</h3>
+      <ul>
+        <li><b>Do not counter-attack.</b></li>
+        <li>Take a screenshot of the report.</li>
+        <li>Send it right away to an R4 or the R5 by private message.</li>
+        <li>The leaders settle the problem through diplomacy.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ What the pact does not cover</h3>
+      <ul>
+        <li>Players without an alliance or outside the top 15 can still attack you: keep a shield up if your castle is not defended.</li>
+        <li>On Alliance Duel Saturday (combat day), only attack the targets given by the R4s and the R5: ask before aiming at a pact alliance.</li>
+        <li>Look at a gathering tile before sending troops, so you don't hit a protected player by accident.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>👑 Kingdom Laws (in game)</h3>
+      <p>Since version 1.0.41, the King can issue three laws: non-aggression (castles), trade protection (wagons) and bounty protection.</p>
+      <ul>
+        <li>A law <b>does not technically prevent</b> attacking: each violation triggers a warning and stays on public record.</li>
+        <li>The King can then punish: a "brand" with a negative effect, or "Wanted" status (5 minutes without shield or teleport).</li>
+        <li>Read the laws in force before attacking outside a war.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🎖️ Ranks in the alliance</h3>
+      <table class="tbl">
+        <tr><th>R3</th><td>The veterans, the pillars: they set the example, give advice, take part, communicate and <b>read</b> announcements and mails. They logically receive more rewards.</td></tr>
+        <tr><th>R2</th><td>Communicates without taking part much, or takes part without communicating or answering. Or waiting to be re-evaluated.</td></tr>
+        <tr><th>R1</th><td>New to the family, time to prove themselves. Or a player who doesn't communicate, doesn't answer or contributes very little.</td></tr>
+      </table>
+      <ul>
+        <li>R1 members may be replaced little by little. Newcomers are protected for 3 days.</li>
+        <li><b>Away for more than 24 hours: tell an R4</b>, who will inform the team. Without news, more than a day away raises the risk of dropping to R1, or even being removed.</li>
+        <li>Has your participation or communication improved? Ask the R4s or the R5 for your promotion: something may have been overlooked.</li>
+        <li>A suggestion about how this works? Contact the R4s or the R5.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>💜 In the [LoVS] alliance</h3>
+      <ul>
+        <li>Targets (cities, sieges, rallies) are decided by the R4s and the R5 and announced in chat.</li>
+        <li>City chests are shared according to participation: sieges, help, donations and kills (Chests tab).</li>
+        <li>Nobody leaves the alliance during duel week.</li>
+        <li>Use a recognisable player name (not the default one) to make communication easier.</li>
+        <li>The day's announcements are in Chat → Alliance → Alliance Announcement: read them every time you log in.</li>
+        <li>The evening cargo ship follows a captain rotation: see the 🚢 Cargo tab.</li>
+      </ul>
+    </div>
+
+    <p class="src">Sources: [LoVS] alliance announcements of 4 and 8 November 2026; R5 mail of 14 November 2026 (ranks); "Kingdom #116" Discord, nap15-laws channel (announcement of 5 November 2026 and illustrated guide); <a href="https://www.packsify.com/blogs/top-lords-kingdom-titles" rel="noopener">Packsify – royal titles and Kingdom Laws</a>. Last updated: 14 November 2026.</p>
+  </section>
+</div>
+<script>
+function trDate(s){const M=["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],F=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];const m=/^(\d+)(?:er)? (\S+) (\d+)(?: à (\d+) h ?(\d*))?/.exec(s);if(!m)return s;const i=F.indexOf(m[2]);if(i<0)return s;return m[1]+' '+M[i]+' '+m[3]+(m[4]?' at '+m[4]+':'+(m[5]||'00').padStart(2,'0')+' (Paris time)':'');}
+function main(DATA, CARGO) {
+DATA.date = trDate(DATA.date);
+const rp = p => Math.max(0, (100 - (p == null ? 100 : p)) / 99);
+const M = DATA.membres;
+const maxP = Math.max(...M.map(m => m.p || 0));
+const rows = M.map(m => {
+  const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
+  const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus));
+  const puis = Math.round(100 * (m.p || 0) / maxP);
+  return {...m, part, puis, mix: Math.round(0.7 * part + 0.3 * puis)};
+});
+const byName = (a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'});
+for (const k of ['part', 'puis', 'mix']) [...rows].sort((a, b) => b[k] - a[k] || byName(a, b)).forEach((r, i) => r['pl_' + k] = i + 1);
+const bonus = {R5: 30, R4: 20, R3: 10, R2: 0, R1: -10};
+const slots = rows.flatMap(r => [0, 1, 2].map(k => ({r, k, prio: r.part + (bonus[r.r] || 0) - 25 * k})))
+  .sort((a, b) => b.prio - a.prio || byName(a.r, b.r));
+slots.forEach((s, i) => (s.r.seuils ||= [])[s.k] = i + 1);
+const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('en-GB'));
+const T = {
+  astuces: {icon: '💡', label: 'Tips', page: 'page-astuces'},
+  cargo: {icon: '🚢', label: 'Cargo', page: 'page-cargo'},
+  part: {icon: '🤝', label: 'Participation', note: 'Sieges of the week, help, donations and kills.', key: 'part',
+    det: r => `Sieges ${v(r.s)} · Help #${v(r.a)} · Donations #${v(r.d)} · Kills #${v(r.e)}`, score: r => [r.part, '/ 100']},
+  puis: {icon: '⚔️', label: 'Power', note: 'Power read from the member list.', key: 'puis',
+    det: r => `${v(r.p)}M power`, score: r => [r.puis, '/ 100']},
+  mix: {icon: '🏆', label: 'Combined', note: '70% participation + 30% power.', key: 'mix',
+    det: r => `Participation ${r.part} · Power ${r.puis}`, score: r => [r.mix, '/ 100']},
+  coffres: {icon: '🎁', label: 'Chests', note: '', key: 'coffres'},
+  regles: {icon: '📜', label: 'Rules', page: 'page-regles'}
+};
+let tab = T[location.hash.slice(1)] ? location.hash.slice(1) : 'astuces';
+const el = id => document.getElementById(id);
+el('sub').textContent = `Data from ${DATA.date} · ${rows.length} members`;
+const pod = el('podium');
+for (const k of ['part', 'puis', 'mix']) {
+  const d = document.createElement('div'); d.className = 'pod';
+  const b = document.createElement('b'); b.textContent = T[k].icon + ' ' + T[k].label; d.appendChild(b);
+  const t = document.createElement('div');
+  t.textContent = [...rows].sort((a, b) => a['pl_' + k] - b['pl_' + k]).slice(0, 3).map(r => r.n).join(', ');
+  d.appendChild(t); pod.appendChild(d);
+}
+for (const k of Object.keys(T)) {
+  const b = document.createElement('button'); b.className = 'tab'; b.role = 'tab'; b.textContent = T[k].icon + ' ' + T[k].label; b.dataset.k = k;
+  b.onclick = () => { tab = k; history.replaceState(null, '', k === 'astuces' ? location.pathname : '#' + k); draw(); }; el('tabs').appendChild(b);
+}
+function line(place, cls, name, rang, det, big, small) {
+  const row = document.createElement('div'); row.className = 'row';
+  const pl = document.createElement('div'); pl.className = 'pl ' + cls; pl.textContent = place;
+  const nm = document.createElement('div'); nm.className = 'nm';
+  const st = document.createElement('strong'); st.textContent = name;
+  const dt = document.createElement('div'); dt.className = 'det';
+  const rk = document.createElement('span'); rk.className = 'rk'; rk.textContent = rang;
+  dt.appendChild(rk); dt.appendChild(document.createTextNode(det));
+  nm.append(st, dt);
+  const sc = document.createElement('div'); sc.className = 'sc';
+  const bb = document.createElement('b'); bb.textContent = big; if (big === '✓') bb.className = 'ok';
+  const sm = document.createElement('span'); sm.textContent = small;
+  sc.append(bb, sm);
+  row.append(pl, nm, sc); return row;
+}
+function draw() {
+  for (const b of el('tabs').children) b.setAttribute('aria-selected', b.dataset.k === tab);
+  for (const k in T) if (T[k].page) el(T[k].page).hidden = k !== tab;
+  el('rank').hidden = el('podium').hidden = !!T[tab].page;
+  if (T[tab].page) return;
+  const q = el('q').value.trim().toLowerCase(), rg = el('rang').value;
+  const keep = r => (!q || r.n.toLowerCase().includes(q)) && (!rg || r.r === rg);
+  const list = el('list'); list.replaceChildren();
+  el('stockbox').hidden = tab !== 'coffres';
+  let shown;
+  if (tab === 'coffres') {
+    const stock = Math.max(0, parseInt(el('stock').value, 10) || 0);
+    const nb = r => r.seuils.filter(x => x <= stock).length;
+    const gagnants = rows.filter(r => nb(r) > 0).length;
+    el('note').textContent = `With ${stock} chests: ${gagnants} members rewarded. "1st from 12" = 1st chest if the city has at least 12.`;
+    shown = [...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).filter(keep);
+    shown.forEach((r, i) => list.appendChild(line(i + 1, '', r.n, r.r,
+      `1st from ${r.seuils[0]} · 2nd from ${r.seuils[1]} · 3rd from ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'chest' + (nb(r) > 1 ? 's' : ''))));
+  } else {
+    const t = T[tab]; el('note').textContent = t.note;
+    shown = [...rows].sort((a, b) => a['pl_' + t.key] - b['pl_' + t.key]).filter(keep);
+    shown.forEach(r => { const p = r['pl_' + t.key], [big, small] = t.score(r);
+      list.appendChild(line(p, p <= 3 ? 'g' + p : '', r.n, r.r, t.det(r), big, small)); });
+  }
+  if (!shown.length) { const e = document.createElement('div'); e.className = 'empty'; e.textContent = 'No member matches.'; list.appendChild(e); }
+}
+const DUEL = [
+  ['😴 Sunday: rest', "No duel today. Don't spend anything important, start your long builds and prepare Monday."],
+  ['🦅 Monday: Intel, griffin and gathering', "Spend your stamina, do your Intel Tasks, use your Beast Cores and send gatherers. Keep everything else."],
+  ['🏰 Tuesday: castle', "Construction speed-ups, UR wagons and bounties, worker tickets. Finish your buildings today."],
+  ['🔬 Wednesday: research', "Research speed-ups, Honor Medals, Intel Tasks. Finish your research today."],
+  ['🦸 Thursday: heroes', "The day for recruitment tickets, hero shards and Skill Medals."],
+  ['🛡️ Friday: soldiers', "Train top-level soldiers, use training speed-ups, UR wagons and bounties."],
+  ['⚔️ Saturday: combat', "This day counts double. All speed-ups count. Follow the R4s' and R5's instructions, shield up if you are away."]];
+const RA = {G: ['Griffin', 1], C: ['Castle', 2], R: ['Research', 3], H: ['Heroes', 4], S: ['Soldiers', 5]};
+const RAW = ['RHSGCR', 'GCRSHG', 'CRHSGC', 'RHSGCR', 'HSGCRH', 'SGCRHS', 'CRHSGC']; // dimanche → samedi, créneaux serveur 0-4-8-12-16-20 h
+{
+  const now = new Date(), dow = now.getUTCDay(), slot = Math.floor(now.getUTCHours() / 4);
+  const box = el('today'), h = document.createElement('h3'), pp = document.createElement('p'), p2 = document.createElement('p');
+  h.textContent = 'Today · ' + DUEL[dow][0]; pp.textContent = DUEL[dow][1];
+  const cur = RA[RAW[dow][slot]];
+  p2.textContent = '⏱️ Race to Ace right now: ' + cur[0] + (cur[1] === dow ? ' (matches the duel: counts double)' : '') + '.';
+  box.append(h, pp, p2);
+  const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], order = [1, 2, 3, 4, 5, 6, 0], t = el('ra');
+  const tr = (cells, tag) => { const r = document.createElement('tr'); cells.forEach(c => { const x = document.createElement(c.th ? 'th' : tag); x.textContent = c.t; if (c.bg) x.style.background = c.bg; if (c.b) x.style.fontWeight = '700'; r.appendChild(x); }); t.appendChild(r); };
+  tr([{t: 'Paris', th: 1}, ...order.map(d => ({t: names[d], th: 1}))], 'th');
+  for (let sl = 0; sl < 6; sl++) tr([{t: ['1 am', '5 am', '9 am', '1 pm', '5 pm', '9 pm'][sl], th: 1}, ...order.map(d => { const c = RA[RAW[d][sl]]; return {t: c[0], bg: c[1] === d ? 'var(--accent-soft)' : '', b: d === dow && sl === slot}; })], 'td');
+}
+document.querySelectorAll('.gnav [data-g]').forEach(b => b.onclick = () => el(b.dataset.g).scrollIntoView({behavior: 'smooth'}));
+el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#part'); draw(); scrollTo(0, 0); };
+{
+  const H = (CARGO.historique || []).slice().sort((a, b) => a.date < b.date ? -1 : 1);
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const fr = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString('en-GB', {weekday: 'long', day: 'numeric', month: 'long'}); };
+  const lundi = s => { const [y, m, d] = s.split('-').map(Number), x = new Date(y, m - 1, d); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
+  const today = iso(new Date()), w0 = lundi(today);
+  const semaine = [0, 1, 2, 3, 4, 5, 6].map(k => { const x = new Date(w0); x.setDate(x.getDate() + k); return iso(x); });
+  const fait = Object.fromEntries(H.map(h => [h.date, h.capitaine]));
+  const taken = new Set(semaine.map(d => fait[d]).filter(Boolean));
+  const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
+  const names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], t = el('cargo-rot');
+  const cell = (tag, txt, bold) => { const x = document.createElement(tag); if (bold) { const b = document.createElement('b'); b.textContent = txt; x.appendChild(b); } else x.textContent = txt; return x; };
+  semaine.forEach((d, k) => {
+    const tr = document.createElement('tr'), td = document.createElement('td');
+    tr.appendChild(cell('th', names[k] + ' ' + Number(d.slice(8)) + (d === today ? ' · tonight' : '')));
+    if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · cargo done'); }
+    else if (d < today) td.textContent = '– no cargo recorded';
+    else if (k === 6) td.textContent = 'VS champion: coming once the duel is recorded.';
+    else {
+      const pool = (k === 5 ? byC : byP).filter(r => !taken.has(r.n)), r = pool[0];
+      if (r) { taken.add(r.n); td.append(cell('span', r.n, true), ' (' + r.r + ') · ' + (k === 5 ? 'participation ' + r.part + ' / 100' : v(r.p) + 'M power') + (pool[1] ? ' · next: ' + pool[1].n : '')); }
+    }
+    tr.appendChild(td); t.appendChild(tr);
+  });
+  el('cargo-note').textContent = 'Week from ' + fr(semaine[0]) + ' to ' + fr(semaine[6]) + '. Ranking based on the data from ' + DATA.date + '. Captains who already sailed this week are left out of the proposals.';
+  const hist = el('cargo-hist');
+  if (!H.length) hist.appendChild(cell('p', 'No cargo recorded yet.'));
+  else {
+    const head = document.createElement('tr'); ['Date', 'Captain', 'Possible again'].forEach(x => head.appendChild(cell('th', x))); hist.appendChild(head);
+    H.slice().reverse().forEach(h => {
+      const nx = lundi(h.date); nx.setDate(nx.getDate() + 7); const n = iso(nx), tr = document.createElement('tr');
+      tr.append(cell('td', fr(h.date)), cell('td', h.capitaine, true), cell('td', n <= today ? '✅ yes, since ' + fr(n) : '⏳ from ' + fr(n)));
+      hist.appendChild(tr);
+    });
+  }
+}
+el('q').oninput = draw; el('rang').onchange = draw; el('stock').oninput = draw;
+draw();
+}
+Promise.all([fetch('../data.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()), fetch('../cargo.json?v=' + Date.now(), {cache: 'no-store'}).then(r => r.json()).catch(() => ({historique: []}))]).then(([d, c]) => main(d, c))
+  .catch(() => { document.getElementById('sub').textContent = 'Could not load the ranking, try again in a moment.'; });
+</script>
+</body>
+</html>
