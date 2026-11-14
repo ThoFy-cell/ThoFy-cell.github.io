@@ -61,6 +61,7 @@ details p{font-size:14px;color:var(--muted)}
 .tbl th,.tbl td{text-align:left;padding:6px 6px;border-top:1px solid var(--line);vertical-align:top}
 .tbl th{white-space:nowrap}
 .src{font-size:13px;color:var(--muted)}
+details.calc{margin:0 0 12px}
 .tr{font-size:12px;color:var(--muted);margin-top:1px}
 .sc .dl{display:block;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
 .sc .dl.up{color:var(--ok)}
@@ -103,14 +104,7 @@ summary::marker{color:var(--gold)}
   <div class="podium" id="podium"></div>
   <div class="tabs" role="tablist" id="tabs"></div>
   <div class="rank" id="rank">
-  <div class="tools">
-    <input type="search" id="q" placeholder="Find a member" aria-label="Find a member">
-    <select id="rang" aria-label="Filter by rank"><option value="">All ranks</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
-    <label class="stock" id="stockbox" hidden>Chests <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
-  </div>
-  <p class="note" id="note"></p>
-  <div class="list" id="list"></div>
-  <details>
+  <details class="calc">
     <summary>🧮 How the scores are calculated</summary>
     <p><b>Participation</b> (out of 100): sieges played this week 40% (out of 6), places in the weekly help, donation and kill rankings 20% each (1st place = full points). 1 point off for each chest received beyond 2 (10 at most).</p>
     <p><b>Power</b>: the player's power compared with the strongest member of the alliance (= 100).</p>
@@ -118,6 +112,13 @@ summary::marker{color:var(--gold)}
     <p><b>Trend</b>: ▲ or ▼ under the score = difference from the previous reading. The 📈 line shows the last three readings, oldest to newest. Participation restarts from zero every Monday, because sieges and rankings are counted per week.</p>
     <p><b>Chests</b>: participation score + rank bonus (R5 +30, R4 +20, R3 +10, R1 −10), 3 chests at most per member, each extra chest costs 25 points. Enter the number of city chests to see who gets one.</p>
   </details>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Find a member" aria-label="Find a member">
+    <select id="rang" aria-label="Filter by rank"><option value="">All ranks</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
+    <label class="stock" id="stockbox" hidden>Chests <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="list" id="list"></div>
   </div>
 
   <section class="page" id="page-cargo" hidden>

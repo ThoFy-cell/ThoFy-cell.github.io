@@ -61,6 +61,7 @@ details p{font-size:14px;color:var(--muted)}
 .tbl th,.tbl td{text-align:left;padding:6px 6px;border-top:1px solid var(--line);vertical-align:top}
 .tbl th{white-space:nowrap}
 .src{font-size:13px;color:var(--muted)}
+details.calc{margin:0 0 12px}
 .tr{font-size:12px;color:var(--muted);margin-top:1px}
 .sc .dl{display:block;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
 .sc .dl.up{color:var(--ok)}
@@ -103,14 +104,7 @@ summary::marker{color:var(--gold)}
   <div class="podium" id="podium"></div>
   <div class="tabs" role="tablist" id="tabs"></div>
   <div class="rank" id="rank">
-  <div class="tools">
-    <input type="search" id="q" placeholder="Mitglied suchen" aria-label="Mitglied suchen">
-    <select id="rang" aria-label="Nach Rang filtern"><option value="">Alle Ränge</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
-    <label class="stock" id="stockbox" hidden>Truhen <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
-  </div>
-  <p class="note" id="note"></p>
-  <div class="list" id="list"></div>
-  <details>
+  <details class="calc">
     <summary>🧮 So werden die Noten berechnet</summary>
     <p><b>Beteiligung</b> (von 100): gespielte Belagerungen der Woche 40 % (von 6), Plätze in den Wochenranglisten für Hilfe, Spenden und Kills je 20 % (1. Platz = alle Punkte). 1 Punkt Abzug pro erhaltener Truhe über 2 hinaus (höchstens 10).</p>
     <p><b>Stärke</b>: Stärke des Spielers im Verhältnis zum stärksten Mitglied der Allianz (= 100).</p>
@@ -118,6 +112,13 @@ summary::marker{color:var(--gold)}
     <p><b>Entwicklung</b>: ▲ oder ▼ unter der Note = Unterschied zur vorigen Ablesung. Die Zeile 📈 zeigt die letzten drei Ablesungen, von der ältesten zur neuesten. Die Beteiligung beginnt jeden Montag wieder bei null, weil Belagerungen und Ranglisten pro Woche gezählt werden.</p>
     <p><b>Truhen</b>: Beteiligungsnote + Rangbonus (R5 +30, R4 +20, R3 +10, R1 −10), höchstens 3 Truhen pro Mitglied, jede weitere Truhe kostet 25 Punkte. Gib die Zahl der Stadttruhen ein, um zu sehen, wer eine bekommt.</p>
   </details>
+  <div class="tools">
+    <input type="search" id="q" placeholder="Mitglied suchen" aria-label="Mitglied suchen">
+    <select id="rang" aria-label="Nach Rang filtern"><option value="">Alle Ränge</option><option>R5</option><option>R4</option><option>R3</option><option>R2</option><option>R1</option></select>
+    <label class="stock" id="stockbox" hidden>Truhen <input type="number" id="stock" min="0" max="300" value="70" inputmode="numeric"></label>
+  </div>
+  <p class="note" id="note"></p>
+  <div class="list" id="list"></div>
   </div>
 
   <section class="page" id="page-cargo" hidden>
