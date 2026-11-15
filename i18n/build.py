@@ -40,6 +40,7 @@ JS = [  # (fragment exact du script français, anglais, allemand)
  ("toLocaleDateString('fr-FR'", "toLocaleDateString('en-GB'", "toLocaleDateString('de-DE'"),
  ("label: 'Astuces'", "label: 'Tips'", "label: 'Tipps'"),
  ("label: 'Cargo'", "label: 'Cargo'", "label: 'Frachtschiff'"),
+ ("a.textContent = '🗺️ Carte'", "a.textContent = '🗺️ Map'", "a.textContent = '🗺️ Karte'"),
  ("label: 'Participation', note: 'Sièges de la semaine, aide, dons et éliminations.'", "label: 'Participation', note: 'Sieges of the week, help, donations and kills.'", "label: 'Beteiligung', note: 'Belagerungen der Woche, Hilfe, Spenden und Kills.'"),
  ("`Sièges ${v(r.s)} · Aide ${v(r.a)}e · Dons ${v(r.d)}e · Élim. ${v(r.e)}e`", "`Sieges ${v(r.s)} · Help #${v(r.a)} · Donations #${v(r.d)} · Kills #${v(r.e)}`", "`Belagerungen ${v(r.s)} · Hilfe ${v(r.a)}. · Spenden ${v(r.d)}. · Kills ${v(r.e)}.`"),
  ("label: 'Puissance', note: 'Puissance relevée dans la liste des membres.'", "label: 'Power', note: 'Power read from the member list.'", "label: 'Stärke', note: 'Stärke aus der Mitgliederliste.'"),

@@ -669,6 +669,7 @@ for (const k of Object.keys(T)) {
   const b = document.createElement('button'); b.className = 'tab'; b.role = 'tab'; b.textContent = T[k].icon + ' ' + T[k].label; b.dataset.k = k;
   b.onclick = () => { tab = k; history.replaceState(null, '', k === 'astuces' ? location.pathname : '#' + k); draw(); }; el('tabs').appendChild(b);
 }
+{ const a = document.createElement('a'); a.className = 'tab'; a.href = '/map/'; a.textContent = '🗺️ Map'; a.style.textDecoration = 'none'; el('tabs').appendChild(a); }
 function line(place, cls, name, rang, det, big, small, trend, delta) {
   const row = document.createElement('div'); row.className = 'row';
   const pl = document.createElement('div'); pl.className = 'pl ' + cls; pl.textContent = place;
