@@ -148,11 +148,18 @@ summary::marker{color:var(--gold)}
       </ul>
     </div>
 
+    <div class="card key" id="cargo-plan-card">
+      <h3>📅 Agreed schedule</h3>
+      <p class="src" id="cargo-plan-by"></p>
+      <div style="overflow-x:auto"><table class="tbl" id="cargo-plan"></table></div>
+      <p class="src">Monday to Friday, one captain per evening following the order. Saturday and Sunday: other players (whoever wants to). The rotation resumes on Monday where it stopped. If you can't make it, swap with another captain.</p>
+    </div>
+
     <div class="card warn">
       <h3>📋 This week's rotation</h3>
       <p class="src" id="cargo-note"></p>
       <table class="tbl" id="cargo-rot"></table>
-      <p class="src">✅ = cargo already done. The other days are a proposal calculated automatically from the ranking, as a starting point. The real schedule is decided and announced by the R4s and the R5.</p>
+      <p class="src">✅ = cargo already done. Beyond the agreed schedule, days are a proposal calculated automatically from the ranking, as a starting point. The real schedule is decided and announced by the R4s and the R5.</p>
     </div>
 
     <div class="card">
@@ -753,6 +760,17 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
   const today = iso(new Date()), w0 = lundi(today);
   const semaine = [0, 1, 2, 3, 4, 5, 6].map(k => { const x = new Date(w0); x.setDate(x.getDate() + k); return iso(x); });
   const fait = Object.fromEntries(H.map(h => [h.date, h.capitaine]));
+  const PL = CARGO.planning || null;
+  const planOf = d => {
+    if (!PL || d < PL.debut || d > PL.fin) return null;
+    let i = 0;
+    for (let x = PL.debut; x <= d; ) {
+      const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), wd = (dt.getDay() + 6) % 7;
+      if (wd < 5) { if (x === d) return PL.ordre[i % PL.ordre.length]; i++; } else if (x === d) return PL.week_end;
+      dt.setDate(dt.getDate() + 1); x = iso(dt);
+    }
+    return null;
+  };
   const taken = new Set(semaine.map(d => fait[d]).filter(Boolean));
   const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
   const names = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], t = el('cargo-rot');
@@ -762,6 +780,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
     tr.appendChild(cell('th', names[k] + ' ' + Number(d.slice(8)) + (d === today ? ' · tonight' : '')));
     if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · cargo done'); }
     else if (d < today) td.textContent = '– no cargo recorded';
+    else if (planOf(d)) { const p = planOf(d); if (p === PL.week_end) td.append(cell('span', 'Other players', true), ' · open to all volunteers'); else td.append(cell('span', '📅 ' + p, true), ' · scheduled'); }
     else if (k === 6) td.textContent = 'VS champion: coming once the duel is recorded.';
     else {
       const pool = (k === 5 ? byC : byP).filter(r => !taken.has(r.n)), r = pool[0];
@@ -769,6 +788,16 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
     }
     tr.appendChild(td); t.appendChild(tr);
   });
+  if (PL) {
+    const pt = el('cargo-plan'), hd = document.createElement('tr'); ['Date', 'Captain'].forEach(x => hd.appendChild(cell('th', x))); pt.appendChild(hd);
+    for (let x = PL.debut; x <= PL.fin; ) {
+      const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), p = planOf(x), tr = document.createElement('tr');
+      tr.append(cell('td', fr(x) + (x === today ? ' · tonight' : '')), cell('td', (fait[x] ? '✅ ' + fait[x] : p === PL.week_end ? 'Other players' : p), p !== PL.week_end));
+      if (x < today) tr.style.opacity = '.55';
+      pt.appendChild(tr); dt.setDate(dt.getDate() + 1); x = iso(dt);
+    }
+    el('cargo-plan-by').textContent = 'Schedule decided by ' + PL.decide_par + ', from ' + fr(PL.debut) + ' to ' + fr(PL.fin) + '. Rotation order: ' + PL.ordre.join(' → ') + '.';
+  }
   el('cargo-note').textContent = 'Week from ' + fr(semaine[0]) + ' to ' + fr(semaine[6]) + '. Ranking based on the data from ' + DATA.date + '. Captains who already sailed this week are left out of the proposals.';
   const hist = el('cargo-hist');
   if (!H.length) hist.appendChild(cell('p', 'No cargo recorded yet.'));

@@ -148,11 +148,18 @@ summary::marker{color:var(--gold)}
       </ul>
     </div>
 
+    <div class="card key" id="cargo-plan-card">
+      <h3>📅 Beschlossener Plan</h3>
+      <p class="src" id="cargo-plan-by"></p>
+      <div style="overflow-x:auto"><table class="tbl" id="cargo-plan"></table></div>
+      <p class="src">Montag bis Freitag ein Kapitän pro Abend in dieser Reihenfolge. Samstag und Sonntag: andere Spieler (wer möchte). Die Rotation geht am Montag dort weiter, wo sie aufgehört hat. Bei Verhinderung tausche mit einem anderen Kapitän.</p>
+    </div>
+
     <div class="card warn">
       <h3>📋 Rotation dieser Woche</h3>
       <p class="src" id="cargo-note"></p>
       <table class="tbl" id="cargo-rot"></table>
-      <p class="src">✅ = Frachtschiff bereits erledigt. Die anderen Tage sind ein automatisch aus der Rangliste berechneter Vorschlag als Grundlage. Den echten Plan legen die R4 und der R5 fest und kündigen ihn an.</p>
+      <p class="src">✅ = Frachtschiff schon erledigt. Nach dem beschlossenen Plan sind die Tage ein automatisch aus der Rangliste berechneter Vorschlag als Grundlage. Der echte Plan wird von den R4 und dem R5 festgelegt und angekündigt.</p>
     </div>
 
     <div class="card">
@@ -753,6 +760,17 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
   const today = iso(new Date()), w0 = lundi(today);
   const semaine = [0, 1, 2, 3, 4, 5, 6].map(k => { const x = new Date(w0); x.setDate(x.getDate() + k); return iso(x); });
   const fait = Object.fromEntries(H.map(h => [h.date, h.capitaine]));
+  const PL = CARGO.planning || null;
+  const planOf = d => {
+    if (!PL || d < PL.debut || d > PL.fin) return null;
+    let i = 0;
+    for (let x = PL.debut; x <= d; ) {
+      const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), wd = (dt.getDay() + 6) % 7;
+      if (wd < 5) { if (x === d) return PL.ordre[i % PL.ordre.length]; i++; } else if (x === d) return PL.week_end;
+      dt.setDate(dt.getDate() + 1); x = iso(dt);
+    }
+    return null;
+  };
   const taken = new Set(semaine.map(d => fait[d]).filter(Boolean));
   const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
   const names = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'], t = el('cargo-rot');
@@ -762,6 +780,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
     tr.appendChild(cell('th', names[k] + ' ' + Number(d.slice(8)) + (d === today ? ' · heute Abend' : '')));
     if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · erledigt'); }
     else if (d < today) td.textContent = '– kein Frachtschiff erfasst';
+    else if (planOf(d)) { const p = planOf(d); if (p === PL.week_end) td.append(cell('span', 'Andere Spieler', true), ' · offen für alle Freiwilligen'); else td.append(cell('span', '📅 ' + p, true), ' · laut Plan'); }
     else if (k === 6) td.textContent = 'VS-Champion: folgt, sobald das Duell erfasst wird.';
     else {
       const pool = (k === 5 ? byC : byP).filter(r => !taken.has(r.n)), r = pool[0];
@@ -769,6 +788,16 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
     }
     tr.appendChild(td); t.appendChild(tr);
   });
+  if (PL) {
+    const pt = el('cargo-plan'), hd = document.createElement('tr'); ['Datum', 'Kapitän'].forEach(x => hd.appendChild(cell('th', x))); pt.appendChild(hd);
+    for (let x = PL.debut; x <= PL.fin; ) {
+      const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), p = planOf(x), tr = document.createElement('tr');
+      tr.append(cell('td', fr(x) + (x === today ? ' · heute Abend' : '')), cell('td', (fait[x] ? '✅ ' + fait[x] : p === PL.week_end ? 'Andere Spieler' : p), p !== PL.week_end));
+      if (x < today) tr.style.opacity = '.55';
+      pt.appendChild(tr); dt.setDate(dt.getDate() + 1); x = iso(dt);
+    }
+    el('cargo-plan-by').textContent = 'Plan beschlossen von ' + PL.decide_par + ', vom ' + fr(PL.debut) + ' bis ' + fr(PL.fin) + '. Reihenfolge: ' + PL.ordre.join(' → ') + '.';
+  }
   el('cargo-note').textContent = 'Woche von ' + fr(semaine[0]) + ' bis ' + fr(semaine[6]) + '. Rangliste nach dem Stand vom ' + DATA.date + '. Kapitäne, die diese Woche schon dran waren, werden bei den Vorschlägen ausgelassen.';
   const hist = el('cargo-hist');
   if (!H.length) hist.appendChild(cell('p', 'Noch kein Frachtschiff erfasst.'));
