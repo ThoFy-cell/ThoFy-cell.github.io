@@ -763,6 +763,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
   const PL = CARGO.planning || null;
   const planOf = d => {
     if (!PL || d < PL.debut || d > PL.fin) return null;
+    if (PL.exceptions && PL.exceptions[d]) return PL.exceptions[d];
     let i = 0;
     for (let x = PL.debut; x <= d; ) {
       const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), wd = (dt.getDay() + 6) % 7;
