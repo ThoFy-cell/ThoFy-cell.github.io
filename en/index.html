@@ -111,7 +111,7 @@ summary::marker{color:var(--gold)}
   <div class="rank" id="rank">
   <details class="calc">
     <summary>🧮 How the scores are calculated</summary>
-    <p><b>Participation</b> (out of 100): sieges played this week 30% (out of 6), place in the ⚔️ VS alliance duel ranking (Monday to Saturday total) 25%, places in the weekly help, donation and kill rankings 15% each (1st place = full points). 1 point off for each chest received beyond 2 (10 at most).</p>
+    <p><b>Participation</b> (out of 100): sieges played during the week 30% (out of 6), rank in the ⚔️ VS ranking of the alliance duel (Monday to Saturday total) 25%, ranks in the weekly help, donation and kill rankings 15% each (1st place = full points). Penalty of 1 point per chest received beyond 2 (10 maximum).</p>
     <p><b>Power</b>: the player's power compared with the strongest member of the alliance (= 100).</p>
     <p><b>Combined</b>: 70% participation + 30% power.</p>
     <p><b>Trend</b>: ▲ or ▼ under the score = difference from the previous reading. The 📈 line shows the last three readings, oldest to newest. Participation restarts from zero every Monday, because sieges and rankings are counted per week.</p>
@@ -449,7 +449,7 @@ summary::marker{color:var(--gold)}
         <li>The city belongs to the alliance. The <b>alliance leader appoints the lord</b> (and the knights): it is not necessarily whoever attacked most, and the title can change hands.</li>
         <li>Declarations are limited: 3 per day (2 in season), one target at a time, and the alliance needs at least 20 members. Once we own a city, we can only target neighbouring cities.</li>
         <li>The city's lord and knights renew the <b>decree every day</b>: it ends at midnight server time (1 am in Paris).</li>
-        <li>Every siege you play counts in your participation score (30% of the score), and so in the sharing of city chests.</li>
+        <li>Every siege you play counts towards your participation score (30% of it), and so towards the sharing of the city chests.</li>
         <li>Capital Siege on Friday: the alliance needs a level 6 city and you need castle 12 to enter the zone.</li>
         <li>Keep healing and training speed-ups for siege days.</li>
       </ul>
@@ -532,6 +532,92 @@ summary::marker{color:var(--gold)}
     <div class="card key cta"><h3>🏆 And the ranking?</h3><p>Participation, power and chest sharing in the alliance: <button type="button" class="tab" id="go-rank">see the ranking →</button></p></div>
 
     <p class="src">Sources: [LoVS] alliance announcements from 31 October to 9 November 2026, readings taken in game; <a href="https://www.toplordsintel.com/guides/alliance-duel" rel="noopener">Top Lords Intel</a>, <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a>, <a href="https://toplordswiki.com/guides/beginner-tips/" rel="noopener">toplordswiki</a>, <a href="https://tap-guides.com/2026/07/31/top-lords-beginner-guide/" rel="noopener">Tap Guides</a>, <a href="https://top-lords.wiki/alliance/city" rel="noopener">top-lords.wiki</a>, <a href="https://www.toplordsintel.com/guides/cities" rel="noopener">Top Lords Intel (cities)</a>, <a href="https://www.toplordsintel.com/guides/plunder" rel="noopener">Top Lords Intel (plunder and wagons)</a>, <a href="https://www.ldshop.gg/ru/blog/top-lords/top-lords-gear-crafting-and-upgrading-guide.html" rel="noopener">LDShop (forge)</a>; ThoFy's tip notebook. Numbers may change with game updates. Last revised: 13 November 2026 (tips grouped by theme).</p>
+  </section>
+
+  <section class="page" id="page-mine" hidden>
+    <h2>⛏️ Gold Mine: a beginner's guide</h2>
+    <p class="lead">Two alliances fight on a separate map to hold 11 buildings. Every building you hold scores points every second, and the alliance with the most points at the end wins. You do not win by killing people: you win by holding, and by holding for a long time.</p>
+
+    <div class="card key">
+      <h3>🥇 Your first 5 moves</h3>
+      <ol>
+        <li><b>Sign up.</b> There are only 20 slots per alliance. When an R4 or the R5 announces the Gold Mine, say yes right away — and only if you will really be there from start to finish.</li>
+        <li><b>Write down your building.</b> Your leader gives you a building to take, with its coordinates. Note them somewhere: you will need them in two minutes.</li>
+        <li><b>Teleport next to it.</b> As soon as the battle starts you land on a special map. Move close to your building before doing anything else.</li>
+        <li><b>Attack it with your best squad.</b> Your first hero squad, the strongest one. Do not hold anything back "just in case".</li>
+        <li><b>Stay in it.</b> An empty building is lost to a single attack. Until someone tells you to move, you stay put and score points every second.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>🗺️ The map of the 11 buildings</h3>
+      <p>North is up, east is right. The relative positions are correct, the distances are not. In colour: the Gold Mine, objective no. 1, and the Intel Post, which almost nobody defends.</p>
+      <svg viewBox="0 0 360 362" width="100%" style="max-width:420px;display:block;margin:12px auto;font-family:inherit" role="img" aria-label="Carte des 11 batiments de la mine d'or">
+        <rect x="8" y="8" width="172" height="38" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="94" y="25" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Intel Post</text>
+        <text x="94" y="39" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 465, 565 · +10%</text>
+        <rect x="232" y="8" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="25" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical IV</text>
+        <text x="292" y="39" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 535, 565</text>
+        <rect x="120" y="58" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="180" y="75" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Weapon Forge</text>
+        <text x="180" y="89" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 500, 545</text>
+        <rect x="8" y="108" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="68" y="125" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Smeltery I</text>
+        <text x="68" y="139" text-anchor="middle" font-size="10.5" fill="var(--muted)">50 pts/s · 436, 524</text>
+        <rect x="232" y="108" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="125" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical II</text>
+        <text x="292" y="139" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 564, 518</text>
+        <rect x="100" y="158" width="160" height="46" rx="10" fill="var(--accent-soft)" stroke="var(--gold-2)" stroke-width="2.5"/>
+        <text x="180" y="179" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">Gold Mine</text>
+        <text x="180" y="195" text-anchor="middle" font-size="11" font-weight="600" fill="var(--fg)">80 pts/s · 500, 500</text>
+        <rect x="8" y="216" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="68" y="233" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical I</text>
+        <text x="68" y="247" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 436, 482</text>
+        <rect x="232" y="216" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="233" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Smeltery II</text>
+        <text x="292" y="247" text-anchor="middle" font-size="10.5" fill="var(--muted)">50 pts/s · 564, 476</text>
+        <rect x="120" y="266" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="180" y="283" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Judgment</text>
+        <text x="180" y="297" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 500, 455</text>
+        <rect x="8" y="316" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="68" y="333" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical III</text>
+        <text x="68" y="347" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 465, 435</text>
+        <rect x="232" y="316" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="333" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Scholar</text>
+        <text x="292" y="347" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 535, 435</text>
+      </svg>
+      <p>Your building is somewhere in there: find its name, then its coordinates to travel to it. The map is mirrored — every building in the west has its twin in the east.</p>
+    </div>
+
+    <div class="card">
+      <h3>😮 Three things that surprise you at first</h3>
+      <p><b>Your soldiers do not die.</b> On this map the wounded are healed automatically when the battle ends. Attacking costs you nothing. So attack, even when you are not sure of winning the fight, and do not waste your healing items during the match.</p>
+      <p><b>The game gives you teleporters.</b> You receive one for free from time to time during the battle. They are there to reposition you fast when the leader says "everyone on the mine". Keep one for the end.</p>
+      <p><b>When a building changes hands, points scatter around it.</b> Those are Breach Points. Send a scout to pick them up: they are free, and plenty of players forget them.</p>
+    </div>
+
+    <div class="card warn">
+      <h3>🚫 The five beginner mistakes</h3>
+      <ul>
+        <li><b>All rushing the Gold Mine.</b> It scores the most, but if all 20 players fight over it, the rest of the map belongs to the enemy. Three small buildings held for the whole match score more than a mine retaken every two minutes.</li>
+        <li><b>Taking a building and then leaving.</b> Points only come in while you are occupying it.</li>
+        <li><b>Signing up without being available.</b> A slot taken for nothing is a building nobody holds.</li>
+        <li><b>Forgetting the Intel Post.</b> Only 10 points per second, but +10% on everything the alliance holds.</li>
+        <li><b>Playing without listening.</b> An average player who follows instructions scores more than a big player who improvises.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>📅 The day before: three things to prepare</h3>
+      <ol>
+        <li><b>Your first hero squad, complete</b>, with sword and gloves upgraded on the attackers, armour and greaves on the tanks.</li>
+        <li><b>As many soldiers as possible</b>, of the highest tier you can train. Start the training the day before, not ten minutes beforehand.</li>
+        <li><b>Your heroes' stamina at maximum</b>, and the alliance chat open during the battle.</li>
+      </ol>
+    </div>
+
+    <p class="src">Written by ThoFy for [LoVS]. Building points and coordinates: <a href="https://www.toplordsintel.com/events/40038" rel="noopener">Top Lords Intel – Gold Mine Conquest</a>. The schedule, the length of the match and the rewards can only be read on the event screen in game. Last updated: 18 November 2026.</p>
   </section>
 
   <section class="page" id="page-regles" hidden>
@@ -652,6 +738,7 @@ const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('
 const T = {
   astuces: {icon: '💡', label: 'Tips', page: 'page-astuces'},
   cargo: {icon: '🚢', label: 'Cargo', page: 'page-cargo'},
+  mine: {icon: '⛏️', label: 'Gold Mine', page: 'page-mine'},
   part: {icon: '🤝', label: 'Participation', note: 'Sieges of the week, VS duel, help, donations and kills.', key: 'part',
     det: r => `Sieges ${v(r.s)} · ${r.v != null ? 'VS #' + v(r.v) + ' · ' : ''}Help #${v(r.a)} · Donations #${v(r.d)} · Kills #${v(r.e)}`, score: r => [r.part, '/ 100']},
   puis: {icon: '⚔️', label: 'Power', note: 'Power read from the member list.', key: 'puis',
@@ -797,7 +884,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
       if (x < today) tr.style.opacity = '.55';
       pt.appendChild(tr); dt.setDate(dt.getDate() + 1); x = iso(dt);
     }
-    el('cargo-plan-by').textContent = 'Schedule decided by ' + PL.decide_par + ', from ' + fr(PL.debut) + ' to ' + fr(PL.fin) + '. Rotation order: ' + PL.ordre.join(' → ') + '.';
+    el('cargo-plan-by').textContent = 'Schedule decided by ' + PL.decide_par + ', from ' + fr(PL.debut) + ' to ' + fr(PL.fin) + '. Rotation order: ' + PL.ordre.join(' → ') + '.' + (PL.note ? ' Changement : ' + PL.note : '');
   }
   el('cargo-note').textContent = 'Week from ' + fr(semaine[0]) + ' to ' + fr(semaine[6]) + '. Ranking based on the data from ' + DATA.date + '. Captains who already sailed this week are left out of the proposals.';
   const hist = el('cargo-hist');

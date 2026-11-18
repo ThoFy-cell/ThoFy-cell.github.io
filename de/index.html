@@ -111,7 +111,7 @@ summary::marker{color:var(--gold)}
   <div class="rank" id="rank">
   <details class="calc">
     <summary>🧮 So werden die Noten berechnet</summary>
-    <p><b>Beteiligung</b> (von 100): gespielte Belagerungen der Woche 30 % (von 6), Platz in der ⚔️ VS-Rangliste des Allianzduells (Summe Montag bis Samstag) 25 %, Plätze in den Wochenranglisten für Hilfe, Spenden und Kills je 15 % (1. Platz = alle Punkte). 1 Punkt Abzug pro erhaltener Truhe über 2 hinaus (höchstens 10).</p>
+    <p><b>Beteiligung</b> (von 100): Belagerungen der Woche 30 % (von 6), Platz in der ⚔️ VS-Wertung des Allianzduells (Summe von Montag bis Samstag) 25 %, Plätze in den Wochenwertungen für Hilfe, Spenden und Kills je 15 % (1. Platz = volle Punktzahl). Abzug von 1 Punkt pro Truhe über 2 hinaus (höchstens 10).</p>
     <p><b>Stärke</b>: Stärke des Spielers im Verhältnis zum stärksten Mitglied der Allianz (= 100).</p>
     <p><b>Kombiniert</b>: 70 % Beteiligung + 30 % Stärke.</p>
     <p><b>Entwicklung</b>: ▲ oder ▼ unter der Note = Unterschied zur vorigen Ablesung. Die Zeile 📈 zeigt die letzten drei Ablesungen, von der ältesten zur neuesten. Die Beteiligung beginnt jeden Montag wieder bei null, weil Belagerungen und Ranglisten pro Woche gezählt werden.</p>
@@ -192,7 +192,7 @@ summary::marker{color:var(--gold)}
     <div class="card">
       <h3>🏅 So wirst du Kapitän</h3>
       <ul>
-        <li><b>Samstag</b>: Steig in der Rangliste 🤝 Beteiligung auf (Belagerungen, VS-Duell, Hilfe, Spenden, Kills).</li>
+        <li><b>Samstag</b>: Klettere in der Wertung 🤝 Beteiligung (Belagerungen, VS-Duell, Hilfe, Spenden, Kills).</li>
         <li><b>Sonntag</b>: Hol die beste Wochenpunktzahl im Allianzduell. Der Reiter 💡 Tipps erklärt, was du an welchem Tag einsetzen sollst.</li>
         <li><b>Unter der Woche</b>: Die Stärke entscheidet, siehe Rangliste ⚔️ Stärke.</li>
       </ul>
@@ -449,7 +449,7 @@ summary::marker{color:var(--gold)}
         <li>Die Stadt gehört der Allianz. Der <b>Allianzführer ernennt den Stadtherrn</b> (und die Ritter): Das ist nicht unbedingt, wer am meisten angegriffen hat, und der Titel kann wechseln.</li>
         <li>Kriegserklärungen sind begrenzt: 3 pro Tag (2 in der Saison), ein Ziel zur Zeit, und die Allianz braucht mindestens 20 Mitglieder. Besitzen wir eine Stadt, können wir nur benachbarte Städte angreifen.</li>
         <li>Stadtherr und Ritter erneuern das <b>Dekret jeden Tag</b>: Es endet um Mitternacht Serverzeit (1 Uhr MEZ).</li>
-        <li>Jede gespielte Belagerung zählt für deine Beteiligungsnote (30 % der Note) und damit für die Verteilung der Stadttruhen.</li>
+        <li>Jede gespielte Belagerung zählt für deine Beteiligungsnote (30 % davon) und damit für die Verteilung der Stadttruhen.</li>
         <li>Belagerung der Hauptstadt am Freitag: Die Allianz braucht eine Stadt der Stufe 6 und du Schloss 12, um die Zone zu betreten.</li>
         <li>Heb Heil- und Trainingsbeschleuniger für Belagerungstage auf.</li>
       </ul>
@@ -534,6 +534,92 @@ summary::marker{color:var(--gold)}
     <p class="src">Quellen: Allianz-Ankündigungen [LoVS] vom 31. Oktober bis 9. November 2026, Ablesungen im Spiel; <a href="https://www.toplordsintel.com/guides/alliance-duel" rel="noopener">Top Lords Intel</a>, <a href="https://www.packsify.com/blogs/top-lords-tips-tricks" rel="noopener">Packsify</a>, <a href="https://toplordswiki.com/guides/beginner-tips/" rel="noopener">toplordswiki</a>, <a href="https://tap-guides.com/2026/07/31/top-lords-beginner-guide/" rel="noopener">Tap Guides</a>, <a href="https://top-lords.wiki/alliance/city" rel="noopener">top-lords.wiki</a>, <a href="https://www.toplordsintel.com/guides/cities" rel="noopener">Top Lords Intel (Städte)</a>, <a href="https://www.toplordsintel.com/guides/plunder" rel="noopener">Top Lords Intel (Plünderung und Wagen)</a>, <a href="https://www.ldshop.gg/ru/blog/top-lords/top-lords-gear-crafting-and-upgrading-guide.html" rel="noopener">LDShop (Schmiede)</a>; Tipp-Notizbuch von ThoFy. Zahlen können sich mit Spiel-Updates ändern. Letzte Überarbeitung: 13. November 2026 (Tipps nach Themen geordnet).</p>
   </section>
 
+  <section class="page" id="page-mine" hidden>
+    <h2>⛏️ Goldmine: Leitfaden für den Anfang</h2>
+    <p class="lead">Zwei Allianzen kämpfen auf einer eigenen Karte um 11 Gebäude. Jedes gehaltene Gebäude bringt jede Sekunde Punkte, und die Allianz mit den meisten Punkten am Ende gewinnt. Man gewinnt nicht durch Töten, sondern durch Halten – und zwar möglichst lange.</p>
+
+    <div class="card key">
+      <h3>🥇 Deine ersten 5 Schritte</h3>
+      <ol>
+        <li><b>Melde dich an.</b> Es gibt nur 20 Plätze pro Allianz. Wenn ein R4 oder der R5 die Goldmine ankündigt, sag sofort zu – aber nur, wenn du wirklich von Anfang bis Ende dabei bist.</li>
+        <li><b>Notiere dein Gebäude.</b> Die Leitung gibt dir ein Gebäude mit seinen Koordinaten. Schreib sie dir auf: Du brauchst sie in zwei Minuten.</li>
+        <li><b>Teleportiere dich daneben.</b> Sobald die Schlacht beginnt, landest du auf einer eigenen Karte. Geh zuerst nah an dein Gebäude, bevor du etwas anderes tust.</li>
+        <li><b>Greif es mit deinem besten Team an.</b> Dein erstes Heldenteam, das stärkste. Halte nichts „für alle Fälle“ zurück.</li>
+        <li><b>Bleib drin.</b> Ein leeres Gebäude ist nach einem einzigen Angriff weg. Solange dir niemand etwas anderes sagt, bleibst du und sammelst jede Sekunde Punkte.</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>🗺️ Die Karte der 11 Gebäude</h3>
+      <p>Norden oben, Osten rechts. Die Lage zueinander stimmt, die Abstände nicht. Farbig: die Goldmine, Ziel Nr. 1, und der Spähposten, den fast niemand verteidigt.</p>
+      <svg viewBox="0 0 360 362" width="100%" style="max-width:420px;display:block;margin:12px auto;font-family:inherit" role="img" aria-label="Carte des 11 batiments de la mine d'or">
+        <rect x="8" y="8" width="172" height="38" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="94" y="25" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Spähposten</text>
+        <text x="94" y="39" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 Pkt/s · 465, 565 · +10 %</text>
+        <rect x="232" y="8" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="25" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Lazarett IV</text>
+        <text x="292" y="39" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 Pkt/s · 535, 565</text>
+        <rect x="120" y="58" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="180" y="75" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Waffenschmiede</text>
+        <text x="180" y="89" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 Pkt/s · 500, 545</text>
+        <rect x="8" y="108" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="68" y="125" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Schmelzerei I</text>
+        <text x="68" y="139" text-anchor="middle" font-size="10.5" fill="var(--muted)">50 Pkt/s · 436, 524</text>
+        <rect x="232" y="108" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="125" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Lazarett II</text>
+        <text x="292" y="139" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 Pkt/s · 564, 518</text>
+        <rect x="100" y="158" width="160" height="46" rx="10" fill="var(--accent-soft)" stroke="var(--gold-2)" stroke-width="2.5"/>
+        <text x="180" y="179" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">Goldmine</text>
+        <text x="180" y="195" text-anchor="middle" font-size="11" font-weight="600" fill="var(--fg)">80 Pkt/s · 500, 500</text>
+        <rect x="8" y="216" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="68" y="233" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Lazarett I</text>
+        <text x="68" y="247" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 Pkt/s · 436, 482</text>
+        <rect x="232" y="216" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="233" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Schmelzerei II</text>
+        <text x="292" y="247" text-anchor="middle" font-size="10.5" fill="var(--muted)">50 Pkt/s · 564, 476</text>
+        <rect x="120" y="266" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="180" y="283" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Gerichtsturm</text>
+        <text x="180" y="297" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 Pkt/s · 500, 455</text>
+        <rect x="8" y="316" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="68" y="333" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Lazarett III</text>
+        <text x="68" y="347" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 Pkt/s · 465, 435</text>
+        <rect x="232" y="316" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="292" y="333" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Gelehrter</text>
+        <text x="292" y="347" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 Pkt/s · 535, 435</text>
+      </svg>
+      <p>Dein Gebäude ist auf jeden Fall dabei: Such seinen Namen und dann seine Koordinaten, um hinzukommen. Die Karte ist gespiegelt – jedes Gebäude im Westen hat seinen Zwilling im Osten.</p>
+    </div>
+
+    <div class="card">
+      <h3>😮 Drei Dinge, die am Anfang überraschen</h3>
+      <p><b>Deine Soldaten sterben nicht.</b> Auf dieser Karte werden Verwundete am Ende der Schlacht automatisch geheilt. Angreifen kostet dich nichts. Greif also an, auch wenn du dir beim Kampf nicht sicher bist, und verschwende während des Spiels keine Heilgegenstände.</p>
+      <p><b>Das Spiel schenkt dir Teleporter.</b> Du bekommst während der Schlacht ab und zu einen gratis. Sie sind dafür da, dich schnell umzusetzen, wenn die Leitung „alle zur Mine“ sagt. Heb dir einen für das Ende auf.</p>
+      <p><b>Wenn ein Gebäude den Besitzer wechselt, fallen ringsum Punkte an.</b> Das sind Breschenpunkte. Schick einen Späher, um sie einzusammeln: Sie sind gratis, und viele Spieler vergessen sie.</p>
+    </div>
+
+    <div class="card warn">
+      <h3>🚫 Die fünf Anfängerfehler</h3>
+      <ul>
+        <li><b>Alle stürmen die Goldmine.</b> Sie bringt am meisten, aber wenn alle 20 Spieler darum kämpfen, gehört der Rest der Karte dem Gegner. Drei kleine Gebäude, die das ganze Spiel über gehalten werden, bringen mehr als eine Mine, die alle zwei Minuten neu erobert wird.</li>
+        <li><b>Ein Gebäude einnehmen und dann weggehen.</b> Punkte gibt es nur, solange du es besetzt hältst.</li>
+        <li><b>Sich anmelden, ohne Zeit zu haben.</b> Ein umsonst belegter Platz ist ein Gebäude, das niemand hält.</li>
+        <li><b>Den Spähposten vergessen.</b> Nur 10 Punkte pro Sekunde, aber +10 % auf alles, was die Allianz hält.</li>
+        <li><b>Spielen, ohne zuzuhören.</b> Ein durchschnittlicher Spieler, der sich an die Ansagen hält, bringt mehr als ein starker Spieler, der improvisiert.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>📅 Am Vortag: drei Dinge vorbereiten</h3>
+      <ol>
+        <li><b>Dein erstes Heldenteam komplett</b>, mit Schwert und Handschuhen auf den Angreifern, Rüstung und Beinschienen auf den Tanks.</li>
+        <li><b>So viele Soldaten wie möglich</b>, auf der höchsten Stufe, die du ausbilden kannst. Starte die Ausbildung am Vortag, nicht zehn Minuten vorher.</li>
+        <li><b>Die Ausdauer deiner Helden auf Maximum</b>, und der Allianz-Chat offen während der Schlacht.</li>
+      </ol>
+    </div>
+
+    <p class="src">Geschrieben von ThoFy für [LoVS]. Punkte und Koordinaten der Gebäude: <a href="https://www.toplordsintel.com/events/40038" rel="noopener">Top Lords Intel – Gold Mine Conquest</a>. Zeiten, Dauer des Spiels und Belohnungen stehen nur im Event-Bildschirm im Spiel. Letzte Aktualisierung: 18. November 2026.</p>
+  </section>
+
   <section class="page" id="page-regles" hidden>
     <h2>📜 Regeln des Königreichs #116</h2>
     <p class="lead">Der Nichtangriffspakt zwischen den großen Allianzen, wie er auf dem Discord des Königreichs angekündigt wurde, und was er für uns bedeutet.</p>
@@ -612,7 +698,7 @@ summary::marker{color:var(--gold)}
       <h3>💜 In der Allianz [LoVS]</h3>
       <ul>
         <li>Die Ziele (Städte, Belagerungen, Sammelangriffe) legen die R4 und der R5 fest und kündigen sie im Chat an.</li>
-        <li>Die Stadttruhen werden nach Beteiligung verteilt: Belagerungen, VS-Duell, Hilfe, Spenden und Kills (Reiter Truhen).</li>
+        <li>Stadttruhen werden nach der Beteiligung verteilt: Belagerungen, VS-Duell, Hilfe, Spenden und Kills (Reiter Truhen).</li>
         <li>Niemand verlässt die Allianz während der Duellwoche.</li>
         <li>Wähle einen erkennbaren Spielernamen (nicht den Standardnamen), um die Verständigung zu erleichtern.</li>
         <li>Die Ankündigungen des Tages stehen unter Chat → Allianz → Allianz-Ankündigung: Lies sie bei jedem Einloggen.</li>
@@ -652,6 +738,7 @@ const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('
 const T = {
   astuces: {icon: '💡', label: 'Tipps', page: 'page-astuces'},
   cargo: {icon: '🚢', label: 'Frachtschiff', page: 'page-cargo'},
+  mine: {icon: '⛏️', label: 'Goldmine', page: 'page-mine'},
   part: {icon: '🤝', label: 'Beteiligung', note: 'Belagerungen der Woche, VS-Duell, Hilfe, Spenden und Kills.', key: 'part',
     det: r => `Belagerungen ${v(r.s)} · ${r.v != null ? 'VS ' + v(r.v) + '. · ' : ''}Hilfe ${v(r.a)}. · Spenden ${v(r.d)}. · Kills ${v(r.e)}.`, score: r => [r.part, '/ 100']},
   puis: {icon: '⚔️', label: 'Stärke', note: 'Stärke aus der Mitgliederliste.', key: 'puis',
@@ -797,7 +884,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
       if (x < today) tr.style.opacity = '.55';
       pt.appendChild(tr); dt.setDate(dt.getDate() + 1); x = iso(dt);
     }
-    el('cargo-plan-by').textContent = 'Plan beschlossen von ' + PL.decide_par + ', vom ' + fr(PL.debut) + ' bis ' + fr(PL.fin) + '. Reihenfolge: ' + PL.ordre.join(' → ') + '.';
+    el('cargo-plan-by').textContent = 'Plan beschlossen von ' + PL.decide_par + ', vom ' + fr(PL.debut) + ' bis ' + fr(PL.fin) + '. Reihenfolge: ' + PL.ordre.join(' → ') + '.' + (PL.note ? ' Changement : ' + PL.note : '');
   }
   el('cargo-note').textContent = 'Woche von ' + fr(semaine[0]) + ' bis ' + fr(semaine[6]) + '. Rangliste nach dem Stand vom ' + DATA.date + '. Kapitäne, die diese Woche schon dran waren, werden bei den Vorschlägen ausgelassen.';
   const hist = el('cargo-hist');
