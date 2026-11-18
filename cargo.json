@@ -19,6 +19,10 @@
   {
    "date": "2026-11-17",
    "capitaine": "Bunny LoVS"
+  },
+  {
+   "date": "2026-11-18",
+   "capitaine": "NonoBzh"
   }
  ],
  "planning": {
@@ -37,8 +41,11 @@
   "week_end": "Autres joueurs",
   "exceptions": {
    "2026-11-17": "Bunny LoVS",
-   "2026-11-18": "RhazorBack"
+   "2026-11-18": "NonoBzh",
+   "2026-11-20": "À trouver (volontaire)",
+   "2026-11-21": "Rhazorbak (à confirmer, le prévenir à l'avance)",
+   "2026-11-22": "À trouver (ou Rhazorbak s'il ne fait pas samedi)"
   },
-  "note": "Mardi 17 : RhazorBack décalé au mercredi 18 ; John week a cédé sa place du mardi à Bunny LoVS (il ne fera pas forcément le cargo cette semaine). Le reste du planning ne change pas."
+  "note": "Mercredi 18 : cargo fait par NonoBzh à la place de Rhazorbak, qui ne peut pas le soir. NonoBzh ne pouvant pas refaire le cargo cette semaine, il faut un capitaine pour vendredi 20 au soir. Week-end 21-22 : Rhazorbak peut faire samedi ou dimanche (une seule fois), à prévenir un peu en avance ; l'autre jour reste à trouver. Rhazorbak sera de nouveau disponible la semaine prochaine. Le reste du planning ne change pas."
  }
 }
