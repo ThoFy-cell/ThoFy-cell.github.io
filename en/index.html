@@ -111,7 +111,7 @@ summary::marker{color:var(--gold)}
   <div class="rank" id="rank">
   <details class="calc">
     <summary>🧮 How the scores are calculated</summary>
-    <p><b>Participation</b> (out of 100): sieges played this week 40% (out of 6), places in the weekly help, donation and kill rankings 20% each (1st place = full points). 1 point off for each chest received beyond 2 (10 at most).</p>
+    <p><b>Participation</b> (out of 100): sieges played this week 30% (out of 6), place in the ⚔️ VS alliance duel ranking (Monday to Saturday total) 25%, places in the weekly help, donation and kill rankings 15% each (1st place = full points). 1 point off for each chest received beyond 2 (10 at most).</p>
     <p><b>Power</b>: the player's power compared with the strongest member of the alliance (= 100).</p>
     <p><b>Combined</b>: 70% participation + 30% power.</p>
     <p><b>Trend</b>: ▲ or ▼ under the score = difference from the previous reading. The 📈 line shows the last three readings, oldest to newest. Participation restarts from zero every Monday, because sieges and rankings are counted per week.</p>
@@ -192,7 +192,7 @@ summary::marker{color:var(--gold)}
     <div class="card">
       <h3>🏅 How to become captain</h3>
       <ul>
-        <li><b>Saturday</b>: climb the 🤝 Participation ranking (sieges, help, donations, kills).</li>
+        <li><b>Saturday</b>: climb the 🤝 Participation ranking (sieges, VS duel, help, donations, kills).</li>
         <li><b>Sunday</b>: get the best score of the week in the Alliance Duel. The 💡 Tips tab explains what to use each day.</li>
         <li><b>On weekdays</b>: power makes the difference, see the ⚔️ Power ranking.</li>
       </ul>
@@ -449,7 +449,7 @@ summary::marker{color:var(--gold)}
         <li>The city belongs to the alliance. The <b>alliance leader appoints the lord</b> (and the knights): it is not necessarily whoever attacked most, and the title can change hands.</li>
         <li>Declarations are limited: 3 per day (2 in season), one target at a time, and the alliance needs at least 20 members. Once we own a city, we can only target neighbouring cities.</li>
         <li>The city's lord and knights renew the <b>decree every day</b>: it ends at midnight server time (1 am in Paris).</li>
-        <li>Every siege you play counts in your participation score (40% of the score), and so in the sharing of city chests.</li>
+        <li>Every siege you play counts in your participation score (30% of the score), and so in the sharing of city chests.</li>
         <li>Capital Siege on Friday: the alliance needs a level 6 city and you need castle 12 to enter the zone.</li>
         <li>Keep healing and training speed-ups for siege days.</li>
       </ul>
@@ -612,7 +612,7 @@ summary::marker{color:var(--gold)}
       <h3>💜 In the [LoVS] alliance</h3>
       <ul>
         <li>Targets (cities, sieges, rallies) are decided by the R4s and the R5 and announced in chat.</li>
-        <li>City chests are shared according to participation: sieges, help, donations and kills (Chests tab).</li>
+        <li>City chests are shared according to participation: sieges, VS duel, help, donations and kills (Chests tab).</li>
         <li>Nobody leaves the alliance during duel week.</li>
         <li>Use a recognisable player name (not the default one) to make communication easier.</li>
         <li>The day's announcements are in Chat → Alliance → Alliance Announcement: read them every time you log in.</li>
@@ -632,7 +632,7 @@ const M = DATA.membres;
 const maxP = Math.max(...M.map(m => m.p || 0));
 const rows = M.map(m => {
   const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
-  const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus));
+  const part = Math.round(100 * ((m.v == null ? 0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) : 0.3 * Math.min(s, 6) / 6 + 0.25 * rp(m.v) + 0.15 * rp(m.a) + 0.15 * rp(m.d) + 0.15 * rp(m.e)) - malus));
   const puis = Math.round(100 * (m.p || 0) / maxP);
   return {...m, part, puis, mix: Math.round(0.7 * part + 0.3 * puis)};
 });
@@ -640,7 +640,7 @@ const byName = (a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'});
 for (const k of ['part', 'puis', 'mix']) [...rows].sort((a, b) => b[k] - a[k] || byName(a, b)).forEach((r, i) => r['pl_' + k] = i + 1);
 const scoreOf = L => { const mx = Math.max(...L.map(m => m.p || 0)), o = {};
   L.forEach(m => { const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
-    const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus)), puis = Math.round(100 * (m.p || 0) / mx);
+    const part = Math.round(100 * ((m.v == null ? 0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) : 0.3 * Math.min(s, 6) / 6 + 0.25 * rp(m.v) + 0.15 * rp(m.a) + 0.15 * rp(m.d) + 0.15 * rp(m.e)) - malus)), puis = Math.round(100 * (m.p || 0) / mx);
     o[m.n] = {part, puis, mix: Math.round(0.7 * part + 0.3 * puis), p: m.p}; });
   return o; };
 const HIST = (DATA.historique || []).slice(0, 2).map(h => ({date: h.date, by: scoreOf(h.membres)}));
@@ -652,8 +652,8 @@ const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('
 const T = {
   astuces: {icon: '💡', label: 'Tips', page: 'page-astuces'},
   cargo: {icon: '🚢', label: 'Cargo', page: 'page-cargo'},
-  part: {icon: '🤝', label: 'Participation', note: 'Sieges of the week, help, donations and kills.', key: 'part',
-    det: r => `Sieges ${v(r.s)} · Help #${v(r.a)} · Donations #${v(r.d)} · Kills #${v(r.e)}`, score: r => [r.part, '/ 100']},
+  part: {icon: '🤝', label: 'Participation', note: 'Sieges of the week, VS duel, help, donations and kills.', key: 'part',
+    det: r => `Sieges ${v(r.s)} · ${r.v != null ? 'VS #' + v(r.v) + ' · ' : ''}Help #${v(r.a)} · Donations #${v(r.d)} · Kills #${v(r.e)}`, score: r => [r.part, '/ 100']},
   puis: {icon: '⚔️', label: 'Power', note: 'Power read from the member list.', key: 'puis',
     det: r => `${v(r.p)}M power`, score: r => [r.puis, '/ 100']},
   mix: {icon: '🏆', label: 'Combined', note: '70% participation + 30% power.', key: 'mix',
