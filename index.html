@@ -761,6 +761,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
   const PL = CARGO.planning || null;
   const planOf = d => {
     if (!PL || d < PL.debut || d > PL.fin) return null;
+    if (PL.exceptions && PL.exceptions[d]) return PL.exceptions[d];
     let i = 0;
     for (let x = PL.debut; x <= d; ) {
       const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), wd = (dt.getDay() + 6) % 7;
@@ -794,7 +795,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
       if (x < today) tr.style.opacity = '.55';
       pt.appendChild(tr); dt.setDate(dt.getDate() + 1); x = iso(dt);
     }
-    el('cargo-plan-by').textContent = 'Planning décidé par ' + PL.decide_par + ', du ' + fr(PL.debut) + ' au ' + fr(PL.fin) + '. Ordre de rotation : ' + PL.ordre.join(' → ') + '.';
+    el('cargo-plan-by').textContent = 'Planning décidé par ' + PL.decide_par + ', du ' + fr(PL.debut) + ' au ' + fr(PL.fin) + '. Ordre de rotation : ' + PL.ordre.join(' → ') + '.' + (PL.note ? ' Changement : ' + PL.note : '');
   }
   el('cargo-note').textContent = 'Semaine du ' + fr(semaine[0]) + ' au ' + fr(semaine[6]) + ". Classement d'après le relevé du " + DATA.date + '. Les capitaines déjà passés cette semaine sont écartés des propositions.';
   const hist = el('cargo-hist');

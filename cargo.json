@@ -15,6 +15,10 @@
   {
    "date": "2026-11-15",
    "capitaine": "Yurry"
+  },
+  {
+   "date": "2026-11-17",
+   "capitaine": "Bunny LoVS"
   }
  ],
  "planning": {
@@ -30,6 +34,11 @@
    "Yurry"
   ],
   "semaine": "lun-ven",
-  "week_end": "Autres joueurs"
+  "week_end": "Autres joueurs",
+  "exceptions": {
+   "2026-11-17": "Bunny LoVS",
+   "2026-11-18": "RhazorBack"
+  },
+  "note": "Mardi 17 : RhazorBack décalé au mercredi 18 ; John week a cédé sa place du mardi à Bunny LoVS (il ne fera pas forcément le cargo cette semaine). Le reste du planning ne change pas."
  }
 }
