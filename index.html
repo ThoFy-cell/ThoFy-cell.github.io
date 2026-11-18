@@ -111,7 +111,7 @@ summary::marker{color:var(--gold)}
   <div class="rank" id="rank">
   <details class="calc">
     <summary>🧮 Comment les notes sont calculées</summary>
-    <p><b>Participation</b> (sur 100) : sièges joués dans la semaine 40 % (sur 6), places aux classements hebdomadaires d'aide, de dons et d'éliminations 20 % chacun (1re place = tous les points). Malus de 1 point par coffre reçu au-delà de 2 (10 au maximum).</p>
+    <p><b>Participation</b> (sur 100) : sièges joués dans la semaine 30 % (sur 6), place au classement ⚔️ VS du duel d'alliance (cumul du lundi au samedi) 25 %, places aux classements hebdomadaires d'aide, de dons et d'éliminations 15 % chacun (1re place = tous les points). Malus de 1 point par coffre reçu au-delà de 2 (10 au maximum).</p>
     <p><b>Puissance</b> : puissance du joueur rapportée au plus puissant de l'alliance (= 100).</p>
     <p><b>Combiné</b> : 70 % participation + 30 % puissance.</p>
     <p><b>Évolution</b> : ▲ ou ▼ sous la note = écart avec le relevé précédent. La ligne 📈 montre les trois derniers relevés, du plus ancien au plus récent. La participation repart de zéro chaque lundi, car les sièges et les classements sont comptés par semaine.</p>
@@ -192,7 +192,7 @@ summary::marker{color:var(--gold)}
     <div class="card">
       <h3>🏅 Comment devenir capitaine</h3>
       <ul>
-        <li><b>Samedi</b> : monte dans le classement 🤝 Participation (sièges, aide, dons, éliminations).</li>
+        <li><b>Samedi</b> : monte dans le classement 🤝 Participation (sièges, duel VS, aide, dons, éliminations).</li>
         <li><b>Dimanche</b> : fais le meilleur score de la semaine au duel d'alliance. L'onglet 💡 Astuces explique quoi utiliser chaque jour.</li>
         <li><b>En semaine</b> : la puissance fait la différence, voir le classement ⚔️ Puissance.</li>
       </ul>
@@ -449,7 +449,7 @@ summary::marker{color:var(--gold)}
         <li>La ville appartient à l'alliance. C'est le <b>chef d'alliance qui nomme le seigneur</b> (et les chevaliers) : ce n'est pas forcément celui qui a le plus attaqué, et le titre peut changer de main.</li>
         <li>Les déclarations sont limitées : 3 par jour (2 en saison), une cible à la fois, et l'alliance doit compter au moins 20 membres. Une fois qu'on possède une ville, on ne peut viser que les villes voisines.</li>
         <li>Le seigneur et les chevaliers de la ville relancent le <b>décret chaque jour</b> : il s'arrête à minuit serveur (1 h à Paris).</li>
-        <li>Chaque siège joué compte dans ta note de participation (40 % de la note), donc dans le partage des coffres de la ville.</li>
+        <li>Chaque siège joué compte dans ta note de participation (30 % de la note), donc dans le partage des coffres de la ville.</li>
         <li>Siège de la Capitale le vendredi : il faut une ville de niveau 6 à l'alliance et un château 12 pour entrer dans la zone.</li>
         <li>Garde des accélérateurs de soin et d'entraînement pour les jours de siège.</li>
       </ul>
@@ -612,7 +612,7 @@ summary::marker{color:var(--gold)}
       <h3>💜 Dans l'alliance [LoVS]</h3>
       <ul>
         <li>Les cibles (villes, sièges, ralliements) sont décidées par les R4 et le R5 et annoncées dans le chat.</li>
-        <li>Les coffres de ville sont partagés selon la participation : sièges, aide, dons et éliminations (onglet Coffres).</li>
+        <li>Les coffres de ville sont partagés selon la participation : sièges, duel VS, aide, dons et éliminations (onglet Coffres).</li>
         <li>On ne quitte pas l'alliance pendant la semaine du duel.</li>
         <li>Mets un nom de joueur reconnaissable (pas le nom par défaut) pour faciliter les échanges.</li>
         <li>Les annonces du jour sont dans Chat → Alliance → Annonce d'Alliance : lis-les à chaque connexion.</li>
@@ -630,7 +630,7 @@ const M = DATA.membres;
 const maxP = Math.max(...M.map(m => m.p || 0));
 const rows = M.map(m => {
   const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
-  const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus));
+  const part = Math.round(100 * ((m.v == null ? 0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) : 0.3 * Math.min(s, 6) / 6 + 0.25 * rp(m.v) + 0.15 * rp(m.a) + 0.15 * rp(m.d) + 0.15 * rp(m.e)) - malus));
   const puis = Math.round(100 * (m.p || 0) / maxP);
   return {...m, part, puis, mix: Math.round(0.7 * part + 0.3 * puis)};
 });
@@ -638,7 +638,7 @@ const byName = (a, b) => a.n.localeCompare(b.n, 'fr', {sensitivity: 'base'});
 for (const k of ['part', 'puis', 'mix']) [...rows].sort((a, b) => b[k] - a[k] || byName(a, b)).forEach((r, i) => r['pl_' + k] = i + 1);
 const scoreOf = L => { const mx = Math.max(...L.map(m => m.p || 0)), o = {};
   L.forEach(m => { const s = m.s || 0, malus = Math.min(0.1, 0.01 * Math.max(0, (m.c || 0) - 2));
-    const part = Math.round(100 * (0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) - malus)), puis = Math.round(100 * (m.p || 0) / mx);
+    const part = Math.round(100 * ((m.v == null ? 0.4 * Math.min(s, 6) / 6 + 0.2 * rp(m.a) + 0.2 * rp(m.d) + 0.2 * rp(m.e) : 0.3 * Math.min(s, 6) / 6 + 0.25 * rp(m.v) + 0.15 * rp(m.a) + 0.15 * rp(m.d) + 0.15 * rp(m.e)) - malus)), puis = Math.round(100 * (m.p || 0) / mx);
     o[m.n] = {part, puis, mix: Math.round(0.7 * part + 0.3 * puis), p: m.p}; });
   return o; };
 const HIST = (DATA.historique || []).slice(0, 2).map(h => ({date: h.date, by: scoreOf(h.membres)}));
@@ -650,8 +650,8 @@ const v = x => x == null ? '–' : (Number.isInteger(x) ? x : x.toLocaleString('
 const T = {
   astuces: {icon: '💡', label: 'Astuces', page: 'page-astuces'},
   cargo: {icon: '🚢', label: 'Cargo', page: 'page-cargo'},
-  part: {icon: '🤝', label: 'Participation', note: 'Sièges de la semaine, aide, dons et éliminations.', key: 'part',
-    det: r => `Sièges ${v(r.s)} · Aide ${v(r.a)}e · Dons ${v(r.d)}e · Élim. ${v(r.e)}e`, score: r => [r.part, '/ 100']},
+  part: {icon: '🤝', label: 'Participation', note: 'Sièges de la semaine, duel VS, aide, dons et éliminations.', key: 'part',
+    det: r => `Sièges ${v(r.s)} · ${r.v != null ? 'VS ' + v(r.v) + 'e · ' : ''}Aide ${v(r.a)}e · Dons ${v(r.d)}e · Élim. ${v(r.e)}e`, score: r => [r.part, '/ 100']},
   puis: {icon: '⚔️', label: 'Puissance', note: 'Puissance relevée dans la liste des membres.', key: 'puis',
     det: r => `${v(r.p)} M de puissance`, score: r => [r.puis, '/ 100']},
   mix: {icon: '🏆', label: 'Combiné', note: '70 % participation + 30 % puissance.', key: 'mix',
