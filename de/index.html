@@ -140,7 +140,7 @@ summary::marker{color:var(--gold)}
       <table class="tbl">
         <tr><th>Montag → Freitag</th><td>Die <b>Stärksten</b> der Allianz (Stärke), einer pro Abend.</td></tr>
         <tr><th>Samstag</th><td>Der <b>Beitrags-Champion</b> der Allianz: Platz 1 der Rangliste 🤝 Beteiligung auf dieser Seite.</td></tr>
-        <tr><th>Sonntag</th><td>Der <b>VS-Champion</b> (Allianzduell) der Woche.</td></tr>
+        <tr><th>Sonntag</th><td>Der <b>VS-Champion</b> (Allianzduell) der Woche. Ist er diese Woche schon Kapitän gewesen, übernimmt der Nächste im VS-Ranking.</td></tr>
       </table>
       <ul>
         <li><b>Nur einmal pro Woche</b>: Niemand kann in derselben Woche zweimal Kapitän sein. Wenn du dich durch deine Punkte erneut qualifizierst, übernimmt der Spieler direkt hinter dir das Frachtschiff.</li>
@@ -859,20 +859,23 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
     }
     return null;
   };
-  const taken = new Set(semaine.map(d => fait[d]).filter(Boolean));
+  const lc = x => String(x).toLowerCase(), taken = new Set(semaine.map(d => fait[d]).filter(Boolean).map(lc));
+  const byV = rows.filter(r => r.v != null).sort((a, b) => a.v - b.v);
+  const vsPool = () => { const deja = new Set(taken); semaine.slice(0, 6).forEach(d => { const p = !fait[d] && d >= today && planOf(d); if (p && (!PL || p !== PL.week_end)) deja.add(lc(p)); }); return byV.filter(r => !deja.has(lc(r.n))); };
   const byP = [...rows].sort((a, b) => a.pl_puis - b.pl_puis), byC = [...rows].sort((a, b) => a.pl_part - b.pl_part);
   const names = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'], t = el('cargo-rot');
   const cell = (tag, txt, bold) => { const x = document.createElement(tag); if (bold) { const b = document.createElement('b'); b.textContent = txt; x.appendChild(b); } else x.textContent = txt; return x; };
   semaine.forEach((d, k) => {
     const tr = document.createElement('tr'), td = document.createElement('td');
     tr.appendChild(cell('th', names[k] + ' ' + Number(d.slice(8)) + (d === today ? ' · heute Abend' : '')));
-    if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · erledigt'); }
+    const vsDay = k === 6 && !fait[d] && d >= today && (!planOf(d) || planOf(d) === PL.week_end);
+    if (vsDay) { const pool = vsPool(), r = pool[0]; if (r) td.append(cell('span', '🏅 ' + r.n, true), ' (' + r.r + ') · ' + r.v + '. im VS' + (pool[1] ? ' · danach: ' + pool[1].n : '')); else td.textContent = 'VS-Champion'; }
+    else if (fait[d]) { td.append(cell('span', '✅ ' + fait[d], true), ' · erledigt'); }
     else if (d < today) td.textContent = '– kein Frachtschiff erfasst';
     else if (planOf(d)) { const p = planOf(d); if (p === PL.week_end) td.append(cell('span', 'Andere Spieler', true), ' · offen für alle Freiwilligen'); else td.append(cell('span', '📅 ' + p, true), ' · laut Plan'); }
-    else if (k === 6) td.textContent = 'VS-Champion: folgt, sobald das Duell erfasst wird.';
     else {
-      const pool = (k === 5 ? byC : byP).filter(r => !taken.has(r.n)), r = pool[0];
-      if (r) { taken.add(r.n); td.append(cell('span', r.n, true), ' (' + r.r + ') · ' + (k === 5 ? 'Beteiligung ' + r.part + ' / 100' : v(r.p) + ' Mio. Stärke') + (pool[1] ? ' · danach: ' + pool[1].n : '')); }
+      const pool = (k === 5 ? byC : byP).filter(r => !taken.has(lc(r.n))), r = pool[0];
+      if (r) { taken.add(lc(r.n)); td.append(cell('span', r.n, true), ' (' + r.r + ') · ' + (k === 5 ? 'Beteiligung ' + r.part + ' / 100' : v(r.p) + ' Mio. Stärke') + (pool[1] ? ' · danach: ' + pool[1].n : '')); }
     }
     tr.appendChild(td); t.appendChild(tr);
   });
@@ -880,7 +883,7 @@ el('go-rank').onclick = () => { tab = 'part'; history.replaceState(null, '', '#p
     const pt = el('cargo-plan'), hd = document.createElement('tr'); ['Datum', 'Kapitän'].forEach(x => hd.appendChild(cell('th', x))); pt.appendChild(hd);
     for (let x = PL.debut; x <= PL.fin; ) {
       const [y, m, j] = x.split('-').map(Number), dt = new Date(y, m - 1, j), p = planOf(x), tr = document.createElement('tr');
-      tr.append(cell('td', fr(x) + (x === today ? ' · heute Abend' : '')), cell('td', (fait[x] ? '✅ ' + fait[x] : p === PL.week_end ? 'Andere Spieler' : p), p !== PL.week_end));
+      tr.append(cell('td', fr(x) + (x === today ? ' · heute Abend' : '')), cell('td', (fait[x] ? '✅ ' + fait[x] : p === PL.week_end ? (dt.getDay() === 0 ? 'VS-Champion' : 'Andere Spieler') : p), p !== PL.week_end || dt.getDay() === 0));
       if (x < today) tr.style.opacity = '.55';
       pt.appendChild(tr); dt.setDate(dt.getDate() + 1); x = iso(dt);
     }
