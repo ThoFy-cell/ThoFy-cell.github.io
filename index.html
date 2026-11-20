@@ -794,10 +794,11 @@ function draw() {
     const stock = Math.max(0, parseInt(el('stock').value, 10) || 0);
     const nb = r => r.seuils.filter(x => x <= stock).length;
     const gagnants = rows.filter(r => nb(r) > 0).length;
-    el('note').textContent = `Avec ${stock} coffres : ${gagnants} membres récompensés. « 1er dès 12 » = 1er coffre si la ville en a au moins 12.`;
-    shown = [...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).filter(keep);
-    shown.forEach((r, i) => list.appendChild(line(i + 1, '', r.n, r.r,
-      `1er dès ${r.seuils[0]} · 2e dès ${r.seuils[1]} · 3e dès ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'coffre' + (nb(r) > 1 ? 's' : ''))));
+    el('note').textContent = `Avec ${stock} coffres : ${gagnants} membres récompensés. « 1er dès 12 » = 1er coffre si la ville en a au moins 12. Liste dans l'ordre de la fenêtre « Distribuer des Récompenses » du jeu (R5, R4, R3, R2, R1), pour distribuer ligne par ligne.`;
+    const prio = new Map([...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).map((r, i) => [r, i + 1]));
+    shown = rows.filter(keep);
+    shown.forEach(r => list.appendChild(line(rows.indexOf(r) + 1, '', r.n, r.r,
+      `Priorité ${prio.get(r)} · 1er dès ${r.seuils[0]} · 2e dès ${r.seuils[1]} · 3e dès ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'coffre' + (nb(r) > 1 ? 's' : ''))));
   } else {
     const t = T[tab]; el('note').textContent = t.note + (HIST.length ? ' Évolution depuis le relevé du ' + HIST[0].date + '.' : '');
     const val = o => o == null ? null : (tab === 'puis' ? o.p : o[t.key]), unit = tab === 'puis' ? ' M' : '';
