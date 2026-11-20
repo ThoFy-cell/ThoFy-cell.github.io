@@ -796,10 +796,11 @@ function draw() {
     const stock = Math.max(0, parseInt(el('stock').value, 10) || 0);
     const nb = r => r.seuils.filter(x => x <= stock).length;
     const gagnants = rows.filter(r => nb(r) > 0).length;
-    el('note').textContent = `With ${stock} chests: ${gagnants} members rewarded. "1st from 12" = 1st chest if the city has at least 12.`;
-    shown = [...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).filter(keep);
-    shown.forEach((r, i) => list.appendChild(line(i + 1, '', r.n, r.r,
-      `1st from ${r.seuils[0]} · 2nd from ${r.seuils[1]} · 3rd from ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'chest' + (nb(r) > 1 ? 's' : ''))));
+    el('note').textContent = `With ${stock} chests: ${gagnants} members rewarded. "1st from 12" = 1st chest if the city has at least 12. List in the order of the in-game « Distribute Rewards » window (R5, R4, R3, R2, R1), to hand out line by line.`;
+    const prio = new Map([...rows].sort((a, b) => a.seuils[0] - b.seuils[0]).map((r, i) => [r, i + 1]));
+    shown = rows.filter(keep);
+    shown.forEach(r => list.appendChild(line(rows.indexOf(r) + 1, '', r.n, r.r,
+      `Priority ${prio.get(r)} · 1st from ${r.seuils[0]} · 2nd from ${r.seuils[1]} · 3rd from ${r.seuils[2]}`, nb(r) ? '×' + nb(r) : '0', 'chest' + (nb(r) > 1 ? 's' : ''))));
   } else {
     const t = T[tab]; el('note').textContent = t.note + (HIST.length ? ' Trend since the reading of ' + HIST[0].date + '.' : '');
     const val = o => o == null ? null : (tab === 'puis' ? o.p : o[t.key]), unit = tab === 'puis' ? 'M' : '';
