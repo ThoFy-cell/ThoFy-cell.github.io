@@ -551,8 +551,8 @@ summary::marker{color:var(--gold)}
 
     <div class="card">
       <h3>🗺️ The map of the 11 buildings</h3>
-      <p>Map to scale: every building is in its real place. North is up, east is right; the numbers along the edges are the coordinates. The eight outer buildings form a ring around the Gold Mine, and three buildings line up in the centre.</p>
-      <svg viewBox="0 0 380 364" width="100%" style="max-width:460px;display:block;margin:12px auto;font-family:inherit" role="img" aria-label="Carte a l'echelle des 11 batiments de la mine d'or">
+      <p>Map to scale: every building is in its real place. North is up, east is right. The eight outer buildings form a ring around the Gold Mine, and three buildings line up in the centre. The two shaded bands are the protected starting zones, one west and one east: your alliance starts in one of them.</p>
+      <svg viewBox="0 0 348 348" width="100%" style="max-width:440px;display:block;margin:12px auto;font-family:inherit" role="img" aria-label="Carte a l'echelle des 11 batiments de la mine d'or et des deux zones de depart">
         <defs>
           <symbol id="ico-mine" viewBox="0 0 24 24" fill="#fff"><path d="M3.5 15.5h7l1 4h-9zM13.5 15.5h7l1 4h-9zM8.5 10h7l1 4h-9z"/></symbol>
           <symbol id="ico-smelt" viewBox="0 0 24 24" fill="#fff"><path d="M12 3c3.2 4.2 5 6.3 5 9.2a5 5 0 01-10 0c0-2 .9-3.2 2-4.2 0 2 1 3 2 3 0-3.2-1.2-5 1-8z"/></symbol>
@@ -562,72 +562,84 @@ summary::marker{color:var(--gold)}
           <symbol id="ico-tower" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.2L19 9H5zM7 9h10v11H7zM4.5 20h15v1.6h-15z"/></symbol>
           <symbol id="ico-book" viewBox="0 0 24 24" fill="#fff"><path d="M9.6 2.5h4.8v6l5 8.7a2.4 2.4 0 01-2.1 3.6H6.7a2.4 2.4 0 01-2.1-3.6l5-8.7z"/></symbol>
         </defs>
-        <rect x="34" y="14" width="322" height="322" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
-        <line x1="195" y1="14" x2="195" y2="336" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
-        <line x1="34" y1="175" x2="356" y2="175" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
-        <text x="28" y="38.8667" text-anchor="end" font-size="9.5" fill="var(--muted)">565</text>
-        <text x="28" y="178.4" text-anchor="end" font-size="9.5" fill="var(--muted)">500</text>
-        <text x="28" y="317.933" text-anchor="end" font-size="9.5" fill="var(--muted)">435</text>
-        <text x="57.6133" y="352" text-anchor="middle" font-size="9.5" fill="var(--muted)">436</text>
-        <text x="195" y="352" text-anchor="middle" font-size="9.5" fill="var(--muted)">500</text>
-        <text x="332.387" y="352" text-anchor="middle" font-size="9.5" fill="var(--muted)">564</text>
+        <rect x="14" y="14" width="320" height="320" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <rect x="14" y="15" width="48" height="318" fill="var(--accent)" fill-opacity="0.07"/>
+        <line x1="62" y1="15" x2="62" y2="333" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 4" opacity="0.6"/>
+        <text x="38" y="29" text-anchor="middle" font-size="8.5" font-weight="600" fill="var(--muted)">start</text>
+        <rect x="286" y="15" width="48" height="318" fill="var(--accent)" fill-opacity="0.07"/>
+        <line x1="286" y1="15" x2="286" y2="333" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 4" opacity="0.6"/>
+        <text x="310" y="29" text-anchor="middle" font-size="8.5" font-weight="600" fill="var(--muted)">start</text>
+        <line x1="174" y1="14" x2="174" y2="334" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
+        <line x1="14" y1="174" x2="334" y2="174" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
         <g>
-          <rect x="106.4" y="22.0" width="27" height="27" rx="7" fill="#7a5bbd" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-intel" x="111.0" y="26.6" width="17.82" height="17.82"/>
-          <text x="119.9" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+          <rect x="106.0" y="58.0" width="24" height="24" rx="6" fill="#7a5bbd" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-intel" x="110.3" y="62.3" width="15.36" height="15.36"/>
+          <text x="118.0" y="94.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Intel</text>
+          <text x="118.0" y="106.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Post</text>
+          <text x="118.0" y="118.0" text-anchor="middle" font-size="9" fill="var(--muted)">10 pts/s</text>
         </g>
         <g>
-          <rect x="256.6" y="22.0" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-med" x="261.2" y="26.6" width="17.82" height="17.82"/>
-          <text x="270.1" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+          <rect x="218.0" y="58.0" width="24" height="24" rx="6" fill="#3f9168" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-med" x="222.3" y="62.3" width="15.36" height="15.36"/>
+          <text x="230.0" y="94.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Medical IV</text>
+          <text x="230.0" y="106.0" text-anchor="middle" font-size="9" fill="var(--muted)">30 pts/s</text>
         </g>
         <g>
-          <rect x="181.5" y="64.9" width="27" height="27" rx="7" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-hammer" x="186.1" y="69.5" width="17.82" height="17.82"/>
-          <text x="195.0" y="102.9" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+          <rect x="162.0" y="90.0" width="24" height="24" rx="6" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-hammer" x="166.3" y="94.3" width="15.36" height="15.36"/>
+          <text x="174.0" y="126.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Weapon Forge</text>
+          <text x="174.0" y="138.0" text-anchor="middle" font-size="9" fill="var(--muted)">10 pts/s</text>
         </g>
         <g>
-          <rect x="44.1" y="110.0" width="27" height="27" rx="7" fill="#c9603a" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-smelt" x="48.7" y="114.6" width="17.82" height="17.82"/>
-          <text x="57.6" y="148.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">50</text>
+          <rect x="59.6" y="123.6" width="24" height="24" rx="6" fill="#c9603a" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-smelt" x="63.9" y="127.9" width="15.36" height="15.36"/>
+          <text x="71.6" y="159.6" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Smeltery I</text>
+          <text x="71.6" y="171.6" text-anchor="middle" font-size="9" fill="var(--muted)">50 pts/s</text>
         </g>
         <g>
-          <rect x="318.9" y="122.9" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-med" x="323.5" y="127.4" width="17.82" height="17.82"/>
-          <text x="332.4" y="160.9" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+          <rect x="264.4" y="133.2" width="24" height="24" rx="6" fill="#3f9168" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-med" x="268.7" y="137.5" width="15.36" height="15.36"/>
+          <text x="276.4" y="169.2" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Medical II</text>
+          <text x="276.4" y="181.2" text-anchor="middle" font-size="9" fill="var(--muted)">30 pts/s</text>
         </g>
         <g>
-          <rect x="176.0" y="156.0" width="38" height="38" rx="9" fill="var(--gold-2)" stroke="var(--panel)" stroke-width="2.5"/>
-          <use href="#ico-mine" x="182.5" y="162.5" width="25.08" height="25.08"/>
-          <text x="195.0" y="205.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)">80</text>
+          <rect x="158.0" y="158.0" width="32" height="32" rx="8" fill="var(--gold-2)" stroke="var(--panel)" stroke-width="2.2"/>
+          <use href="#ico-mine" x="163.8" y="163.8" width="20.48" height="20.48"/>
+          <text x="174.0" y="204.0" text-anchor="middle" font-size="12" font-weight="600" fill="var(--fg)">Gold Mine</text>
+          <text x="174.0" y="218.0" text-anchor="middle" font-size="10.5" fill="var(--muted)">80 pts/s</text>
         </g>
         <g>
-          <rect x="44.1" y="200.1" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-med" x="48.7" y="204.7" width="17.82" height="17.82"/>
-          <text x="57.6" y="238.1" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+          <rect x="59.6" y="190.8" width="24" height="24" rx="6" fill="#3f9168" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-med" x="63.9" y="195.1" width="15.36" height="15.36"/>
+          <text x="71.6" y="226.8" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Medical I</text>
+          <text x="71.6" y="238.8" text-anchor="middle" font-size="9" fill="var(--muted)">30 pts/s</text>
         </g>
         <g>
-          <rect x="318.9" y="213.0" width="27" height="27" rx="7" fill="#c9603a" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-smelt" x="323.5" y="217.6" width="17.82" height="17.82"/>
-          <text x="332.4" y="251.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">50</text>
+          <rect x="264.4" y="200.4" width="24" height="24" rx="6" fill="#c9603a" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-smelt" x="268.7" y="204.7" width="15.36" height="15.36"/>
+          <text x="276.4" y="236.4" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Smeltery II</text>
+          <text x="276.4" y="248.4" text-anchor="middle" font-size="9" fill="var(--muted)">50 pts/s</text>
         </g>
         <g>
-          <rect x="181.5" y="258.1" width="27" height="27" rx="7" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-tower" x="186.1" y="262.7" width="17.82" height="17.82"/>
-          <text x="195.0" y="296.1" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+          <rect x="162.0" y="234.0" width="24" height="24" rx="6" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-tower" x="166.3" y="238.3" width="15.36" height="15.36"/>
+          <text x="174.0" y="270.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Judgment</text>
+          <text x="174.0" y="282.0" text-anchor="middle" font-size="9" fill="var(--muted)">10 pts/s</text>
         </g>
         <g>
-          <rect x="106.4" y="301.0" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-med" x="111.0" y="305.6" width="17.82" height="17.82"/>
-          <text x="119.9" y="339.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+          <rect x="106.0" y="266.0" width="24" height="24" rx="6" fill="#3f9168" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-med" x="110.3" y="270.3" width="15.36" height="15.36"/>
+          <text x="118.0" y="302.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Medical III</text>
+          <text x="118.0" y="314.0" text-anchor="middle" font-size="9" fill="var(--muted)">30 pts/s</text>
         </g>
         <g>
-          <rect x="256.6" y="301.0" width="27" height="27" rx="7" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.8"/>
-          <use href="#ico-book" x="261.2" y="305.6" width="17.82" height="17.82"/>
-          <text x="270.1" y="339.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+          <rect x="218.0" y="266.0" width="24" height="24" rx="6" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.6"/>
+          <use href="#ico-book" x="222.3" y="270.3" width="15.36" height="15.36"/>
+          <text x="230.0" y="302.0" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg)">Scholar</text>
+          <text x="230.0" y="314.0" text-anchor="middle" font-size="9" fill="var(--muted)">10 pts/s</text>
         </g>
       </svg>
-      <p class="note">The number under each building is its points per second. Colour: gold = the mine (80), orange = the smelteries (50), green = the medical camps (30), grey = the small buildings (10). In purple, the Intel Post: only 10 pts/s, but +10% on everything the alliance holds.</p>
+      <p class="note">Colour: gold = the mine (80 pts/s), orange = the smelteries (50), green = the medical camps (30), grey = the small buildings (10). In purple, the Intel Post: only 10 pts/s, but +10% on everything the alliance holds. Each building's coordinates are in the table below.</p>
       <table class="tbl">
         <tr><th></th><th>Building</th><th>Pts/s</th><th>Coord.</th></tr>
         <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:var(--gold-2)"><use href="#ico-mine" x="3" y="3" width="18" height="18"/></svg></td><td>Gold Mine</td><td>80</td><td>500, 500</td></tr>
