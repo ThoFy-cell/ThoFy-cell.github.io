@@ -449,7 +449,7 @@ summary::marker{color:var(--gold)}
         <li>The city belongs to the alliance. The <b>alliance leader appoints the lord</b> (and the knights): it is not necessarily whoever attacked most, and the title can change hands.</li>
         <li>Declarations are limited: 3 per day (2 in season), one target at a time, and the alliance needs at least 20 members. Once we own a city, we can only target neighbouring cities.</li>
         <li>The city's lord and knights renew the <b>decree every day</b>: it ends at midnight server time (1 am in Paris).</li>
-        <li>Every siege you play counts towards your participation score (30% of it), and so towards the sharing of the city chests.</li>
+        <li>Every siege you play counts towards your participation score (30% of it, in weeks when there are sieges), and so towards the sharing of the city chests.</li>
         <li>Capital Siege on Friday: the alliance needs a level 6 city and you need castle 12 to enter the zone.</li>
         <li>Keep healing and training speed-ups for siege days.</li>
       </ul>
@@ -551,42 +551,97 @@ summary::marker{color:var(--gold)}
 
     <div class="card">
       <h3>🗺️ The map of the 11 buildings</h3>
-      <p>North is up, east is right. The relative positions are correct, the distances are not. In colour: the Gold Mine, objective no. 1, and the Intel Post, which almost nobody defends.</p>
-      <svg viewBox="0 0 360 362" width="100%" style="max-width:420px;display:block;margin:12px auto;font-family:inherit" role="img" aria-label="Carte des 11 batiments de la mine d'or">
-        <rect x="8" y="8" width="172" height="38" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 4"/>
-        <text x="94" y="25" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Intel Post</text>
-        <text x="94" y="39" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 465, 565 · +10%</text>
-        <rect x="232" y="8" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="292" y="25" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical IV</text>
-        <text x="292" y="39" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 535, 565</text>
-        <rect x="120" y="58" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="180" y="75" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Weapon Forge</text>
-        <text x="180" y="89" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 500, 545</text>
-        <rect x="8" y="108" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="68" y="125" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Smeltery I</text>
-        <text x="68" y="139" text-anchor="middle" font-size="10.5" fill="var(--muted)">50 pts/s · 436, 524</text>
-        <rect x="232" y="108" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="292" y="125" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical II</text>
-        <text x="292" y="139" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 564, 518</text>
-        <rect x="100" y="158" width="160" height="46" rx="10" fill="var(--accent-soft)" stroke="var(--gold-2)" stroke-width="2.5"/>
-        <text x="180" y="179" text-anchor="middle" font-size="14" font-weight="700" fill="var(--fg)">Gold Mine</text>
-        <text x="180" y="195" text-anchor="middle" font-size="11" font-weight="600" fill="var(--fg)">80 pts/s · 500, 500</text>
-        <rect x="8" y="216" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="68" y="233" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical I</text>
-        <text x="68" y="247" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 436, 482</text>
-        <rect x="232" y="216" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="292" y="233" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Smeltery II</text>
-        <text x="292" y="247" text-anchor="middle" font-size="10.5" fill="var(--muted)">50 pts/s · 564, 476</text>
-        <rect x="120" y="266" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="180" y="283" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Judgment</text>
-        <text x="180" y="297" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 500, 455</text>
-        <rect x="8" y="316" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="68" y="333" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Medical III</text>
-        <text x="68" y="347" text-anchor="middle" font-size="10.5" fill="var(--muted)">30 pts/s · 465, 435</text>
-        <rect x="232" y="316" width="120" height="38" rx="8" fill="var(--panel)" stroke="var(--line)" stroke-width="1.5"/>
-        <text x="292" y="333" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--fg)">Scholar</text>
-        <text x="292" y="347" text-anchor="middle" font-size="10.5" fill="var(--muted)">10 pts/s · 535, 435</text>
+      <p>Map to scale: every building is in its real place. North is up, east is right; the numbers along the edges are the coordinates. The eight outer buildings form a ring around the Gold Mine, and three buildings line up in the centre.</p>
+      <svg viewBox="0 0 380 364" width="100%" style="max-width:460px;display:block;margin:12px auto;font-family:inherit" role="img" aria-label="Carte a l'echelle des 11 batiments de la mine d'or">
+        <defs>
+          <symbol id="ico-mine" viewBox="0 0 24 24" fill="#fff"><path d="M3.5 15.5h7l1 4h-9zM13.5 15.5h7l1 4h-9zM8.5 10h7l1 4h-9z"/></symbol>
+          <symbol id="ico-smelt" viewBox="0 0 24 24" fill="#fff"><path d="M12 3c3.2 4.2 5 6.3 5 9.2a5 5 0 01-10 0c0-2 .9-3.2 2-4.2 0 2 1 3 2 3 0-3.2-1.2-5 1-8z"/></symbol>
+          <symbol id="ico-med" viewBox="0 0 24 24" fill="#fff"><path d="M10 4h4v6h6v4h-6v6h-4v-6H4v-4h6z"/></symbol>
+          <symbol id="ico-intel" viewBox="0 0 24 24" fill="#fff"><path d="M12 5.5c5.2 0 8.5 6.5 8.5 6.5s-3.3 6.5-8.5 6.5S3.5 12 3.5 12 6.8 5.5 12 5.5z" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="2.6"/></symbol>
+          <symbol id="ico-hammer" viewBox="0 0 24 24" fill="#fff"><path d="M5 4.5L17.5 19M19 4.5L6.5 19" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/></symbol>
+          <symbol id="ico-tower" viewBox="0 0 24 24" fill="#fff"><path d="M12 2.2L19 9H5zM7 9h10v11H7zM4.5 20h15v1.6h-15z"/></symbol>
+          <symbol id="ico-book" viewBox="0 0 24 24" fill="#fff"><path d="M9.6 2.5h4.8v6l5 8.7a2.4 2.4 0 01-2.1 3.6H6.7a2.4 2.4 0 01-2.1-3.6l5-8.7z"/></symbol>
+        </defs>
+        <rect x="34" y="14" width="322" height="322" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <line x1="195" y1="14" x2="195" y2="336" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
+        <line x1="34" y1="175" x2="356" y2="175" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 5"/>
+        <text x="28" y="38.8667" text-anchor="end" font-size="9.5" fill="var(--muted)">565</text>
+        <text x="28" y="178.4" text-anchor="end" font-size="9.5" fill="var(--muted)">500</text>
+        <text x="28" y="317.933" text-anchor="end" font-size="9.5" fill="var(--muted)">435</text>
+        <text x="57.6133" y="352" text-anchor="middle" font-size="9.5" fill="var(--muted)">436</text>
+        <text x="195" y="352" text-anchor="middle" font-size="9.5" fill="var(--muted)">500</text>
+        <text x="332.387" y="352" text-anchor="middle" font-size="9.5" fill="var(--muted)">564</text>
+        <g>
+          <rect x="106.4" y="22.0" width="27" height="27" rx="7" fill="#7a5bbd" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-intel" x="111.0" y="26.6" width="17.82" height="17.82"/>
+          <text x="119.9" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+        </g>
+        <g>
+          <rect x="256.6" y="22.0" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-med" x="261.2" y="26.6" width="17.82" height="17.82"/>
+          <text x="270.1" y="60.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+        </g>
+        <g>
+          <rect x="181.5" y="64.9" width="27" height="27" rx="7" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-hammer" x="186.1" y="69.5" width="17.82" height="17.82"/>
+          <text x="195.0" y="102.9" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+        </g>
+        <g>
+          <rect x="44.1" y="110.0" width="27" height="27" rx="7" fill="#c9603a" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-smelt" x="48.7" y="114.6" width="17.82" height="17.82"/>
+          <text x="57.6" y="148.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">50</text>
+        </g>
+        <g>
+          <rect x="318.9" y="122.9" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-med" x="323.5" y="127.4" width="17.82" height="17.82"/>
+          <text x="332.4" y="160.9" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+        </g>
+        <g>
+          <rect x="176.0" y="156.0" width="38" height="38" rx="9" fill="var(--gold-2)" stroke="var(--panel)" stroke-width="2.5"/>
+          <use href="#ico-mine" x="182.5" y="162.5" width="25.08" height="25.08"/>
+          <text x="195.0" y="205.0" text-anchor="middle" font-size="11" font-weight="700" fill="var(--fg)">80</text>
+        </g>
+        <g>
+          <rect x="44.1" y="200.1" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-med" x="48.7" y="204.7" width="17.82" height="17.82"/>
+          <text x="57.6" y="238.1" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+        </g>
+        <g>
+          <rect x="318.9" y="213.0" width="27" height="27" rx="7" fill="#c9603a" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-smelt" x="323.5" y="217.6" width="17.82" height="17.82"/>
+          <text x="332.4" y="251.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">50</text>
+        </g>
+        <g>
+          <rect x="181.5" y="258.1" width="27" height="27" rx="7" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-tower" x="186.1" y="262.7" width="17.82" height="17.82"/>
+          <text x="195.0" y="296.1" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+        </g>
+        <g>
+          <rect x="106.4" y="301.0" width="27" height="27" rx="7" fill="#3f9168" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-med" x="111.0" y="305.6" width="17.82" height="17.82"/>
+          <text x="119.9" y="339.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">30</text>
+        </g>
+        <g>
+          <rect x="256.6" y="301.0" width="27" height="27" rx="7" fill="#6b7f99" stroke="var(--panel)" stroke-width="1.8"/>
+          <use href="#ico-book" x="261.2" y="305.6" width="17.82" height="17.82"/>
+          <text x="270.1" y="339.0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--fg)">10</text>
+        </g>
       </svg>
+      <p class="note">The number under each building is its points per second. Colour: gold = the mine (80), orange = the smelteries (50), green = the medical camps (30), grey = the small buildings (10). In purple, the Intel Post: only 10 pts/s, but +10% on everything the alliance holds.</p>
+      <table class="tbl">
+        <tr><th></th><th>Building</th><th>Pts/s</th><th>Coord.</th></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:var(--gold-2)"><use href="#ico-mine" x="3" y="3" width="18" height="18"/></svg></td><td>Gold Mine</td><td>80</td><td>500, 500</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#c9603a"><use href="#ico-smelt" x="3" y="3" width="18" height="18"/></svg></td><td>Smeltery I</td><td>50</td><td>436, 524</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#c9603a"><use href="#ico-smelt" x="3" y="3" width="18" height="18"/></svg></td><td>Smeltery II</td><td>50</td><td>564, 476</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#3f9168"><use href="#ico-med" x="3" y="3" width="18" height="18"/></svg></td><td>Medical IV</td><td>30</td><td>535, 565</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#3f9168"><use href="#ico-med" x="3" y="3" width="18" height="18"/></svg></td><td>Medical II</td><td>30</td><td>564, 518</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#3f9168"><use href="#ico-med" x="3" y="3" width="18" height="18"/></svg></td><td>Medical I</td><td>30</td><td>436, 482</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#3f9168"><use href="#ico-med" x="3" y="3" width="18" height="18"/></svg></td><td>Medical III</td><td>30</td><td>465, 435</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#7a5bbd"><use href="#ico-intel" x="3" y="3" width="18" height="18"/></svg></td><td>Intel Post</td><td>10</td><td>465, 565</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#6b7f99"><use href="#ico-hammer" x="3" y="3" width="18" height="18"/></svg></td><td>Weapon Forge</td><td>10</td><td>500, 545</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#6b7f99"><use href="#ico-tower" x="3" y="3" width="18" height="18"/></svg></td><td>Judgment</td><td>10</td><td>500, 455</td></tr>
+        <tr><td><svg viewBox="0 0 24 24" width="20" height="20" style="vertical-align:middle;border-radius:5px;background:#6b7f99"><use href="#ico-book" x="3" y="3" width="18" height="18"/></svg></td><td>Scholar</td><td>10</td><td>535, 435</td></tr>
+      </table>
       <p>Your building is somewhere in there: find its name, then its coordinates to travel to it. The map is mirrored — every building in the west has its twin in the east.</p>
     </div>
 

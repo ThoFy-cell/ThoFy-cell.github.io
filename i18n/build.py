@@ -36,6 +36,8 @@ def norm(s):  # compatibilité avec les clés d'origine (<a46_0>) : on numérote
     return re.sub(r'<(a|span|small|i|em|code)\d+_\d+>', r, s)
 
 JS = [  # (fragment exact du script français, anglais, allemand)
+ ("') · ' + r.v + 'e au VS'", "') · #' + r.v + ' in VS'", "') · ' + r.v + '. im VS'"),
+ ("'Champion du VS'", "'VS champion'", "'VS-Champion'"),
  ("x.toLocaleString('fr-FR')", "x.toLocaleString('en-GB')", "x.toLocaleString('de-DE')"),
  ("toLocaleDateString('fr-FR'", "toLocaleDateString('en-GB'", "toLocaleDateString('de-DE'"),
  ("label: 'Astuces'", "label: 'Tips'", "label: 'Tipps'"),
@@ -51,8 +53,8 @@ JS = [  # (fragment exact du script français, anglais, allemand)
  ("label: 'Coffres'", "label: 'Chests'", "label: 'Truhen'"),
  ("label: 'Règles'", "label: 'Rules'", "label: 'Regeln'"),
  ("`Relevé du ${DATA.date} · ${rows.length} membres`", "`Data from ${DATA.date} · ${rows.length} members`", "`Stand vom ${DATA.date} · ${rows.length} Mitglieder`"),
- ("`Avec ${stock} coffres : ${gagnants} membres récompensés. « 1er dès 12 » = 1er coffre si la ville en a au moins 12.`", "`With ${stock} chests: ${gagnants} members rewarded. \"1st from 12\" = 1st chest if the city has at least 12.`", "`Mit ${stock} Truhen: ${gagnants} Mitglieder belohnt. „1. ab 12“ = 1. Truhe, wenn die Stadt mindestens 12 hat.`"),
- ("`1er dès ${r.seuils[0]} · 2e dès ${r.seuils[1]} · 3e dès ${r.seuils[2]}`", "`1st from ${r.seuils[0]} · 2nd from ${r.seuils[1]} · 3rd from ${r.seuils[2]}`", "`1. ab ${r.seuils[0]} · 2. ab ${r.seuils[1]} · 3. ab ${r.seuils[2]}`"),
+ ("`Avec ${stock} coffres : ${gagnants} membres récompensés. « 1er dès 12 » = 1er coffre si la ville en a au moins 12. Liste dans l'ordre de la fenêtre « Distribuer des Récompenses » du jeu (R5, R4, R3, R2, R1), pour distribuer ligne par ligne.`", "`With ${stock} chests: ${gagnants} members rewarded. \"1st from 12\" = 1st chest if the city has at least 12. List in the order of the in-game « Distribute Rewards » window (R5, R4, R3, R2, R1), to hand out line by line.`", "`Mit ${stock} Truhen: ${gagnants} Mitglieder belohnt. „1. ab 12“ = 1. Truhe, wenn die Stadt mindestens 12 hat. Liste in der Reihenfolge des Spielfensters „Belohnungen verteilen“ (R5, R4, R3, R2, R1), um Zeile für Zeile zu verteilen.`"),
+ ("`Priorité ${prio.get(r)} · 1er dès ${r.seuils[0]} · 2e dès ${r.seuils[1]} · 3e dès ${r.seuils[2]}`", "`Priority ${prio.get(r)} · 1st from ${r.seuils[0]} · 2nd from ${r.seuils[1]} · 3rd from ${r.seuils[2]}`", "`Priorität ${prio.get(r)} · 1. ab ${r.seuils[0]} · 2. ab ${r.seuils[1]} · 3. ab ${r.seuils[2]}`"),
  ("'coffre' + (nb(r) > 1 ? 's' : '')", "'chest' + (nb(r) > 1 ? 's' : '')", "'Truhe' + (nb(r) > 1 ? 'n' : '')"),
  ("'Aucun membre ne correspond.'", "'No member matches.'", "'Kein Mitglied passt.'"),
  ("['😴 Dimanche : repos', \"Pas de duel aujourd'hui. Ne dépense rien d'important, lance tes longs chantiers et prépare lundi.\"]", "['😴 Sunday: rest', \"No duel today. Don't spend anything important, start your long builds and prepare Monday.\"]", "['😴 Sonntag: Ruhetag', \"Heute kein Duell. Gib nichts Wichtiges aus, starte lange Bauten und bereite Montag vor.\"]"),
@@ -79,7 +81,6 @@ JS = [  # (fragment exact du script français, anglais, allemand)
  ("'Planning décidé par ' + PL.decide_par + ', du ' + fr(PL.debut) + ' au ' + fr(PL.fin) + '. Ordre de rotation : ' + PL.ordre.join(' → ') + '.'", "'Schedule decided by ' + PL.decide_par + ', from ' + fr(PL.debut) + ' to ' + fr(PL.fin) + '. Rotation order: ' + PL.ordre.join(' → ') + '.'", "'Plan beschlossen von ' + PL.decide_par + ', vom ' + fr(PL.debut) + ' bis ' + fr(PL.fin) + '. Reihenfolge: ' + PL.ordre.join(' → ') + '.'"),
  ("fr(x) + (x === today ? ' · ce soir' : '')", "fr(x) + (x === today ? ' · tonight' : '')", "fr(x) + (x === today ? ' · heute Abend' : '')"),
  ("'– pas de cargo enregistré'", "'– no cargo recorded'", "'– kein Frachtschiff erfasst'"),
- ("'Champion du VS : à venir, dès que le duel sera relevé.'", "'VS champion: coming once the duel is recorded.'", "'VS-Champion: folgt, sobald das Duell erfasst wird.'"),
  ("'participation ' + r.part + ' / 100'", "'participation ' + r.part + ' / 100'", "'Beteiligung ' + r.part + ' / 100'"),
  ("v(r.p) + ' M de puissance'", "v(r.p) + 'M power'", "v(r.p) + ' Mio. Stärke'"),
  ("' · ensuite : '", "' · next: '", "' · danach: '"),
