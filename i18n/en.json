@@ -371,5 +371,6 @@
  "Carte à l'échelle : chaque bâtiment est à sa vraie place. Nord en haut, est à droite. Les huit bâtiments du bord forment un anneau autour de la mine d'or, et trois bâtiments s'alignent au centre. Les deux bandes grisées sont les zones de départ protégées, une à l'ouest et une à l'est : ton alliance commence dans l'une des deux.": "Map to scale: every building is in its real place. North is up, east is right. The eight outer buildings form a ring around the Gold Mine, and three buildings line up in the centre. The two shaded bands are the protected starting zones, one west and one east: your alliance starts in one of them.",
  "Couleur : or = la mine (80 pts/s), orange = les fonderies (50), vert = les camps médicaux (30), gris = les petits bâtiments (10). En violet, le poste de renseignement : 10 pts/s seulement, mais +10 % sur tout ce que l'alliance tient. Les coordonnées de chaque bâtiment sont dans le tableau ci-dessous.": "Colour: gold = the mine (80 pts/s), orange = the smelteries (50), green = the medical camps (30), grey = the small buildings (10). In purple, the Intel Post: only 10 pts/s, but +10% on everything the alliance holds. Each building's coordinates are in the table below.",
  "Poste de": "Intel",
- "renseignement": "Post"
+ "renseignement": "Post",
+ "📅 La veille, deux choses à préparer": "📅 The day before: two things to prepare"
 }
