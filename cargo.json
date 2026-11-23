@@ -23,6 +23,14 @@
   {
    "date": "2026-11-18",
    "capitaine": "NonoBzh"
+  },
+  {
+   "date": "2026-11-22",
+   "capitaine": "Default Username"
+  },
+  {
+   "date": "2026-11-23",
+   "capitaine": "la Fripouille"
   }
  ],
  "planning": {
@@ -44,8 +52,8 @@
    "2026-11-18": "NonoBzh",
    "2026-11-20": "Yurry",
    "2026-11-21": "Laetiti",
-   "2026-11-23": "Laetiti"
+   "2026-11-23": "la Fripouille"
   },
-  "note": "Mercredi 18 : cargo fait par NonoBzh à la place de Rhazorbak, qui ne peut pas le soir. Vendredi 20 : Yurry (à la place de NonoBzh). Samedi 21 : Laetiti. Lundi 23 : Laetiti (à la place de Yurry, qui passe vendredi). Dimanche : champion du VS, ou le suivant au classement VS s'il a déjà fait le cargo dans la semaine. Le reste du planning ne change pas."
+  "note": "Mercredi 18 : cargo fait par NonoBzh à la place de Rhazorbak, qui ne peut pas le soir. Vendredi 20 : Yurry (à la place de NonoBzh). Samedi 21 : Laetiti. Lundi 23 : fait par la Fripouille (Laetiti était prévue). Dimanche : champion du VS, ou le suivant au classement VS s'il a déjà fait le cargo dans la semaine. Le reste du planning ne change pas. Dimanche 22 : fait par Default Username."
  }
 }
